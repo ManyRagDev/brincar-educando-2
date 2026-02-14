@@ -16,7 +16,7 @@ export default async function NovaDiarioPage() {
 
   const { data: criancas } = await supabase
     .from("criancas")
-    .select("nome")
+    .select("id, nome")
     .order("created_at", { ascending: false })
     .limit(1);
 
