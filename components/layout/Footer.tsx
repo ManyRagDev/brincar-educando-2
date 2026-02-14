@@ -4,7 +4,7 @@ import { BookOpen, Heart, Mail, Instagram } from "lucide-react";
 const footerLinks = {
   conteudo: [
     { href: "/blog", label: "Blog" },
-    { href: "/loja", label: "Loja" },
+    { href: "/loja", label: "Loja", badge: "Em breve" },
     { href: "/historias", label: "Histórias" },
   ],
   empresa: [
@@ -65,9 +65,14 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[var(--color-foreground)] hover:text-[var(--color-primary)] transition-colors"
+                    className="inline-flex items-center gap-2 text-sm text-[var(--color-foreground)] hover:text-[var(--color-primary)] transition-colors"
                   >
                     {link.label}
+                    {link.badge && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 leading-none">
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 </li>
               ))}

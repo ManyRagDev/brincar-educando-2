@@ -1,20 +1,20 @@
 import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
-import { ExternalLink, ShoppingBag } from "lucide-react";
+import { ShoppingBag, Sparkles, Heart, Star, Leaf, Palette } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Loja | Brincar Educando",
-  description: "Seleção curada de brinquedos educativos e recursos para o desenvolvimento infantil.",
+  description: "Em breve: seleção curada de brinquedos educativos e recursos para o desenvolvimento infantil.",
 };
 
-const products = [
-  { title: "Kit Blocos Lógicos Montessori", price: "R$ 89,90", category: "Cognitivo", ageRange: "2-6 anos", emoji: "🧩", href: "#" },
-  { title: "Tinta Guache Atóxica (12 cores)", price: "R$ 35,00", category: "Arte", ageRange: "1+ ano", emoji: "🎨", href: "#" },
-  { title: "Massinha de Modelar Natural", price: "R$ 42,00", category: "Sensorial", ageRange: "1+ ano", emoji: "🌈", href: "#" },
-  { title: "Livro: O Poder do Brincar", price: "R$ 58,00", category: "Livros", ageRange: "Pais", emoji: "📚", href: "#" },
-  { title: "Xilofone Infantil Colorido", price: "R$ 65,00", category: "Música", ageRange: "1-4 anos", emoji: "🎵", href: "#" },
-  { title: "Tapete Sensorial Tátil", price: "R$ 120,00", category: "Sensorial", ageRange: "0-3 anos", emoji: "🌿", href: "#" },
+const categorias = [
+  { emoji: "🧩", label: "Montessori" },
+  { emoji: "🎨", label: "Arte" },
+  { emoji: "📚", label: "Livros" },
+  { emoji: "🌿", label: "Sensorial" },
+  { emoji: "🎵", label: "Música" },
+  { emoji: "✨", label: "Criatividade" },
 ];
 
 export default function LojaPage() {
@@ -22,53 +22,111 @@ export default function LojaPage() {
     <>
       <PublicNav />
       <main className="min-h-screen bg-[var(--color-background)] pt-[120px]">
+        {/* Hero */}
         <div className="bg-[var(--color-muted)] border-b border-[var(--color-border)]">
-          <div className="container mx-auto px-4 py-12">
-            <p className="text-xs font-black uppercase tracking-widest text-[var(--color-secondary)] mb-2">
-              Produtos selecionados
-            </p>
-            <h1 className="font-serif text-4xl sm:text-5xl font-black text-[var(--color-foreground)] mb-3">
-              Loja
-            </h1>
-            <p className="text-[var(--color-muted-foreground)] max-w-lg">
-              Seleção curada de brinquedos educativos e livros para apoiar o desenvolvimento infantil.
-              Links com parceiros de confiança.
-            </p>
+          <div className="container mx-auto px-4 py-12 md:py-16">
+            <div className="max-w-2xl">
+              <p className="text-xs font-black uppercase tracking-widest text-[var(--color-secondary)] mb-2">
+                Produtos selecionados
+              </p>
+              <h1 className="font-serif text-4xl sm:text-5xl font-black leading-tight text-[var(--color-foreground)] mb-4">
+                A lojinha está sendo{" "}
+                <span className="text-[var(--color-primary)] italic">preparada</span>
+              </h1>
+              <p className="text-[var(--color-muted-foreground)] text-lg">
+                Estamos curadando com cuidado os melhores produtos para o desenvolvimento infantil.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((p, i) => (
-              <div key={i} className="card-theme overflow-hidden group">
-                <div className="aspect-square bg-[var(--color-muted)] flex items-center justify-center">
-                  <span className="text-7xl">{p.emoji}</span>
+        <div className="container mx-auto px-4 py-14 max-w-2xl">
+          {/* Card principal */}
+          <div className="card-theme overflow-hidden">
+            {/* Topo colorido */}
+            <div className="h-2 w-full bg-gradient-to-r from-amber-400 via-orange-400 to-pink-400" />
+
+            <div className="p-8 md:p-12 flex flex-col items-center text-center">
+              {/* Ícone */}
+              <div className="relative mb-6">
+                <div className="w-24 h-24 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center">
+                  <ShoppingBag className="h-12 w-12 text-[var(--color-primary)]" />
                 </div>
-                <div className="p-5">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-secondary)] mb-2 block">
-                    {p.category} · {p.ageRange}
-                  </span>
-                  <h3 className="font-bold text-base text-[var(--color-foreground)] mb-2">{p.title}</h3>
-                  <div className="flex items-center justify-between">
-                    <span className="font-black text-lg text-[var(--color-primary)]">{p.price}</span>
-                    <a
-                      href={p.href}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-foreground)] text-xs font-bold hover:no-underline"
-                    >
-                      <ShoppingBag className="h-3 w-3" />
-                      Comprar
-                    </a>
+                <span className="absolute -top-1 -right-1 text-2xl">🛍️</span>
+                <span className="absolute -bottom-1 -left-2 text-xl">✨</span>
+              </div>
+
+              {/* Badge */}
+              <div className="mb-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-black uppercase tracking-widest">
+                <Sparkles className="h-3 w-3" />
+                Em breve
+              </div>
+
+              <h2 className="font-serif text-3xl font-black text-[var(--color-foreground)] mb-4 leading-tight">
+                A lojinha está chegando
+              </h2>
+
+              <p className="text-[var(--color-muted-foreground)] text-base leading-relaxed mb-3 max-w-md">
+                Estamos selecionando produtos com muito critério — brinquedos, materiais e livros
+                que realmente fazem diferença no desenvolvimento do seu filho.
+              </p>
+
+              <p className="text-[var(--color-muted-foreground)] text-base leading-relaxed mb-8 max-w-md">
+                Sem achismo, sem exagero.{" "}
+                <span className="text-[var(--color-foreground)] font-semibold">
+                  Só o que tem respaldo e vale cada real.
+                </span>
+              </p>
+
+              {/* Divisor */}
+              <div className="w-12 h-px bg-[var(--color-border)] mb-8" />
+
+              {/* Categorias em preview */}
+              <p className="text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] mb-5">
+                Categorias que você vai encontrar
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-3 mb-10">
+                {categorias.map((cat) => (
+                  <div
+                    key={cat.label}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-muted)] text-sm font-semibold text-[var(--color-foreground)]"
+                  >
+                    <span>{cat.emoji}</span>
+                    {cat.label}
                   </div>
+                ))}
+              </div>
+
+              {/* Promessas */}
+              <div className="w-full rounded-2xl bg-[var(--color-muted)] p-6 flex flex-col gap-3">
+                <div className="flex items-start gap-3">
+                  <Heart className="h-5 w-5 text-[var(--color-primary)] flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--color-muted-foreground)] text-left">
+                    Curadoria baseada em desenvolvimento infantil e pedagogias ativas.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Star className="h-5 w-5 text-[var(--color-secondary)] flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--color-muted-foreground)] text-left">
+                    Produtos selecionados por faixa etária, do bebê ao pré-escolar.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Leaf className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--color-muted-foreground)] text-left">
+                    Prioridade para materiais naturais, atóxicos e sustentáveis.
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Palette className="h-5 w-5 text-pink-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-[var(--color-muted-foreground)] text-left">
+                    Arte, música, sensorial, lógica — um universo para cada fase.
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-
-          <p className="text-xs text-[var(--color-muted-foreground)] text-center mt-12">
-            * Links de afiliado. Comprando por aqui você apoia o Brincar Educando sem custo adicional.
-          </p>
         </div>
       </main>
       <Footer />

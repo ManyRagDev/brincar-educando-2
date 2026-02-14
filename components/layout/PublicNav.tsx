@@ -17,7 +17,7 @@ import { LogOut, LayoutDashboard } from "lucide-react";
 const navLinks = [
   { href: "/", label: "Início", icon: Home },
   { href: "/blog", label: "Blog", icon: BookOpen },
-  { href: "/loja", label: "Loja", icon: ShoppingBag },
+  { href: "/loja", label: "Loja", icon: ShoppingBag, badge: "Em breve" },
   { href: "/sobre", label: "Sobre", icon: Info },
 ];
 
@@ -66,13 +66,18 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
               key={link.href}
               href={link.href}
               className={cn(
-                "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-[var(--color-muted)]",
+                "relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-[var(--color-muted)] flex items-center gap-2",
                 pathname === link.href
                   ? "text-[var(--color-primary)] bg-[var(--color-muted)]"
                   : "text-[var(--color-foreground)]"
               )}
             >
               {link.label}
+              {link.badge && (
+                <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 leading-none">
+                  {link.badge}
+                </span>
+              )}
             </Link>
           ))}
         </div>
@@ -156,6 +161,11 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
                   >
                     <link.icon className="h-4 w-4" />
                     {link.label}
+                    {link.badge && (
+                      <span className="ml-auto text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 leading-none">
+                        {link.badge}
+                      </span>
+                    )}
                   </Link>
                 ))}
 

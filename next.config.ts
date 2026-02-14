@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      // Security headers for all routes
       {
         source: "/:path*",
         headers: [
@@ -32,6 +33,29 @@ const nextConfig: NextConfig = {
           {
             key: "Strict-Transport-Security",
             value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+      // Static assets: content-hashed by Next.js — safe to cache forever
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // HTML pages: always revalidate with server before using cached version.
+      // Browser sends a conditional request (ETag / If-Modified-Since);
+      // server responds 304 if nothing changed (cheap) or 200 with fresh HTML.
+      // This prevents stale pages on mobile while staying efficient.
+      {
+        source: "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff2?|ttf|otf)).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, must-revalidate",
           },
         ],
       },

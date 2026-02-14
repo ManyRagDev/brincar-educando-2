@@ -7,6 +7,7 @@ import { getAllBlogPosts } from "@/lib/mdx";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import { JourneySuggestions } from "@/components/journey/JourneySuggestions";
 import { getDashboardSuggestions } from "@/lib/journey/suggestions";
+import { ChildAgeCard } from "@/components/dashboard/ChildAgeCard";
 import { differenceInYears, differenceInMonths, parseISO, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import type { Metadata } from "next";
@@ -32,13 +33,14 @@ export default async function DashboardPage() {
   const { data: criancas } = await supabase
     .schema("brincareducando")
     .from("criancas")
-    .select("id, nome, data_nascimento")
+    .select("id, nome, data_nascimento, avatar_id, cor_favorita")
     .order("created_at", { ascending: false })
     .limit(1);
 
   const child = criancas?.[0];
   let childContext = "Crie o perfil da sua criança para sugestões personalizadas.";
   let childAgeMonths: number | null = null;
+  let childAgeString = "";
 
   if (child) {
     const birthDate = parseISO(child.data_nascimento);
@@ -46,12 +48,11 @@ export default async function DashboardPage() {
     const months = differenceInMonths(new Date(), birthDate) % 12;
     childAgeMonths = differenceInMonths(new Date(), birthDate);
 
-    let ageString = "";
-    if (years > 0) ageString += `${years} anos`;
-    if (years > 0 && months > 0) ageString += " e ";
-    if (months > 0 || years === 0) ageString += `${months} meses`;
+    if (years > 0) childAgeString += `${years} ${years === 1 ? "ano" : "anos"}`;
+    if (years > 0 && months > 0) childAgeString += " e ";
+    if (months > 0 || years === 0) childAgeString += `${months} ${months === 1 ? "mês" : "meses"}`;
 
-    childContext = `${child.nome} está com ${ageString}`;
+    childContext = `${child.nome} está com ${childAgeString}`;
   }
 
   // 2. Buscar Sugestões (Server Side) — filtradas pela faixa etária da criança
@@ -74,7 +75,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen">
       {/* Header Personalizado */}
       <header className="px-6 pt-8 pb-6 flex items-start justify-between">
-        <div className="space-y-1">
+        <div className="space-y-2">
           <h1 className="text-xl font-bold text-[var(--color-foreground)] flex items-center gap-2">
             🌤️ Boa tarde, {firstName}!
           </h1>
@@ -83,9 +84,18 @@ export default async function DashboardPage() {
               <Calendar className="w-3.5 h-3.5" />
               {todayDateCapitalized}
             </p>
-            <p className="text-[var(--color-primary)] font-medium">
-              {childContext}
-            </p>
+            {child ? (
+              <ChildAgeCard
+                nome={child.nome}
+                idadeTexto={childAgeString}
+                avatarId={child.avatar_id}
+                corFavorita={child.cor_favorita}
+              />
+            ) : (
+              <p className="text-[var(--color-primary)] font-medium">
+                {childContext}
+              </p>
+            )}
           </div>
         </div>
         <button className="p-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] shadow-sm relative">
