@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "atividade_001",
+    "titulo": "Pintura com gelo colorido",
+    "descricao": "Congele água com corante alimentício em forminhas. Bebê explora textura fria e cores em papel grande, desenvolvendo exploração sensorial tátil.",
+    "categoria": "sensorial",
+    "energia": "media",
+    "preparo_minutos": 30,
+    "duracao_minutos": 10,
+    "idade_min_meses": 6,
+    "idade_max_meses": 12,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Forminhas de gelo", "Corante alimentício", "Papel grande", "Água"],
+    "beneficios": ["Coordenação Motora", "Exploração Sensorial", "Percepção Visual"],
+    "passos": [
+      "Congele água com corante em forminhas de gelo",
+      "Coloque papel grande no chão ou mesa",
+      "Entregue o gelo colorido para o bebê explorar",
+      "Deixe ele deslizar o gelo no papel",
+      "Observe as reações de temperatura e cor"
+    ],
+    "dicas": [
+      "Use corante alimentício natural",
+      "Supervisione para evitar ingestão",
+      "Temperatura fria estimula sensações novas"
+    ]
+  },
+  {
+    "id": "atividade_002",
+    "titulo": "Sacola surpresa de tecidos",
+    "descricao": "Coloque tecidos de diferentes texturas em uma sacola. Bebê retira e explora cada um com as mãos e boca.",
+    "categoria": "sensorial",
+    "energia": "baixa",
+    "preparo_minutos": 5,
+    "duracao_minutos": 10,
+    "idade_min_meses": 0,
+    "idade_max_meses": 6,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Sacola de pano", "3-4 retalhos de tecidos variados", "Tecidos limpos e seguros"],
+    "beneficios": ["Exploração Sensorial", "Coordenação Motora", "Atenção"],
+    "passos": [
+      "Selecione tecidos de texturas variadas (liso, áspero, macio)",
+      "Coloque na sacola",
+      "Apresente a sacola ao bebê",
+      "Deixe ele explorar livremente",
+      "Nomeie as texturas enquanto ele toca"
+    ],
+    "dicas": [
+      "Certifique-se que os tecidos são seguros para levar à boca",
+      "Varie as texturas a cada sessão",
+      "Estimula desenvolvimento tátil precoce"
+    ]
+  },
+  {
+    "id": "atividade_003",
+    "titulo": "Caixa de sons da cozinha",
+    "descricao": "Panelas, colheres e potes viram instrumentos musicais para explorar diferentes sons e ritmos.",
+    "categoria": "sensorial",
+    "energia": "media",
+    "preparo_minutos": 3,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 24,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["2-3 panelas", "Colheres de pau", "Potes plásticos"],
+    "beneficios": ["Exploração Sensorial", "Coordenação Motora", "Ritmo"],
+    "passos": [
+      "Separe panelas e utensílios seguros",
+      "Coloque no chão ou mesa baixa",
+      "Mostre como bater para fazer sons",
+      "Deixe a criança explorar livremente",
+      "Faça ritmos simples para ela imitar"
+    ],
+    "dicas": [
+      "Evite materiais que possam machucar",
+      "Crie ritmos alternados (rápido/lento)",
+      "Estimula discriminação auditiva"
+    ]
+  },
+  {
+    "id": "atividade_004",
+    "titulo": "Tapete sensorial improvisado",
+    "descricao": "Cole texturas variadas em papelão grande para criança andar descalça e explorar diferentes sensações nos pés.",
+    "categoria": "sensorial",
+    "energia": "media",
+    "preparo_minutos": 15,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Papelão grande", "Texturas: lixa, tecido, plástico bolha", "Fita adesiva"],
+    "beneficios": ["Equilíbrio", "Exploração Sensorial", "Coordenação Motora"],
+    "passos": [
+      "Cole diferentes texturas no papelão",
+      "Coloque no chão de forma segura",
+      "Tire os sapatos da criança",
+      "Convide-a a caminhar sobre as texturas",
+      "Pergunte o que ela sente em cada uma"
+    ],
+    "dicas": [
+      "Varie as texturas para enriquecer experiência",
+      "Use materiais seguros e limpos",
+      "Estimula propriocepção dos pés"
+    ]
+  },
+  {
+    "id": "atividade_005",
+    "titulo": "Desenho gigante no papelão",
+    "descricao": "Use papelão grande no chão para criança desenhar com movimentos amplos, desenvolvendo coordenação motora grossa.",
+    "categoria": "criativa",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Papelão grande", "Giz de cera grosso", "Fita para fixar no chão"],
+    "beneficios": ["Coordenação Motora", "Expressão", "Criatividade"],
+    "passos": [
+      "Fixe papelão grande no chão",
+      "Ofereça giz de cera",
+      "Incentive movimentos amplos",
+      "Deixe desenhar livremente",
+      "Pergunte sobre o desenho"
+    ],
+    "dicas": [
+      "Movimentos amplos preparam para escrita",
+      "Não corrija o desenho",
+      "Celebre as tentativas"
+    ]
+  },
+  {
+    "id": "atividade_006",
+    "titulo": "Desenho com água na varanda",
+    "descricao": "Use pincel e água para desenhar no chão ou parede externa. Desenhos evaporam e podem ser refeitos.",
+    "categoria": "criativa",
+    "energia": "media",
+    "preparo_minutos": 2,
+    "duracao_minutos": 15,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "ao ar livre",
+    "materiais": ["Pincel largo", "Balde com água", "Varanda ou calçada"],
+    "beneficios": ["Coordenação Motora", "Criatividade", "Observação"],
+    "passos": [
+      "Encha balde com água",
+      "Dê pincel para criança",
+      "Mostre como desenhar no chão",
+      "Deixe ela criar livremente",
+      "Observe junto a água evaporando"
+    ],
+    "dicas": [
+      "Atividade sem sujeira permanente",
+      "Ensina conceito de temporariedade",
+      "Ideal para dias quentes"
+    ]
+  },
+  {
+    "id": "atividade_007",
+    "titulo": "Pintura com esponja e prato",
+    "descricao": "Corte esponja em pedaços e use como carimbos com tinta lavável em prato raso.",
+    "categoria": "criativa",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 12,
+    "idade_max_meses": 24,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Esponja", "Tinta lavável", "Papel", "Prato raso"],
+    "beneficios": ["Coordenação Motora", "Criatividade", "Exploração Sensorial"],
+    "passos": [
+      "Corte esponja em pedaços pequenos",
+      "Coloque tinta no prato",
+      "Mostre como carimbar",
+      "Deixe a criança explorar",
+      "Faça padrões simples"
+    ],
+    "dicas": [
+      "Prefira tintas atóxicas",
+      "Textura da esponja estimula tato",
+      "Desenvolve pinça de três dedos"
+    ]
+  },
+  {
+    "id": "atividade_008",
+    "titulo": "Escultura de papel amassado",
+    "descricao": "Amassar papel e moldar formas simples desenvolve força nas mãos e criatividade tridimensional.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 15,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Papel de rascunho", "Fita adesiva (opcional)"],
+    "beneficios": ["Força", "Criatividade", "Coordenação Motora"],
+    "passos": [
+      "Dê folhas de papel para criança",
+      "Mostre como amassar",
+      "Incentive criar bolas, cobrinhas",
+      "Use fita para unir partes se quiser",
+      "Converse sobre as formas criadas"
+    ],
+    "dicas": [
+      "Fortalece músculos das mãos",
+      "Não precisa ser perfeito",
+      "Estimula imaginação tridimensional"
+    ]
+  },
+  {
+    "id": "atividade_009",
+    "titulo": "Torre de potes e panelas",
+    "descricao": "Empilhar potes e panelas de tamanhos diferentes desenvolve noção espacial e coordenação.",
+    "categoria": "criativa",
+    "energia": "media",
+    "preparo_minutos": 3,
+    "duracao_minutos": 15,
+    "idade_min_meses": 12,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["3-4 potes de tamanhos diferentes", "Panelas plásticas"],
+    "beneficios": ["Coordenação Motora", "Raciocínio Lógico", "Equilíbrio"],
+    "passos": [
+      "Separe potes de tamanhos variados",
+      "Mostre como empilhar",
+      "Deixe a criança tentar",
+      "Comemore quando conseguir",
+      "Aumente o desafio com mais peças"
+    ],
+    "dicas": [
+      "Usar diferentes tamanhos ensina sequência",
+      "Quedas são parte do aprendizado",
+      "Marco Montessori de empilhamento"
+    ]
+  },
+  {
+    "id": "atividade_010",
+    "titulo": "Cidade de caixas",
+    "descricao": "Caixas de papelão viram casas, carros e prédios para brincadeira simbólica e construção criativa.",
+    "categoria": "criativa",
+    "energia": "media",
+    "preparo_minutos": 10,
+    "duracao_minutos": 30,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["2-3 caixas de papelão", "Canetinha", "Fita adesiva"],
+    "beneficios": ["Imaginação", "Criatividade", "Brincadeira Simbólica"],
+    "passos": [
+      "Separe caixas de tamanhos variados",
+      "Deixe criança decorar com canetinha",
+      "Ajude a criar portas e janelas",
+      "Monte a cidade juntos",
+      "Brinque de faz-de-conta"
+    ],
+    "dicas": [
+      "Criança define o que cada caixa é",
+      "Não precisa ser realista",
+      "Estimula narrativa e imaginação"
+    ]
+  },
+  {
+    "id": "atividade_011",
+    "titulo": "Caça aos pares na gaveta de meias",
+    "descricao": "Encontrar meias iguais e parear desenvolve discriminação visual e conceito de correspondência.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 24,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["3-4 pares de meias"],
+    "beneficios": ["Foco", "Raciocínio Lógico", "Classificação"],
+    "passos": [
+      "Separe alguns pares de meias",
+      "Misture todas",
+      "Pegue uma e peça para achar o par",
+      "Comemore quando encontrar",
+      "Repita com outras meias"
+    ],
+    "dicas": [
+      "Comece com meias bem diferentes",
+      "Atividade Montessori de vida prática",
+      "Ensina correspondência um-a-um"
+    ]
+  },
+  {
+    "id": "atividade_012",
+    "titulo": "Classificar tampas por tamanho",
+    "descricao": "Organizar tampas do menor ao maior desenvolve seriação e percepção de tamanhos.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 3,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["4-5 tampas de diferentes tamanhos"],
+    "beneficios": ["Raciocínio Lógico", "Classificação", "Percepção Visual"],
+    "passos": [
+      "Separe tampas de tamanhos variados",
+      "Mostre a menor e a maior",
+      "Peça para colocar em ordem",
+      "Ajude se necessário",
+      "Use palavras: pequeno, médio, grande"
+    ],
+    "dicas": [
+      "Comece com 3 tampas",
+      "Material sensorial Montessori",
+      "Prepara para conceitos matemáticos"
+    ]
+  },
+  {
+    "id": "atividade_013",
+    "titulo": "Organizar talheres da família",
+    "descricao": "Separar garfos, facas e colheres no porta-talheres é vida prática que desenvolve classificação.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Talheres limpos", "Porta-talheres"],
+    "beneficios": ["Classificação", "Colaboração", "Autonomia"],
+    "passos": [
+      "Tire talheres do porta-talheres",
+      "Peça para separar por tipo",
+      "Nomeie cada utensílio",
+      "Deixe ela organizar",
+      "Agradeça pela ajuda"
+    ],
+    "dicas": [
+      "Atividade Montessori de vida prática",
+      "Integra criança nas tarefas",
+      "Desenvolve senso de utilidade"
+    ]
+  },
+  {
+    "id": "atividade_014",
+    "titulo": "Labirinto de caixa de papelão",
+    "descricao": "Criar labirinto simples com obstáculos para bola ou carrinho desenvolve resolução de problemas.",
+    "categoria": "cognitiva",
+    "energia": "media",
+    "preparo_minutos": 10,
+    "duracao_minutos": 15,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Caixa de sapato", "Canudos ou palitos", "Fita", "Bolinha"],
+    "beneficios": ["Raciocínio Lógico", "Coordenação Motora", "Planejamento"],
+    "passos": [
+      "Cole canudos dentro da caixa criando caminhos",
+      "Coloque bolinha na entrada",
+      "Peça para criança inclinar caixa",
+      "Objetivo: levar bolinha até o fim",
+      "Comemore quando conseguir"
+    ],
+    "dicas": [
+      "Comece com caminho simples",
+      "Estimula funções executivas",
+      "Pode aumentar complexidade"
+    ]
+  },
+  {
+    "id": "atividade_015",
+    "titulo": "Resolver qual pote cabe onde",
+    "descricao": "Encaixar potes de diferentes tamanhos uns nos outros desenvolve percepção espacial.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 24,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["3-4 potes que encaixam"],
+    "beneficios": ["Raciocínio Lógico", "Coordenação Motora", "Percepção Espacial"],
+    "passos": [
+      "Separe potes que encaixam",
+      "Tire todos de dentro",
+      "Mostre como encaixar um no outro",
+      "Deixe criança tentar",
+      "Incentive tentativa e erro"
+    ],
+    "dicas": [
+      "Não corrija imediatamente",
+      "Descoberta pelo erro é aprendizado",
+      "Estimula persistência"
+    ]
+  },
+  {
+    "id": "atividade_016",
+    "titulo": "Missão de entregar recados pela casa",
+    "descricao": "Dar tarefas simples como levar objeto de um cômodo a outro desenvolve memória de trabalho.",
+    "categoria": "cognitiva",
+    "energia": "media",
+    "preparo_minutos": 1,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Objetos da casa"],
+    "beneficios": ["Memória", "Autonomia", "Foco"],
+    "passos": [
+      "Escolha objeto simples (colher, pano)",
+      "Peça: 'Leve isso para a cozinha'",
+      "Aguarde ela ir e voltar",
+      "Comemore quando completar",
+      "Aumente distância gradualmente"
+    ],
+    "dicas": [
+      "Comece com instruções curtas",
+      "Desenvolve memória de trabalho",
+      "Integra criança na rotina"
+    ]
+  },
+  {
+    "id": "atividade_017",
+    "titulo": "Jogo da bandeja que some",
+    "descricao": "Mostre objetos em bandeja, cubra, retire um e peça para descobrir qual sumiu.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 3,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Bandeja", "3-4 objetos pequenos", "Pano"],
+    "beneficios": ["Memória", "Foco", "Observação"],
+    "passos": [
+      "Coloque 3 objetos na bandeja",
+      "Deixe criança observar bem",
+      "Cubra com pano",
+      "Retire um objeto escondido",
+      "Descubra e pergunte o que sumiu"
+    ],
+    "dicas": [
+      "Comece com 3 objetos bem diferentes",
+      "Jogo clássico de memória visual",
+      "Aumente quantidade gradualmente"
+    ]
+  },
+  {
+    "id": "atividade_018",
+    "titulo": "Caminho de obstáculos com cadeiras",
+    "descricao": "Criar circuito com almofadas e cadeiras para criança passar por baixo, pular e contornar.",
+    "categoria": "movimento",
+    "energia": "alta",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["2 cadeiras", "Almofadas", "Espaço livre"],
+    "beneficios": ["Equilíbrio", "Coordenação Motora", "Agilidade"],
+    "passos": [
+      "Organize cadeiras e almofadas no chão",
+      "Mostre o caminho",
+      "Peça para passar por baixo da cadeira",
+      "Pular almofadas",
+      "Comemore ao completar"
+    ],
+    "dicas": [
+      "Supervisione para segurança",
+      "Varie obstáculos",
+      "Atividade física OMS recomendada"
+    ]
+  },
+  {
+    "id": "atividade_019",
+    "titulo": "Dança das estátuas na sala",
+    "descricao": "Música toca, todos dançam. Música para, todos congelam como estátua.",
+    "categoria": "movimento",
+    "energia": "alta",
+    "preparo_minutos": 1,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Celular com música"],
+    "beneficios": ["Autorregulação", "Coordenação Motora", "Ritmo"],
+    "passos": [
+      "Coloque música animada",
+      "Dance junto com a criança",
+      "Pause a música subitamente",
+      "Todos congelam como estátua",
+      "Retome música e repita"
+    ],
+    "dicas": [
+      "Desenvolve autocontrole motor",
+      "Estimula escuta ativa",
+      "Gasta energia de forma divertida"
+    ]
+  },
+  {
+    "id": "atividade_020",
+    "titulo": "Transferir água com esponja",
+    "descricao": "Duas tigelas, uma com água. Criança transfere água usando esponja, desenvolvendo coordenação fina.",
+    "categoria": "movimento",
+    "energia": "baixa",
+    "preparo_minutos": 3,
+    "duracao_minutos": 15,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["2 tigelas", "Esponja", "Água", "Pano para secar"],
+    "beneficios": ["Coordenação Motora", "Foco", "Autonomia"],
+    "passos": [
+      "Coloque água colorida em uma tigela",
+      "Tigela vazia ao lado",
+      "Dê esponja para criança",
+      "Mostre como molhar e espremer",
+      "Deixe ela transferir a água"
+    ],
+    "dicas": [
+      "Atividade Montessori clássica",
+      "Movimento de pinça essencial",
+      "Prepara para escrita"
+    ]
+  },
+  {
+    "id": "atividade_021",
+    "titulo": "Histórias do dia com panelas",
+    "descricao": "Usar panelas e utensílios como personagens para criar histórias inventadas juntos.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 15,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["2-3 panelas", "Colher de pau", "Pano de prato"],
+    "beneficios": ["Linguagem", "Imaginação", "Vínculo Familiar"],
+    "passos": [
+      "Apresente panelas como personagens",
+      "Dê nomes: panela mãe, colher filha",
+      "Comece história simples",
+      "Pare e peça criança continuar",
+      "Use objetos para representar ações"
+    ],
+    "dicas": [
+      "Não corrija gramática durante história",
+      "Foco na fluidez da fala",
+      "Promove consciência narrativa"
+    ]
+  },
+  {
+    "id": "atividade_022",
+    "titulo": "Rimas com nomes da família",
+    "descricao": "Brincar de criar rimas bobas com nomes conhecidos desenvolve consciência fonológica.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 1,
+    "duracao_minutos": 10,
+    "idade_min_meses": 48,
+    "idade_max_meses": 72,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Nenhum material necessário"],
+    "beneficios": ["Linguagem", "Consciência Fonológica", "Vínculo Familiar"],
+    "passos": [
+      "Fale nomes da família devagar",
+      "Crie rima boba: Ana-banana",
+      "Explique o jogo",
+      "Convide criança a inventar rimas",
+      "Não force rimas perfeitas"
+    ],
+    "dicas": [
+      "Valorize aproximações sonoras",
+      "Comece com nomes curtos",
+      "Fortemente associado à alfabetização"
+    ]
+  },
+  {
+    "id": "atividade_023",
+    "titulo": "Caça às letras do próprio nome",
+    "descricao": "Esconder letras do nome pela casa para criança encontrar e montar em sequência.",
+    "categoria": "cognitiva",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 48,
+    "idade_max_meses": 72,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Papéis com letras", "Fita crepe"],
+    "beneficios": ["Linguagem", "Memória", "Autoconfiança"],
+    "passos": [
+      "Escreva cada letra do nome em papel",
+      "Cole em locais visíveis",
+      "Mostre modelo do nome completo",
+      "Peça criança caçar as letras",
+      "Monte nome na ordem juntos"
+    ],
+    "dicas": [
+      "Nome próprio é porta de entrada para leitura",
+      "Não corrija inversões com rigidez",
+      "Celebre reconhecimento das letras"
+    ]
+  },
+  {
+    "id": "atividade_024",
+    "titulo": "Histórias em sequência com fotos",
+    "descricao": "Usar fotos do dia ou passeio para criar narrativa com começo, meio e fim.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 60,
+    "idade_max_meses": 96,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["3-4 fotos impressas ou no celular"],
+    "beneficios": ["Linguagem", "Memória", "Organização Temporal"],
+    "passos": [
+      "Selecione fotos de evento recente",
+      "Misture ordem das fotos",
+      "Peça criança colocar em ordem",
+      "Conte história baseada nas fotos",
+      "Use palavras: primeiro, depois, por fim"
+    ],
+    "dicas": [
+      "Desenvolve estrutura narrativa",
+      "Fortalece memória episódica",
+      "Base para produção textual futura"
+    ]
+  },
+  {
+    "id": "atividade_025",
+    "titulo": "Caixa de sons caseira",
+    "descricia": "Colocar arroz, feijão ou botões em potes fechados para criar chocalhos com sons diferentes.",
+    "categoria": "sensorial",
+    "energia": "baixa",
+    "preparo_minutos": 10,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["3-4 potes plásticos com tampa", "Arroz, feijão, botões"],
+    "beneficios": ["Exploração Sensorial", "Ritmo", "Discriminação Auditiva"],
+    "passos": [
+      "Coloque materiais diferentes em cada pote",
+      "Feche bem as tampas",
+      "Deixe criança chacoalhar",
+      "Compare sons: qual é mais alto?",
+      "Crie ritmos simples"
+    ],
+    "dicas": [
+      "Certifique tampas bem fechadas",
+      "Material Montessori sensorial",
+      "Estimula discriminação de timbres"
+    ]
+  },
+  {
+    "id": "atividade_026",
+    "titulo": "Cantigas com gestos no colo",
+    "descricao": "Cantar músicas simples fazendo gestos e movimentos com bebê no colo.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 0,
+    "duracao_minutos": 10,
+    "idade_min_meses": 0,
+    "idade_max_meses": 12,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Nenhum"],
+    "beneficios": ["Vínculo Familiar", "Linguagem", "Ritmo"],
+    "passos": [
+      "Sente confortavelmente com bebê",
+      "Cante cantiga conhecida",
+      "Faça gestos suaves (palmas, balançar)",
+      "Olhe nos olhos do bebê",
+      "Repita música favorita"
+    ],
+    "dicas": [
+      "Cantar desenvolve linguagem precoce",
+      "Ritmo e melodia acalmam",
+      "Fortalece vínculo afetivo"
+    ]
+  },
+  {
+    "id": "atividade_027",
+    "titulo": "Histórias olhando livro ao contrário",
+    "descricao": "Deixar criança segurar livro infantil e inventar história pelas imagens, sem ler texto.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 1,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Livro infantil com imagens"],
+    "beneficios": ["Linguagem", "Imaginação", "Pré-leitura"],
+    "passos": [
+      "Dê livro para criança segurar",
+      "Deixe ela virar páginas",
+      "Pergunte: o que está acontecendo?",
+      "Não corrija interpretações",
+      "Valorize narrativa dela"
+    ],
+    "dicas": [
+      "Leitura de imagens é base para alfabetização",
+      "Criança como protagonista da história",
+      "Desenvolve oralidade"
+    ]
+  },
+  {
+    "id": "atividade_028",
+    "titulo": "Desenhar o som",
+    "descricao": "Ouvir sons diferentes (palmas, bater panela) e desenhar como imagina que seria o som.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 3,
+    "duracao_minutos": 15,
+    "idade_min_meses": 60,
+    "idade_max_meses": 96,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Papel", "Lápis de cor", "Fonte de sons"],
+    "beneficios": ["Expressão", "Criatividade", "Sinestesia"],
+    "passos": [
+      "Faça som (palma, sino, bater colher)",
+      "Peça criança desenhar o som",
+      "Pergunte: que cor tem esse som?",
+      "Repita com sons diferentes",
+      "Converse sobre os desenhos"
+    ],
+    "dicas": [
+      "Não há certo ou errado",
+      "Estimula correspondência sensorial",
+      "Desenvolve expressão abstrata"
+    ]
+  },
+  {
+    "id": "atividade_029",
+    "titulo": "Rolando garrafa de água pelo caminho",
+    "descricao": "Criar caminho com fita no chão e criança rola garrafa plástica tentando seguir a linha.",
+    "categoria": "movimento",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 24,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Garrafa plástica", "Fita crepe"],
+    "beneficios": ["Coordenação Motora", "Foco", "Controle de Força"],
+    "passos": [
+      "Cole fita fazendo caminho no chão",
+      "Dê garrafa para criança",
+      "Mostre como rolar seguindo linha",
+      "Incentive manter na linha",
+      "Comemore quando completar"
+    ],
+    "dicas": [
+      "Desenvolve controle motor fino",
+      "Pode fazer caminhos curvos",
+      "Estimula persistência"
+    ]
+  },
+  {
+    "id": "atividade_030",
+    "titulo": "Pular de almofada em almofada",
+    "descricao": "Espalhar almofadas no chão como pedras de rio para criança pular sem tocar o chão.",
+    "categoria": "movimento",
+    "energia": "alta",
+    "preparo_minutos": 3,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["4-5 almofadas"],
+    "beneficios": ["Equilíbrio", "Agilidade", "Coordenação Motora"],
+    "passos": [
+      "Espalhe almofadas pelo chão",
+      "Explique: chão é rio, almofadas são pedras",
+      "Criança pula de uma em outra",
+      "Varie distâncias entre almofadas",
+      "Aumente desafio gradualmente"
+    ],
+    "dicas": [
+      "Supervisione para segurança",
+      "Desenvolve saltos e equilíbrio",
+      "Imaginação transforma exercício em jogo"
+    ]
+  },
+  {
+    "id": "atividade_031",
+    "titulo": "Enfiar macarrão no escorredor",
+    "descricao": "Pegar macarrão cru e enfiar nos furos do escorredor desenvolve precisão motora fina.",
+    "categoria": "movimento",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 15,
+    "idade_min_meses": 24,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Macarrão espaguete cru", "Escorredor"],
+    "beneficios": ["Coordenação Motora", "Foco", "Paciência"],
+    "passos": [
+      "Vire escorredor de cabeça para baixo",
+      "Dê macarrões para criança",
+      "Mostre como enfiar nos furos",
+      "Deixe ela fazer sozinha",
+      "Comemore cada macarrão inserido"
+    ],
+    "dicas": [
+      "Atividade Montessori DIY",
+      "Treina pinça e precisão",
+      "Prepara para segurar lápis"
+    ]
+  },
+  {
+    "id": "atividade_032",
+    "titulo": "Rasgar papel para chuva",
+    "descricao": "Rasgar papel em pedacinhos e jogar para cima como chuva de confete.",
+    "categoria": "movimento",
+    "energia": "media",
+    "preparo_minutos": 1,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 24,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Papel de rascunho"],
+    "beneficios": ["Coordenação Motora", "Força", "Expressão"],
+    "passos": [
+      "Dê folhas de papel",
+      "Mostre como rasgar",
+      "Deixe rasgar livremente",
+      "Juntem pedaços rasgados",
+      "Joguem para cima como confete"
+    ],
+    "dicas": [
+      "Rasgar desenvolve força bilateral",
+      "Movimento de pinça essencial",
+      "Momento de limpar também é aprendizado"
+    ]
+  },
+  {
+    "id": "atividade_033",
+    "titulo": "Colar feijão no contorno",
+    "descricao": "Desenhar forma simples e criança cola feijões seguindo a linha, desenvolvendo precisão.",
+    "categoria": "movimento",
+    "energia": "baixa",
+    "preparo_minutos": 5,
+    "duracao_minutos": 20,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Papel", "Feijões", "Cola branca", "Lápis"],
+    "beneficios": ["Coordenação Motora", "Foco", "Paciência"],
+    "passos": [
+      "Desenhe forma simples (círculo, coração)",
+      "Passe cola na linha",
+      "Criança cola feijões um a um",
+      "Aguarde secar",
+      "Admire o resultado juntos"
+    ],
+    "dicas": [
+      "Desenvolve pinça fina",
+      "Requer atenção sustentada",
+      "Treina controle de movimento delicado"
+    ]
+  },
+  {
+    "id": "atividade_034",
+    "titulo": "Caminhada de pés descalços na calçada",
+    "descricao": "Andar descalço em superfícies variadas (grama, calçada, terra) estimula sensores dos pés.",
+    "categoria": "ao ar livre",
+    "energia": "media",
+    "preparo_minutos": 1,
+    "duracao_minutos": 15,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "ao ar livre",
+    "materiais": ["Nenhum"],
+    "beneficios": ["Exploração Sensorial", "Equilíbrio", "Propriocepção"],
+    "passos": [
+      "Escolha local seguro (quintal, calçada)",
+      "Tire sapatos da criança",
+      "Caminhem juntos descalços",
+      "Conversem sobre texturas sentidas",
+      "Varie superfícies se possível"
+    ],
+    "dicas": [
+      "Supervisione para evitar objetos perigosos",
+      "Estimula terminações nervosas dos pés",
+      "Melhora propriocepção e equilíbrio"
+    ]
+  },
+  {
+    "id": "atividade_035",
+    "titulo": "Coleção de folhas do quarteirão",
+    "descricao": "Caminhar coletando folhas diferentes e depois classificar por tamanho, forma ou cor.",
+    "categoria": "ao ar livre",
+    "energia": "media",
+    "preparo_minutos": 2,
+    "duracao_minutos": 20,
+    "idade_min_meses": 36,
+    "idade_max_meses": 96,
+    "dificuldade": "facil",
+    "local": "ao ar livre",
+    "materiais": ["Sacola ou caixinha"],
+    "beneficios": ["Observação", "Classificação", "Conexão com Natureza"],
+    "passos": [
+      "Dê sacola para criança",
+      "Caminhem coletando folhas variadas",
+      "Voltem para casa",
+      "Separem por categorias",
+      "Conversem sobre diferenças"
+    ],
+    "dicas": [
+      "Ensine respeito pela natureza",
+      "Classificação é base da ciência",
+      "Pode colar folhas em papel depois"
+    ]
+  },
+  {
+    "id": "atividade_036",
+    "titulo": "Desenhar sombras no chão",
+    "descricao": "Em dia ensolarado, traçar contorno da sombra de objetos ou do próprio corpo no chão.",
+    "categoria": "ao ar livre",
+    "energia": "media",
+    "preparo_minutos": 3,
+    "duracao_minutos": 15,
+    "idade_min_meses": 48,
+    "idade_max_meses": 96,
+    "dificuldade": "medio",
+    "local": "ao ar livre",
+    "materiais": ["Giz", "Dia ensolarado"],
+    "beneficios": ["Observação", "Ciência", "Criatividade"],
+    "passos": [
+      "Escolha local com sol forte",
+      "Coloque objeto no chão",
+      "Contorne sombra com giz",
+      "Converse sobre luz e sombra",
+      "Tente em horários diferentes"
+    ],
+    "dicas": [
+      "Introduz conceitos de física",
+      "Sombra muda conforme sol",
+      "Estimula curiosidade científica"
+    ]
+  },
+  {
+    "id": "atividade_037",
+    "titulo": "Observando céu e contando nuvens",
+    "descricao": "Deitar no chão e olhar nuvens, identificar formas e contar quantas conseguem ver.",
+    "categoria": "ao ar livre",
+    "energia": "baixa",
+    "preparo_minutos": 1,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "ao ar livre",
+    "materiais": ["Toalha ou colchonete"],
+    "beneficios": ["Imaginação", "Linguagem", "Atenção"],
+    "passos": [
+      "Escolha local seguro ao ar livre",
+      "Deitem confortavelmente",
+      "Olhem o céu juntos",
+      "Pergunte: com o que parecem as nuvens?",
+      "Contem quantas veem"
+    ],
+    "dicas": [
+      "Momento calmo de conexão",
+      "Estimula linguagem descritiva",
+      "Desenvolve imaginação"
+    ]
+  },
+  {
+    "id": "atividade_038",
+    "titulo": "Afunda ou boia?",
+    "descricao": "Bacia com água e objetos variados. Criança prevê se vai afundar ou boiar e testa.",
+    "categoria": "ao ar livre",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 36,
+    "idade_max_meses": 72,
+    "dificuldade": "facil",
+    "local": "ao ar livre",
+    "materiais": ["Bacia com água", "Objetos variados (pedra, rolha, colher)"],
+    "beneficios": ["Raciocínio Lógico", "Ciência", "Observação"],
+    "passos": [
+      "Encha bacia com água",
+      "Separe objetos diversos",
+      "Pergunte: vai afundar ou boiar?",
+      "Criança faz previsão",
+      "Testem juntos"
+    ],
+    "dicas": [
+      "Introduz método científico",
+      "Hipótese → teste → resultado",
+      "Não dê respostas antes do teste"
+    ]
+  },
+  {
+    "id": "atividade_039",
+    "titulo": "Plantar feijão no algodão",
+    "descricao": "Colocar feijão em algodão úmido e acompanhar germinação dia a dia.",
+    "categoria": "ao ar livre",
+    "energia": "baixa",
+    "preparo_minutos": 5,
+    "duracao_minutos": 5,
+    "idade_min_meses": 36,
+    "idade_max_meses": 96,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Feijão", "Algodão", "Potinho transparente", "Água"],
+    "beneficios": ["Responsabilidade", "Paciência", "Ciência"],
+    "passos": [
+      "Coloque algodão no pote",
+      "Umedeça com água",
+      "Coloque feijão sobre algodão",
+      "Deixe em local com luz",
+      "Observe crescimento diariamente"
+    ],
+    "dicas": [
+      "Ensina ciclo de vida",
+      "Desenvolve cuidado com ser vivo",
+      "Requer constância (regar)"
+    ]
+  },
+  {
+    "id": "atividade_040",
+    "titulo": "Fazer chuva com garrafa furada",
+    "descricao": "Furar garrafa plástica, encher de água e criar chuva artificial para regar plantas.",
+    "categoria": "ao ar livre",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 48,
+    "dificuldade": "facil",
+    "local": "ao ar livre",
+    "materiais": ["Garrafa plástica", "Prego para furar", "Água"],
+    "beneficios": ["Ciência", "Coordenação Motora", "Cuidado"],
+    "passos": [
+      "Adulto fura garrafa (vários furinhos)",
+      "Encha de água",
+      "Criança segura de cabeça para baixo",
+      "Água sai como chuva",
+      "Use para regar plantas"
+    ],
+    "dicas": [
+      "Explica fluxo de água",
+      "Integra brincadeira com cuidado",
+      "Ideal para dias quentes"
+    ]
+  },
+  {
+    "id": "atividade_041",
+    "titulo": "Seguir caminho de fita no chão",
+    "descricao": "Cole fita colorida no chão fazendo caminho. Criança anda sobre a linha sem sair.",
+    "categoria": "movimento",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Fita crepe colorida"],
+    "beneficios": ["Equilíbrio", "Foco", "Coordenação Motora"],
+    "passos": [
+      "Cole fita fazendo linha no chão",
+      "Pode fazer curvas e ziguezagues",
+      "Criança caminha sobre a linha",
+      "Incentive não sair da linha",
+      "Aumente dificuldade: andar de costas"
+    ],
+    "dicas": [
+      "Atividade Montessori de linha",
+      "Desenvolve controle motor",
+      "Pode fazer com olhos fechados (avançado)"
+    ]
+  },
+  {
+    "id": "atividade_042",
+    "titulo": "Organizar roupas por tipo",
+    "descricao": "Separar roupas limpas por categoria: camisas, calças, meias. Vida prática que ensina classificação.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 2,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 48,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Roupas limpas", "Cestas ou pilhas"],
+    "beneficios": ["Classificação", "Autonomia", "Colaboração"],
+    "passos": [
+      "Tire roupas do varal",
+      "Mostre categorias: camisas, calças",
+      "Peça criança separar",
+      "Nomeie cada peça",
+      "Agradeça pela ajuda"
+    ],
+    "dicas": [
+      "Montessori vida prática",
+      "Integra criança nas tarefas domésticas",
+      "Ensina responsabilidade"
+    ]
+  },
+  {
+    "id": "atividade_043",
+    "titulo": "Eco de sons na casa",
+    "descricao": "Você faz som (palma, assobio), criança repete. Desenvolve imitação e ritmo.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 0,
+    "duracao_minutos": 10,
+    "idade_min_meses": 24,
+    "idade_max_meses": 48,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Nenhum"],
+    "beneficios": ["Ritmo", "Memória", "Atenção"],
+    "passos": [
+      "Faça som simples (2 palmas)",
+      "Peça criança repetir",
+      "Aumente complexidade gradualmente",
+      "Inverta: criança faz, você repete",
+      "Tente sequências de 3-4 sons"
+    ],
+    "dicas": [
+      "Desenvolve memória auditiva",
+      "Base para linguagem oral",
+      "Pode usar instrumentos caseiros"
+    ]
+  },
+  {
+    "id": "atividade_044",
+    "titulo": "Procure objeto enquanto arrumo casa",
+    "descricao": "Pedir para criança encontrar objeto específico enquanto você arruma. Integra ajuda com jogo.",
+    "categoria": "cognitiva",
+    "energia": "media",
+    "preparo_minutos": 0,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 72,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Objetos da casa"],
+    "beneficios": ["Foco", "Memória", "Colaboração"],
+    "passos": [
+      "Nomeie objeto específico",
+      "Dê dica de localização",
+      "Criança procura enquanto você trabalha",
+      "Comemore quando encontrar",
+      "Repita com outro objeto"
+    ],
+    "dicas": [
+      "Integra rotina com brincadeira",
+      "Desenvolve atenção seletiva",
+      "Criança sente-se útil"
+    ]
+  },
+  {
+    "id": "atividade_045",
+    "titulo": "Trilha de tampas para carrinhos",
+    "descricao": "Organizar tampas no chão como pista. Criança empurra carrinho seguindo o caminho.",
+    "categoria": "movimento",
+    "energia": "media",
+    "preparo_minutos": 5,
+    "duracao_minutos": 15,
+    "idade_min_meses": 36,
+    "idade_max_meses": 60,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Tampas plásticas", "Carrinho pequeno"],
+    "beneficios": ["Coordenação Motora", "Planejamento", "Criatividade"],
+    "passos": [
+      "Coloque tampas enfileiradas no chão",
+      "Crie curvas e obstáculos",
+      "Dê carrinho para criança",
+      "Peça para seguir trilha",
+      "Deixe ela criar própria trilha depois"
+    ],
+    "dicas": [
+      "Desenvolve planejamento espacial",
+      "Controle motor fino ao guiar carrinho",
+      "Pode complicar adicionando túneis"
+    ]
+  },
+  {
+    "id": "atividade_046",
+    "titulo": "Caminhar carregando potes com água",
+    "descricao": "Criança caminha pela casa carregando pote com água sem derramar. Montessori clássico.",
+    "categoria": "movimento",
+    "energia": "media",
+    "preparo_minutos": 2,
+    "duracao_minutos": 10,
+    "idade_min_meses": 48,
+    "idade_max_meses": 96,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Potinho com água", "Pano para limpar"],
+    "beneficios": ["Equilíbrio", "Foco", "Paciência"],
+    "passos": [
+      "Encha pote até metade",
+      "Peça criança levar até outro local",
+      "Desafio: não derramar",
+      "Se derramar, ela limpa (vida prática)",
+      "Comemore sucesso"
+    ],
+    "dicas": [
+      "Atividade Montessori de concentração",
+      "Desenvolve controle corporal refinado",
+      "Consequência natural ensina cuidado"
+    ]
+  },
+  {
+    "id": "atividade_047",
+    "titulo": "Passar pano dançando",
+    "descricao": "Colocar música e passar pano no chão dançando. Transforma tarefa em diversão.",
+    "categoria": "movimento",
+    "energia": "alta",
+    "preparo_minutos": 2,
+    "duracao_minutos": 10,
+    "idade_min_meses": 36,
+    "idade_max_meses": 72,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Pano úmido", "Música"],
+    "beneficios": ["Coordenação Motora", "Colaboração", "Ritmo"],
+    "passos": [
+      "Coloque música animada",
+      "Dê pano para criança",
+      "Passem pano dançando juntos",
+      "Faça movimentos divertidos",
+      "Celebre chão limpo"
+    ],
+    "dicas": [
+      "Atividade física + tarefa doméstica",
+      "Criança não sente como obrigação",
+      "Fortalece senso de contribuição"
+    ]
+  },
+  {
+    "id": "atividade_048",
+    "titulo": "Eco de palavras na janela",
+    "descricao": "Falar palavras por sílabas (BO-LA) e criança repete. Desenvolve consciência silábica.",
+    "categoria": "criativa",
+    "energia": "baixa",
+    "preparo_minutos": 0,
+    "duracao_minutos": 10,
+    "idade_min_meses": 48,
+    "idade_max_meses": 84,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Nenhum"],
+    "beneficios": ["Linguagem", "Consciência Fonológica", "Memória"],
+    "passos": [
+      "Escolha palavra simples (casa)",
+      "Fale separando sílabas: CA-SA",
+      "Criança repete",
+      "Bata palmas para cada sílaba",
+      "Aumente dificuldade gradualmente"
+    ],
+    "dicas": [
+      "Base essencial da alfabetização",
+      "Comece com 2 sílabas",
+      "Pode usar nomes da família"
+    ]
+  },
+  {
+    "id": "atividade_049",
+    "titulo": "Sentir cheiros da cozinha",
+    "descricao": "Vendar olhos e apresentar cheiros diferentes para criança identificar pelo olfato.",
+    "categoria": "sensorial",
+    "energia": "baixa",
+    "preparo_minutos": 3,
+    "duracao_minutos": 10,
+    "idade_min_meses": 12,
+    "idade_max_meses": 36,
+    "dificuldade": "facil",
+    "local": "interno",
+    "materiais": ["Vendas ou fechar olhos", "Alimentos aromáticos (laranja, café, canela)"],
+    "beneficios": ["Exploração Sensorial", "Discriminação", "Foco"],
+    "passos": [
+      "Feche olhos da criança suavemente",
+      "Aproxime alimento aromático",
+      "Pergunte: o que você sente?",
+      "Deixe ela adivinhar",
+      "Abra olhos e confirme"
+    ],
+    "dicas": [
+      "Evite cheiros fortes/irritantes",
+      "Material sensorial Montessori",
+      "Desenvolve discriminação olfativa"
+    ]
+  },
+  {
+    "id": "atividade_050",
+    "titulo": "Linha do tempo do meu dia",
+    "descricao": "Desenhar linha horizontal e marcar as atividades do dia em ordem. Desenvolve noção temporal.",
+    "categoria": "cognitiva",
+    "energia": "baixa",
+    "preparo_minutos": 3,
+    "duracao_minutos": 20,
+    "idade_min_meses": 60,
+    "idade_max_meses": 96,
+    "dificuldade": "medio",
+    "local": "interno",
+    "materiais": ["Papel comprido", "Lápis", "Régua (opcional)"],
+    "beneficios": ["Memória", "Organização Temporal", "Linguagem"],
+    "passos": [
+      "Desenhe linha horizontal",
+      "Pergunte: o que fez desde que acordou?",
+      "Desenhe símbolo para cada atividade",
+      "Coloque em ordem na linha",
+      "Leia história do dia juntos"
+    ],
+    "dicas": [
+      "Desenvolve sequência temporal",
+      "Base para narrativa escrita",
+      "Pode incluir horários aproximados"
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+<svg width="400" height="240" viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="100%" stop-color="#FCA5A5"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="240" fill="url(#g)"/>
+  <g font-family="sans-serif" fill="#1F2937">
+    <text x="20" y="60" font-size="28" font-weight="700">BrinContos</text>
+    <text x="20" y="100" font-size="16">A Aventura do Pequeno Explorador</text>
+    <text x="20" y="130" font-size="14" fill="#374151">Histórias para crianças e famílias</text>
+  </g>
+</svg>
