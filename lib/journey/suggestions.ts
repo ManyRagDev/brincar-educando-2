@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-export async function getDashboardSuggestions(supabase: SupabaseClient, childAgeMonths: number | null) {
+export async function getDashboardSuggestions(supabase: SupabaseClient<any, any, any>, childAgeMonths: number | null) {
     const hour = new Date().getHours();
 
     // 1. Determinar energia baseada no horário
