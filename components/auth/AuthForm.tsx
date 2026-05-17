@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader2, Chrome } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Mode = "signin" | "signup" | "reset";
@@ -28,6 +28,25 @@ export function AuthForm({ defaultMode = "signin" }: AuthFormProps) {
   const supabase = createClient();
 
   const [showUnifiedChoice, setShowUnifiedChoice] = useState(false);
+
+  async function ensureManyLabsAccess() {
+    const response = await fetch("/api/manylabs/ensure-access", {
+      method: "POST",
+    });
+
+    if (response.ok) return true;
+
+    const body = await response.json().catch(() => ({}));
+    if (response.status === 403 && body?.error === "brincareducando_access_required") {
+      setError(
+        "Nao conseguimos ativar o Brincar Educando para sua Conta ManyLabs. Tente novamente ou fale com o suporte."
+      );
+      return false;
+    }
+
+    setError("Nao foi possivel validar seu acesso agora. Tente novamente.");
+    return false;
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -81,8 +100,11 @@ export function AuthForm({ defaultMode = "signin" }: AuthFormProps) {
             : error.message
         );
       } else {
-        router.push("/dashboard");
-        router.refresh();
+        const hasAccess = await ensureManyLabsAccess();
+        if (hasAccess) {
+          router.push("/dashboard");
+          router.refresh();
+        }
       }
     });
   }

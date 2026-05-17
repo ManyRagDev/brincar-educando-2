@@ -51,5 +51,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  if (isProtected && user) {
+    const { data: hasAccess, error } = await supabase.rpc(
+      "current_user_has_manylabs_app_access"
+    );
+
+    if (error || hasAccess !== true) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/auth/access-denied";
+      redirectUrl.search = "";
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
+
   return supabaseResponse;
 }

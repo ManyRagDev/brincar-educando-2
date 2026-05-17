@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { ensureBrincarEducandoAccess } from "@/lib/supabase/manylabs";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -39,6 +40,11 @@ export async function GET(request: Request) {
             nome: data.user.user_metadata?.full_name || data.user.user_metadata?.name
           }
         });
+      }
+
+      const hasAccess = await ensureBrincarEducandoAccess(data.user);
+      if (!hasAccess) {
+        return NextResponse.redirect(`${origin}/auth/access-denied`);
       }
 
       return NextResponse.redirect(`${origin}${next}`);
