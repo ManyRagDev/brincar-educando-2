@@ -32,6 +32,10 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 let adminClient: SupabaseClient<ManyLabsDatabase> | null = null;
 
+export type ManyLabsAccessResult =
+  | { ok: true }
+  | { ok: false; reason: "server_not_configured" | "rpc_failed" | "access_denied"; message?: string };
+
 function getAdminClient() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error("ManyLabs admin Supabase environment is not configured");
@@ -61,7 +65,7 @@ export function getManyLabsDisplayName(user: User): string | null {
   return typeof name === "string" && name.trim() ? name.trim() : null;
 }
 
-export async function ensureBrincarEducandoAccess(user: User): Promise<boolean> {
+export async function ensureBrincarEducandoAccessResult(user: User): Promise<ManyLabsAccessResult> {
   try {
     const supabase = getAdminClient();
     const { data, error } = await supabase
@@ -74,14 +78,32 @@ export async function ensureBrincarEducandoAccess(user: User): Promise<boolean> 
 
     if (error) {
       console.error("[ManyLabs] ensure_manylabs_app_access failed:", error.message);
-      return false;
+      return { ok: false, reason: "rpc_failed", message: error.message };
     }
 
-    return data === true;
+    if (data !== true) {
+      return { ok: false, reason: "access_denied" };
+    }
+
+    return { ok: true };
   } catch (error) {
     console.error("[ManyLabs] ensure access unexpected failure:", error);
-    return false;
+
+    if (error instanceof Error && error.message.includes("environment is not configured")) {
+      return { ok: false, reason: "server_not_configured", message: error.message };
+    }
+
+    return {
+      ok: false,
+      reason: "rpc_failed",
+      message: error instanceof Error ? error.message : "Unexpected ManyLabs access failure",
+    };
   }
+}
+
+export async function ensureBrincarEducandoAccess(user: User): Promise<boolean> {
+  const result = await ensureBrincarEducandoAccessResult(user);
+  return result.ok;
 }
 
 export async function hasBrincarEducandoAccess(userId: string): Promise<boolean> {

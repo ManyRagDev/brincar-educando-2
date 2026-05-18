@@ -44,6 +44,16 @@ export function AuthForm({ defaultMode = "signin" }: AuthFormProps) {
       return false;
     }
 
+    if (body?.error === "manylabs_server_not_configured") {
+      setError("A ativacao ManyLabs ainda nao esta configurada no servidor.");
+      return false;
+    }
+
+    if (body?.error === "manylabs_rpc_failed") {
+      setError("Nao foi possivel validar o ManyLabs agora. Tente novamente.");
+      return false;
+    }
+
     setError("Nao foi possivel validar seu acesso agora. Tente novamente.");
     return false;
   }
