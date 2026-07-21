@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Menu, X, BookOpen, Home, ShoppingBag, Info } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -29,11 +29,28 @@ interface PublicNavProps {
 export function PublicNav({ transparent = false, user }: PublicNavProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(user ?? null);
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
+
+  useEffect(() => {
+    setCurrentUser(user ?? null);
+  }, [user]);
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setCurrentUser(session?.user ?? null);
+      router.refresh();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router, supabase]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    setCurrentUser(null);
     router.refresh();
   };
 
@@ -86,7 +103,7 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
           <ThemeToggle showLabel={false} />
 
           <div className="hidden md:flex items-center gap-2">
-            {user ? (
+            {currentUser ? (
               <>
                 <Button variant="default" size="sm" className="btn-primary-theme font-bold shadow-md" asChild>
                   <Link href="/dashboard" className="gap-2">
@@ -170,11 +187,11 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
                 ))}
 
                 <div className="mt-4 pt-4 border-t border-[var(--color-border)] flex flex-col gap-2">
-                  {user ? (
+                  {currentUser ? (
                     <>
                       <div className="px-2 py-2 text-xs text-muted-foreground font-medium flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-green-500" />
-                        Conectado como {user.email}
+                        Conectado como {currentUser.email}
                       </div>
                       <Button variant="default" className="w-full justify-start btn-primary-theme font-bold" asChild>
                         <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="gap-2">
