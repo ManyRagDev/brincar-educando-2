@@ -42,7 +42,8 @@ export function FloatingMobileToC() {
       });
     });
 
-    setHeadings(items);
+    const frame = requestAnimationFrame(() => setHeadings(items));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   // Track active heading and show/hide button
@@ -50,7 +51,6 @@ export function FloatingMobileToC() {
     if (headings.length === 0) return;
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
       const article = document.querySelector("article.prose");
       
       if (article) {

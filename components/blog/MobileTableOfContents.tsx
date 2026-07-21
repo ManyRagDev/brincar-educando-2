@@ -41,7 +41,8 @@ export function MobileTableOfContents() {
       });
     });
 
-    setHeadings(items);
+    const frame = requestAnimationFrame(() => setHeadings(items));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   // Track active heading with IntersectionObserver

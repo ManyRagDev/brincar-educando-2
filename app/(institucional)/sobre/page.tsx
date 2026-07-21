@@ -10,7 +10,6 @@ import {
   BookMarked,
   ShoppingBag,
   ArrowRight,
-  Star,
   Users,
   Sparkles,
   Shield,

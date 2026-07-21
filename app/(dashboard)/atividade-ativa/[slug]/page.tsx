@@ -1,222 +1,285 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, Pause, Play, Clock, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/client";
-import { useActiveSession } from "@/lib/journey/activeSessionStore";
-import { useTheme } from "@/components/providers/ThemeProvider";
-import { cn } from "@/lib/utils";
+import { ChevronLeft, ChevronRight, Clock3, Eye, Pause, Play, RefreshCw, X } from "lucide-react";
+import { recordRecommendationEvent } from "@/app/(dashboard)/actions";
+import { ChildSelectionPrompt } from "@/components/dashboard/ChildSelectionPrompt";
+import { useActiveChild } from "@/components/dashboard/ActiveChildProvider";
 import { PostActivityReflection } from "@/components/journey/PostActivityReflection";
+import { Button } from "@/components/ui/button";
+import { useActiveSession } from "@/lib/journey/activeSessionStore";
+import { isMomentContext } from "@/lib/journey/recommendation-engine";
+import { createClient } from "@/lib/supabase/client";
+import type { Json } from "@/lib/supabase/database.types";
+import { cn } from "@/lib/utils";
 
-interface Activity {
-    id: string;
-    slug: string;
-    titulo: string;
-    descricao: string;
-    passos: string[] | null;
-    imagem_url: string | null;
-    preparo_minutos: number;
+type EndReason = "concluida" | "perdeu_interesse" | "adaptada" | "adulto_cansou" | "crianca_cansou" | "outro";
+
+type Activity = {
+  id: string;
+  slug: string;
+  titulo: string;
+  materiais: string[];
+  preparacao: string[];
+  passos: string[];
+  prompts: string[];
+  sinaisPausa: string[];
+  encerramento: string[];
+  supervisao: string;
+  riscos: string[];
+  simplificar: string;
+};
+
+function stringsFromJson(value: Json | null, key: string) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return [];
+  const nested = value[key];
+  return Array.isArray(nested) ? nested.filter((item): item is string => typeof item === "string") : [];
+}
+
+function stringFromJson(value: Json | null, key: string) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return "";
+  return typeof value[key] === "string" ? value[key] : "";
 }
 
 function formatTime(seconds: number) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  const minutes = Math.floor(seconds / 60);
+  return `${String(minutes).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
-const PASSOS_FALLBACK = [
-    "Prepare o ambiente e chame a criança.",
-    "Mostre os materiais e deixe ela explorar livremente primeiro.",
-    "Siga a atividade, mas lembre-se: a diversão é mais importante que o resultado!",
-];
-
 export default function ActiveActivityPage() {
-    const { slug } = useParams() as { slug: string };
-    const { isAcolher } = useTheme();
+  const { slug } = useParams() as { slug: string };
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { activeChild, needsSelection } = useActiveChild();
+  const { isPaused, elapsedSeconds, startSession, pauseSession, resumeSession, endSession, tick } = useActiveSession();
+  const [activity, setActivity] = useState<Activity | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [mode, setMode] = useState<"prepare" | "play">("prepare");
+  const [currentStep, setCurrentStep] = useState(0);
+  const [showAll, setShowAll] = useState(false);
+  const [timerEnabled, setTimerEnabled] = useState(false);
+  const [showAdaptation, setShowAdaptation] = useState(false);
+  const [showReflection, setShowReflection] = useState(false);
+  const [endReason, setEndReason] = useState<EndReason>("concluida");
 
-    const {
-        isPaused,
-        elapsedSeconds,
-        startSession,
-        pauseSession,
-        resumeSession,
-        endSession,
-        tick
-    } = useActiveSession();
+  const recommendationKey = searchParams.get("rk");
+  const ruleVersion = searchParams.get("rv");
+  const position = Number(searchParams.get("pos") ?? "0");
+  const rawContext = searchParams.get("ctx");
+  const recommendationContext = isMomentContext(rawContext) ? rawContext : null;
 
-    const [activity, setActivity] = useState<Activity | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [showReflection, setShowReflection] = useState(false);
-    const [childId, setChildId] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    async function loadActivity() {
+      if (!activeChild) {
+        setLoading(false);
+        return;
+      }
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("atividades")
+        .select("id, slug, titulo, materiais, preparacao, passos, prompts_interacao, sinais_adaptar_parar, encerramento, seguranca, variacoes")
+        .eq("slug", slug)
+        .eq("publicado", true)
+        .single();
+      if (cancelled) return;
+      if (data) {
+        const steps = Array.isArray(data.passos)
+          ? data.passos.filter((item): item is string => typeof item === "string")
+          : [];
+        setActivity({
+          id: data.id,
+          slug: data.slug ?? slug,
+          titulo: data.titulo,
+          materiais: data.materiais ?? [],
+          preparacao: data.preparacao,
+          passos: steps,
+          prompts: data.prompts_interacao,
+          sinaisPausa: data.sinais_adaptar_parar,
+          encerramento: data.encerramento,
+          supervisao: stringFromJson(data.seguranca, "supervisao"),
+          riscos: stringsFromJson(data.seguranca, "riscos"),
+          simplificar: stringFromJson(data.variacoes, "simplificar"),
+        });
+      }
+      setLoading(false);
+    }
+    void loadActivity();
+    return () => { cancelled = true; };
+  }, [activeChild, slug]);
 
-    useEffect(() => {
-        async function loadData() {
-            const supabase = createClient();
+  useEffect(() => {
+    if (!timerEnabled || isPaused) return;
+    const interval = window.setInterval(tick, 1000);
+    return () => window.clearInterval(interval);
+  }, [isPaused, tick, timerEnabled]);
 
-            const [activityRes, criancaRes] = await Promise.all([
-                supabase
-                    .schema("brincareducando")
-                    .from("atividades")
-                    .select("id, slug, titulo, descricao, passos, imagem_url, preparo_minutos")
-                    .eq("slug", slug)
-                    .single(),
-                supabase
-                    .schema("brincareducando")
-                    .from("criancas")
-                    .select("id")
-                    .order("created_at", { ascending: false })
-                    .limit(1)
-                    .maybeSingle(),
-            ]);
+  function begin() {
+    if (!activity || !activeChild) return;
+    setMode("play");
+    startSession(activity.id);
+    if (recommendationKey && ruleVersion && Number.isInteger(position)) {
+      const storageKey = `recommendation-start:${recommendationKey}`;
+      if (!window.sessionStorage.getItem(storageKey)) {
+        window.sessionStorage.setItem(storageKey, "1");
+        void recordRecommendationEvent({
+          childId: activeChild.id,
+          activityId: activity.id,
+          type: "start",
+          context: recommendationContext,
+          recommendationKey,
+          ruleVersion,
+          position,
+        });
+      }
+    }
+  }
 
-            if (activityRes.data) {
-                setActivity(activityRes.data);
-                startSession(activityRes.data.id);
-            }
-            if (criancaRes.data) {
-                setChildId(criancaRes.data.id);
-            }
-            setLoading(false);
-        }
-        loadData();
-    }, [slug, startSession]);
+  function finish(reason: EndReason) {
+    setEndReason(reason);
+    pauseSession();
+    setShowReflection(true);
+  }
 
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-        if (!isPaused) {
-            interval = setInterval(tick, 1000);
-        }
-        return () => clearInterval(interval);
-    }, [isPaused, tick]);
+  function closeReflection() {
+    setShowReflection(false);
+    endSession();
+    router.push("/dashboard");
+  }
 
-    if (loading) return null;
-    if (!activity) return <div>Atividade não encontrada</div>;
+  if (loading) return <div className="p-8 text-center">Preparando a atividade…</div>;
+  if (needsSelection) return <div className="min-h-screen p-6"><ChildSelectionPrompt /></div>;
+  if (!activity || !activeChild) return <div className="p-8 text-center">Atividade não encontrada.</div>;
 
-    const passos = (activity.passos && activity.passos.length > 0)
-        ? activity.passos
-        : PASSOS_FALLBACK;
+  return (
+    <div className="min-h-screen bg-[var(--color-background)]">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-background)]/95 px-4 py-3 backdrop-blur">
+        <Link href={`/atividades/${slug}`} className="grid size-11 place-items-center rounded-full hover:bg-[var(--color-muted)]" aria-label="Sair do modo Brincar">
+          <X className="size-5" aria-hidden="true" />
+        </Link>
+        <p className="max-w-[55vw] truncate font-black">{activity.titulo}</p>
+        {mode === "play" ? (
+          <button
+            type="button"
+            onClick={() => {
+              if (!timerEnabled) { setTimerEnabled(true); resumeSession(); }
+              else if (isPaused) resumeSession();
+              else pauseSession();
+            }}
+            className="min-h-11 rounded-full bg-[var(--color-muted)] px-3 font-mono text-sm font-bold tabular-nums"
+            aria-label={timerEnabled ? (isPaused ? "Retomar cronômetro" : "Pausar cronômetro") : "Ativar cronômetro opcional"}
+          >
+            {timerEnabled ? formatTime(elapsedSeconds) : <><Clock3 className="mr-1 inline size-4" /> Cronômetro</>}
+          </button>
+        ) : <div className="size-11" />}
+      </header>
 
-    return (
-        <div className={cn(
-            "min-h-screen flex flex-col",
-            isAcolher ? "bg-[#FFF9F5]" : "bg-white"
-        )}>
+      {mode === "prepare" ? (
+        <main className="mx-auto max-w-2xl px-5 py-8">
+          <p className="text-xs font-black uppercase tracking-wide text-[var(--color-primary)]">Antes de começar</p>
+          <h1 className="mt-1 text-3xl font-black">Prepare sem pressa</h1>
+          <p className="mt-2 text-[var(--color-muted-foreground)]">A lista é um apoio, não uma obrigação. Adapte ao espaço e ao momento de vocês.</p>
 
-            {/* Header Focado */}
-            <header className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
-                <Link
-                    href={`/atividades/${slug}`}
-                    className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
-                >
-                    <X className="w-6 h-6" />
-                </Link>
+          <section className="mt-6 rounded-3xl border border-[var(--color-border)] p-5">
+            <h2 className="font-black">Checklist rápido</h2>
+            <ul className="mt-3 space-y-3">
+              {[...activity.preparacao, ...(activity.materiais.length ? [`Materiais: ${activity.materiais.join(", ")}`] : [])].map((item) => (
+                <li key={item} className="flex gap-3 text-sm leading-6"><span aria-hidden="true">□</span>{item}</li>
+              ))}
+            </ul>
+          </section>
 
-                <div className={cn(
-                    "px-4 py-1 rounded-full font-mono font-bold text-lg tabular-nums flex items-center gap-2",
-                    isAcolher ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]" : "bg-gray-100 text-gray-700"
-                )}>
-                    <Clock className="w-4 h-4" />
-                    {formatTime(elapsedSeconds)}
-                </div>
+          <section className="mt-4 rounded-3xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+            <h2 className="font-black">Segurança e supervisão</h2>
+            <p className="mt-2 text-sm"><strong>Supervisão:</strong> {activity.supervisao}</p>
+            {activity.riscos.length > 0 && <p className="mt-2 text-sm"><strong>Atenção a:</strong> {activity.riscos.join("; ")}.</p>}
+          </section>
 
-                <div className="w-10" />
-            </header>
+          <Button size="lg" className="mt-6 h-14 w-full rounded-2xl text-base font-black" onClick={begin}>
+            Tudo pronto, começar <Play className="ml-2 size-5" aria-hidden="true" />
+          </Button>
+        </main>
+      ) : (
+        <main className="mx-auto max-w-2xl px-5 py-8">
+          <div className="flex items-center justify-between text-sm font-bold text-[var(--color-muted-foreground)]">
+            <span>Passo {currentStep + 1} de {activity.passos.length}</span>
+            <button type="button" className="min-h-11 text-[var(--color-primary)]" onClick={() => setShowAll((value) => !value)}>
+              <Eye className="mr-1 inline size-4" aria-hidden="true" /> {showAll ? "Um por vez" : "Mostrar todos"}
+            </button>
+          </div>
 
-            {/* Conteúdo Principal */}
-            <main className="flex-1 max-w-2xl mx-auto w-full px-6 py-8 flex flex-col">
+          {showAll ? (
+            <ol className="mt-5 space-y-3">
+              {activity.passos.map((step, index) => (
+                <li key={step} className="flex gap-4 rounded-2xl border border-[var(--color-border)] p-4">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--color-primary)] font-black text-white">{index + 1}</span>
+                  <p className="pt-1 leading-7">{step}</p>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <section className="mt-5 min-h-64 rounded-3xl bg-[var(--color-card)] p-6 shadow-lg md:p-8">
+              <span className="grid size-10 place-items-center rounded-full bg-[var(--color-primary)] font-black text-white">{currentStep + 1}</span>
+              <p className="mt-6 text-2xl font-black leading-9">{activity.passos[currentStep]}</p>
+              <div className="mt-8 flex justify-between gap-3">
+                <Button variant="outline" size="lg" disabled={currentStep === 0} onClick={() => setCurrentStep((step) => step - 1)}>
+                  <ChevronLeft className="mr-1 size-5" /> Anterior
+                </Button>
+                {currentStep < activity.passos.length - 1 ? (
+                  <Button size="lg" onClick={() => setCurrentStep((step) => step + 1)}>Próximo <ChevronRight className="ml-1 size-5" /></Button>
+                ) : (
+                  <Button size="lg" onClick={() => finish("concluida")}>Encerrar</Button>
+                )}
+              </div>
+            </section>
+          )}
 
-                <div className="flex-1 space-y-8">
-                    <div className="text-center space-y-4">
-                        <h1 className={cn(
-                            "text-3xl font-black leading-tight",
-                            isAcolher ? "text-[var(--color-primary)]" : "text-gray-900"
-                        )}>
-                            {activity.titulo}
-                        </h1>
-                        {activity.imagem_url && (
-                            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-sm">
-                                <Image
-                                    src={activity.imagem_url}
-                                    alt={activity.titulo}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        )}
-                    </div>
+          {activity.prompts.length > 0 && (
+            <aside className="mt-4 rounded-3xl bg-emerald-50 p-5 text-emerald-950">
+              <p className="text-xs font-black uppercase tracking-wide">Experimente dizer…</p>
+              <p className="mt-1 text-lg font-bold">“{activity.prompts[currentStep % activity.prompts.length]}”</p>
+            </aside>
+          )}
 
-                    {/* Passo a Passo */}
-                    <div className="space-y-6">
-                        <h2 className="text-lg font-bold uppercase tracking-wider text-gray-400 text-center">
-                            Instruções
-                        </h2>
-                        <ul className="space-y-4">
-                            {passos.map((passo, i) => (
-                                <li key={i} className="flex gap-4">
-                                    <span className={cn(
-                                        "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 text-white",
-                                        isAcolher ? "bg-[var(--color-primary)]" : "bg-gray-700"
-                                    )}>
-                                        {i + 1}
-                                    </span>
-                                    <span className={cn("pt-1 leading-relaxed", isAcolher ? "text-gray-700" : "text-gray-600")}>
-                                        {passo}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+          {showAdaptation && (
+            <aside className="mt-4 rounded-3xl border border-violet-200 bg-violet-50 p-5 text-violet-950">
+              <p className="font-black">Uma forma mais simples</p>
+              <p className="mt-1 text-sm leading-6">{activity.simplificar}</p>
+              <Button variant="outline" className="mt-3" onClick={() => setShowAdaptation(false)}>Continuar adaptado</Button>
+            </aside>
+          )}
 
-                {/* Controles do Rodapé */}
-                <div className="sticky bottom-0 bg-gradient-to-t from-white via-white to-transparent pt-12 pb-8 mt-8 flex flex-col gap-4">
-                    <div className="flex justify-center">
-                        <Button
-                            variant="outline"
-                            size="icon"
-                            className="w-14 h-14 rounded-full border-2"
-                            onClick={() => isPaused ? resumeSession() : pauseSession()}
-                        >
-                            {isPaused ? <Play className="w-6 h-6 fill-current" /> : <Pause className="w-6 h-6 fill-current" />}
-                        </Button>
-                    </div>
+          <section className="mt-6 border-t border-[var(--color-border)] pt-5" aria-label="Ações rápidas">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Button variant="outline" className="min-h-12" onClick={() => setShowAdaptation(true)}><RefreshCw className="mr-2 size-4" /> Adaptar</Button>
+              <Button variant="outline" className="min-h-12" onClick={() => finish("perdeu_interesse")}>Perdeu o interesse</Button>
+              {timerEnabled && <Button variant="outline" className="min-h-12" onClick={() => isPaused ? resumeSession() : pauseSession()}>{isPaused ? <Play className="mr-2 size-4" /> : <Pause className="mr-2 size-4" />}{isPaused ? "Retomar" : "Pausar"}</Button>}
+              <Button className={cn("min-h-12", !timerEnabled && "sm:col-span-1")} onClick={() => finish("concluida")}>Encerrar brincadeira</Button>
+            </div>
+            <details className="mt-4 rounded-2xl bg-[var(--color-muted)] p-4">
+              <summary className="cursor-pointer font-bold">Sinais de que pode ser hora de adaptar ou parar</summary>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[var(--color-muted-foreground)]">
+                {activity.sinaisPausa.map((signal) => <li key={signal}>{signal}</li>)}
+              </ul>
+            </details>
+          </section>
+        </main>
+      )}
 
-                    <Button
-                        size="lg"
-                        className={cn(
-                            "w-full h-14 text-lg font-bold rounded-2xl shadow-lg hover:scale-[1.02] transition-transform",
-                            isAcolher
-                                ? "bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90"
-                                : "bg-green-600 hover:bg-green-700"
-                        )}
-                        onClick={() => {
-                            pauseSession();
-                            setShowReflection(true);
-                        }}
-                    >
-                        <CheckCircle2 className="w-6 h-6 mr-2" />
-                        Concluir Atividade
-                    </Button>
-                </div>
-
-            </main>
-
-            {/* Modal de Reflexão */}
-            {showReflection && (
-                <PostActivityReflection
-                    activityId={activity.id}
-                    activityName={activity.titulo}
-                    durationSeconds={elapsedSeconds}
-                    childId={childId ?? ""}
-                    onClose={() => {
-                        endSession();
-                    }}
-                />
-            )}
-        </div>
-    );
+      {showReflection && (
+        <PostActivityReflection
+          activityId={activity.id}
+          childId={activeChild.id}
+          activityName={activity.titulo}
+          durationSeconds={elapsedSeconds}
+          endReason={endReason}
+          recommendationKey={recommendationKey}
+          recommendationContext={recommendationContext}
+          onClose={closeReflection}
+        />
+      )}
+    </div>
+  );
 }

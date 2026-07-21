@@ -16,7 +16,7 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ className, showLabel = true }: ThemeToggleProps) {
-  const { theme, toggleTheme, isAcolher } = useTheme();
+  const { toggleTheme, isAcolher } = useTheme();
 
   return (
     <TooltipProvider delayDuration={100}>

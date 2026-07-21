@@ -135,3 +135,23 @@ ON CONFLICT (codigo_externo) DO UPDATE SET
     beneficios = EXCLUDED.beneficios,
     passos = EXCLUDED.passos,
     dicas = EXCLUDED.dicas;
+
+-- These entries are an editorial backlog, not dashboard-ready activities.
+-- The phase-2 publication contract must be completed before they are published.
+UPDATE brincareducando.atividades
+SET
+    slug = CASE codigo_externo
+        WHEN 'atividade_051' THEN 'massagem-com-flanela-macia'
+        WHEN 'atividade_052' THEN 'bolhas-de-sabao-para-tocar'
+        WHEN 'atividade_053' THEN 'frutas-na-palma-da-mao'
+        WHEN 'atividade_054' THEN 'caixa-do-toque-misterioso'
+        WHEN 'atividade_055' THEN 'pintura-com-os-pes'
+        WHEN 'atividade_056' THEN 'jardineiro-descalco'
+        ELSE slug
+    END,
+    publicado = false,
+    status_editorial = 'revisao_pendente'
+WHERE codigo_externo IN (
+    'atividade_051', 'atividade_052', 'atividade_053',
+    'atividade_054', 'atividade_055', 'atividade_056'
+);

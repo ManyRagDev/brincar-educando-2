@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ExternalLink, ShoppingBag } from "lucide-react";
 
 interface ProductEmbedProps {
@@ -22,11 +23,13 @@ export default function ProductEmbed({
     <div className="my-8 card-theme overflow-hidden">
       <div className="flex gap-4 p-4">
         {image && (
-          <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-[var(--color-muted)]">
-            <img
+          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--color-muted)]">
+            <Image
               src={image}
               alt={title}
-              className="w-full h-full object-cover"
+              fill
+              sizes="96px"
+              className="object-cover"
             />
           </div>
         )}

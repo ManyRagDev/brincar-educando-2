@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Clock, Calendar, List } from "lucide-react";
+import { ArrowLeft, Clock, Calendar } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getBlogPost, getBlogSlugs, getAllBlogPosts } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";

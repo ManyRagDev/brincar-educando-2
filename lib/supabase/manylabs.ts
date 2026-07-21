@@ -27,22 +27,45 @@ type ManyLabsDatabase = {
   };
 };
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
 let adminClient: SupabaseClient<ManyLabsDatabase> | null = null;
 
 export type ManyLabsAccessResult =
   | { ok: true }
-  | { ok: false; reason: "server_not_configured" | "rpc_failed" | "access_denied"; message?: string };
+  | {
+      ok: false;
+      reason: "server_not_configured" | "rpc_failed" | "access_denied";
+      message?: string;
+      diagnostics?: ManyLabsEnvironmentDiagnostics;
+    };
+
+export type ManyLabsEnvironmentDiagnostics = {
+  hasSupabaseUrl: boolean;
+  hasServiceRoleKey: boolean;
+  serviceRoleKeyLength: number;
+  serviceRoleKeyLooksJwt: boolean;
+};
+
+export function getManyLabsEnvironmentDiagnostics(): ManyLabsEnvironmentDiagnostics {
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  return {
+    hasSupabaseUrl: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
+    hasServiceRoleKey: Boolean(serviceRoleKey),
+    serviceRoleKeyLength: serviceRoleKey?.length ?? 0,
+    serviceRoleKeyLooksJwt: serviceRoleKey?.startsWith("eyJ") ?? false,
+  };
+}
 
 function getAdminClient() {
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
     throw new Error("ManyLabs admin Supabase environment is not configured");
   }
 
   if (!adminClient) {
-    adminClient = createClient<ManyLabsDatabase>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    adminClient = createClient<ManyLabsDatabase>(supabaseUrl, serviceRoleKey, {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
@@ -90,7 +113,12 @@ export async function ensureBrincarEducandoAccessResult(user: User): Promise<Man
     console.error("[ManyLabs] ensure access unexpected failure:", error);
 
     if (error instanceof Error && error.message.includes("environment is not configured")) {
-      return { ok: false, reason: "server_not_configured", message: error.message };
+      return {
+        ok: false,
+        reason: "server_not_configured",
+        message: error.message,
+        diagnostics: getManyLabsEnvironmentDiagnostics(),
+      };
     }
 
     return {

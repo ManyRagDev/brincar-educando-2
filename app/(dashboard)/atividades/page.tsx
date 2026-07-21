@@ -4,8 +4,9 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { ActivitySearch } from "@/components/journey/ActivitySearch";
 import { ActivityGrid } from "@/components/journey/ActivityGrid";
-import { createClient } from "@/lib/supabase/server";
+import { requireAppUser } from "@/lib/auth/require-app-user";
 import { differenceInMonths, parseISO } from "date-fns";
+import { getActiveChild } from "@/lib/children/active-child";
 
 export const metadata: Metadata = {
   title: "Atividades | Brincar Educando",
@@ -19,27 +20,14 @@ export default async function AtividadesPage({
 }) {
   const resolvedSearchParams = await searchParams;
 
-  // Buscar criança do usuário logado para filtro por faixa etária
-  const supabase = await createClient();
-  const { data: criancas } = await supabase
-    .schema("brincareducando")
-    .from("criancas")
-    .select("id, nome, data_nascimento, genero")
-    .order("created_at", { ascending: false })
-    .limit(1);
-
-  const child = criancas?.[0];
+  const { supabase, user } = await requireAppUser();
+  const { activeChild: child } = await getActiveChild(supabase, user.id);
   let childAgeMonths: number | null = null;
   let childAgeLabel: string | null = null;
 
   if (child) {
     childAgeMonths = differenceInMonths(new Date(), parseISO(child.data_nascimento));
-    // Artigo baseado no gênero declarado — inclusivo e suave
-    const artigo =
-      child.genero === "menino" ? "do"
-      : child.genero === "menina" ? "da"
-      : "de";
-    childAgeLabel = `Para a idade ${artigo} ${child.nome}`;
+    childAgeLabel = `Para a fase de ${child.nome}`;
   }
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { saveChildProfile } from "@/app/(dashboard)/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,8 @@ import { Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import NextImage from "next/image";
+import { cn } from "@/lib/utils";
+import type { Tables } from "@/lib/supabase/database.types";
 
 const coresFavoritas = [
     { value: "rosa", label: "Rosa", color: "bg-pink-400" },
@@ -36,9 +38,20 @@ const avataresPremium = [
     { id: "boy2", src: "/images/avatars/boy2.png", label: "Aventureiro" },
 ];
 
+type ChildFormData = Pick<
+    Tables<"criancas">,
+    "id" | "nome" | "data_nascimento" | "genero" | "cor_favorita" | "interesses" | "avatar_id"
+>;
+
 interface PerfilCriancaFormProps {
-    initialData?: any;
+    initialData?: ChildFormData | null;
     isEditing?: boolean;
+}
+
+function getInitialInterests(initialData?: ChildFormData | null) {
+    return Array.isArray(initialData?.interesses)
+        ? initialData.interesses.filter((item): item is string => typeof item === "string")
+        : [];
 }
 
 export function PerfilCriancaForm({ initialData, isEditing = false }: PerfilCriancaFormProps) {
@@ -47,19 +60,17 @@ export function PerfilCriancaForm({ initialData, isEditing = false }: PerfilCria
     const [dataNascimento, setDataNascimento] = useState(initialData?.data_nascimento || "");
     const [genero, setGenero] = useState(initialData?.genero || "");
     const [corFavorita, setCorFavorita] = useState(initialData?.cor_favorita || "azul");
-    const [interesses, setInteresses] = useState<string[]>(initialData?.interesses || []);
+    const [interesses, setInteresses] = useState<string[]>(getInitialInterests(initialData));
     const [avatarId, setAvatarId] = useState(initialData?.avatar_id || "boy");
 
     const router = useRouter();
-    const supabase = createClient();
-
     useEffect(() => {
         if (initialData) {
             setNome(initialData.nome || "");
             setDataNascimento(initialData.data_nascimento || "");
             setGenero(initialData.genero || "");
             setCorFavorita(initialData.cor_favorita || "azul");
-            setInteresses(initialData.interesses || []);
+            setInteresses(getInitialInterests(initialData));
             setAvatarId(initialData.avatar_id || "boy");
         }
     }, [initialData]);
@@ -77,39 +88,23 @@ export function PerfilCriancaForm({ initialData, isEditing = false }: PerfilCria
         setLoading(true);
 
         try {
-            if (isEditing && initialData?.id) {
-                const { error } = await supabase
-                    .from("criancas")
-                    .update({
-                        nome,
-                        data_nascimento: dataNascimento,
-                        genero,
-                        cor_favorita: corFavorita,
-                        interesses,
-                        avatar_id: avatarId
-                    })
-                    .eq("id", initialData.id);
+            const result = await saveChildProfile({
+                ...(isEditing && initialData?.id ? { id: initialData.id } : {}),
+                name: nome,
+                birthDate: dataNascimento,
+                gender: genero || "nao_informado",
+                favoriteColor: corFavorita,
+                interests: interesses,
+                avatarId,
+            });
 
-                if (error) throw error;
-                toast.success("Perfil atualizado! ✨");
-            } else {
-                const { data, error } = await supabase.rpc("upsert_child_with_profile", {
-                    p_nome: nome,
-                    p_data_nascimento: dataNascimento,
-                    p_genero: genero,
-                    p_cor_favorita: corFavorita,
-                    p_interesses: interesses,
-                    p_avatar_id: avatarId
-                });
-
-                if (error) throw error;
-                toast.success("Perfil da criança criado! ✨");
-            }
+            if (!result.ok) throw new Error(result.message);
+            toast.success(isEditing ? "Perfil atualizado! ✨" : "Perfil da criança criado! ✨");
 
             router.push("/dashboard");
             router.refresh();
-        } catch (error: any) {
-            toast.error(error.message || "Erro ao salvar perfil");
+        } catch (error: unknown) {
+            toast.error(error instanceof Error ? error.message : "Erro ao salvar perfil");
         } finally {
             setLoading(false);
         }
@@ -179,15 +174,15 @@ export function PerfilCriancaForm({ initialData, isEditing = false }: PerfilCria
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Gênero</Label>
-                        <Select value={genero} onValueChange={setGenero} required>
+                        <Label>Gênero (opcional)</Label>
+                        <Select value={genero} onValueChange={setGenero}>
                             <SelectTrigger className="bg-[var(--color-input)] h-12">
-                                <SelectValue placeholder="Selecione..." />
+                                <SelectValue placeholder="Prefiro não informar" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="menino">Menino</SelectItem>
                                 <SelectItem value="menina">Menina</SelectItem>
-                                <SelectItem value="neutro">Prefiro não informar</SelectItem>
+                                <SelectItem value="nao_informado">Prefiro não informar</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -245,8 +240,4 @@ export function PerfilCriancaForm({ initialData, isEditing = false }: PerfilCria
             </Button>
         </form>
     );
-}
-
-function cn(...inputs: any[]) {
-    return inputs.filter(Boolean).join(" ");
 }

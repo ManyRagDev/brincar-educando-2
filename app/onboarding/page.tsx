@@ -1,18 +1,13 @@
-import { createClient } from "@/lib/supabase/server";
 import { PerfilCriancaForm } from "@/components/dashboard/PerfilCriancaForm";
+import { redirect } from "next/navigation";
+import { getActiveChild } from "@/lib/children/active-child";
+import { requireAppUser } from "@/lib/auth/require-app-user";
 
 export default async function OnboardingPage() {
-    const supabase = await createClient();
+    const { supabase, user } = await requireAppUser();
+    const { activeChild: existingChild, needsSelection } = await getActiveChild(supabase, user.id);
 
-    const { data: { user } } = await supabase.auth.getUser();
-
-    // Fetch existing children to see if we are in "edit" mode or just returning
-    const { data: criancas } = await supabase
-        .from("criancas")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    const existingChild = criancas && criancas.length > 0 ? criancas[0] : null;
+    if (needsSelection) redirect("/dashboard");
 
     return (
         <div className="min-h-screen bg-[var(--color-background)] py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">

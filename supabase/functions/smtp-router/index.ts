@@ -48,7 +48,7 @@ serve(async (req) => {
         // Supabase Auth Hooks provide different structures depending on the event
         const { user, mail_data } = body;
         const to = user.email;
-        const { subject, template_name, otp, confirmation_url } = mail_data || {};
+        const { subject, otp, confirmation_url } = mail_data || {};
 
         // Map Template Names (Internal Supabase names) to Friendly Brincar Educando content
         let htmlContent = "";

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Dumbbell, BookOpen, BookMarked, User } from "lucide-react";
+import { Home, Dumbbell, BookOpen, BookMarked, Sprout } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -10,7 +10,7 @@ const tabs = [
   { href: "/atividades", label: "Atividades", icon: Dumbbell },
   { href: "/diario", label: "Diário", icon: BookMarked },
   { href: "/historias", label: "Histórias", icon: BookOpen, badge: true },
-  { href: "/perfil", label: "Perfil", icon: User },
+  { href: "/jornada", label: "Jornada", icon: Sprout },
 ];
 
 export function BottomNav() {

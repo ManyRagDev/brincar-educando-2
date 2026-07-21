@@ -1,4 +1,4 @@
-import { Info as InfoIcon, Lightbulb, CheckSquare, AlertTriangle, Megaphone } from "lucide-react";
+import { Info as InfoIcon, Lightbulb, CheckSquare, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BlockProps {

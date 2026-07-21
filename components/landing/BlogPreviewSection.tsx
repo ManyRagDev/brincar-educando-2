@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, Clock, BookOpen } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Clock } from "lucide-react";
 import { getAllBlogPosts } from "@/lib/mdx";
 import { formatDateShort } from "@/lib/utils";
 
@@ -38,11 +39,12 @@ export async function BlogPreviewSection() {
             >
               {/* Thumbnail */}
               <div className="relative aspect-video overflow-hidden bg-[var(--color-muted)] rounded-t-[var(--radius-lg)]">
-                <img
+                <Image
                   src={post.metadata.thumbnail}
                   alt={post.metadata.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Category badge */}
                 <span className="absolute top-3 left-3 px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-[var(--color-secondary)] text-[var(--color-secondary-foreground)]">

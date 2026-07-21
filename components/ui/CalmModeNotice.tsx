@@ -60,7 +60,7 @@ function HandDrawnArrow() {
 export function CalmModeNotice() {
     const [isVisible, setIsVisible] = useState(false);
     const [showArrow, setShowArrow] = useState(false);
-    const { theme, toggleTheme, isAcolher } = useTheme();
+    const { toggleTheme, isAcolher } = useTheme();
 
     useEffect(() => {
         // Check if user already dismissed it

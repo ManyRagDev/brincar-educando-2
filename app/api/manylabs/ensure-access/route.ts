@@ -1,11 +1,18 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { ensureBrincarEducandoAccessResult } from "@/lib/supabase/manylabs";
+import {
+  ensureBrincarEducandoAccessResult,
+  getManyLabsEnvironmentDiagnostics,
+} from "@/lib/supabase/manylabs";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST() {
+  const envDiagnostics = getManyLabsEnvironmentDiagnostics();
+
   console.info("[ManyLabs] ensure-access route invoked", {
-    hasSupabaseUrl: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
-    hasServiceRoleKey: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+    ...envDiagnostics,
   });
 
   const supabase = await createClient();
@@ -34,14 +41,20 @@ export async function POST() {
 
     if (accessResult.reason === "server_not_configured") {
       return NextResponse.json(
-        { error: "manylabs_server_not_configured" },
+        {
+          error: "manylabs_server_not_configured",
+          diagnostics: accessResult.diagnostics ?? envDiagnostics,
+        },
         { status: 500 }
       );
     }
 
     if (accessResult.reason === "rpc_failed") {
       return NextResponse.json(
-        { error: "manylabs_rpc_failed" },
+        {
+          error: "manylabs_rpc_failed",
+          diagnostics: envDiagnostics,
+        },
         { status: 500 }
       );
     }

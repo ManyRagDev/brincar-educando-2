@@ -4,9 +4,7 @@ import { useTheme } from "@/components/providers/ThemeProvider";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Clock, Star, Camera, MessageCircle, MoreVertical } from "lucide-react";
-import Image from "next/image";
-import { ActivityBadge } from "./ActivityBadge";
+import { Clock, Camera, MessageCircle } from "lucide-react";
 
 interface TimelineEntryProps {
     execution: {
@@ -95,25 +93,23 @@ export function TimelineEntry({ execution }: TimelineEntryProps) {
                     </div>
 
                     {execution.avaliacao && (
-                        <div className="flex gap-0.5">
-                            {[...Array(execution.avaliacao)].map((_, i) => (
-                                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                            ))}
-                        </div>
+                        <span className="rounded-full bg-[var(--color-muted)] px-3 py-1 text-xs font-semibold text-[var(--color-muted-foreground)]">
+                            {execution.avaliacao >= 4
+                                ? "Foi envolvente"
+                                : execution.avaliacao === 3
+                                  ? "Foi tranquilo"
+                                  : "Não era o momento"}
+                        </span>
                     )}
                 </div>
 
                 {/* Fotos */}
                 {execution.fotos_urls && execution.fotos_urls.length > 0 && (
                     <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-thin">
-                        {execution.fotos_urls.map((url, i) => (
-                            <div key={i} className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden border">
-                                {/* Placeholder para imagem real */}
-                                <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                                    <Camera className="text-gray-300" />
-                                </div>
-                            </div>
-                        ))}
+                        <div className="flex min-h-11 items-center gap-2 rounded-xl bg-gray-100 px-4 text-sm text-gray-500">
+                            <Camera className="h-4 w-4" aria-hidden="true" />
+                            {execution.fotos_urls.length} {execution.fotos_urls.length === 1 ? "foto guardada" : "fotos guardadas"}
+                        </div>
                     </div>
                 )}
 
@@ -129,26 +125,7 @@ export function TimelineEntry({ execution }: TimelineEntryProps) {
                             "w-4 h-4 absolute -top-2 left-4 fill-white",
                             isAcolher ? "text-[var(--color-primary)]" : "text-gray-300"
                         )} />
-                        "{execution.notas}"
-                    </div>
-                )}
-
-                {/* Habilidades/Tags */}
-                {execution.habilidades_desbloqueadas && execution.habilidades_desbloqueadas.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                        {execution.habilidades_desbloqueadas.map((skill) => (
-                            <span
-                                key={skill}
-                                className={cn(
-                                    "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide",
-                                    isAcolher
-                                        ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
-                                        : "bg-gray-100 text-gray-500"
-                                )}
-                            >
-                                {skill}
-                            </span>
-                        ))}
+                        &ldquo;{execution.notas}&rdquo;
                     </div>
                 )}
             </div>

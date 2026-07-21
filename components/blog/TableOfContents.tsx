@@ -41,7 +41,8 @@ export function TableOfContents({ className }: TableOfContentsProps) {
       });
     });
 
-    setHeadings(items);
+    const frame = requestAnimationFrame(() => setHeadings(items));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   // Track active heading with IntersectionObserver

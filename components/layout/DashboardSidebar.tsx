@@ -12,17 +12,20 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  Sprout,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ChildSwitcher } from "@/components/dashboard/ChildSwitcher";
 
 const navItems = [
   { href: "/dashboard", label: "Início", icon: Home },
   { href: "/atividades", label: "Atividades", icon: Dumbbell },
   { href: "/diario", label: "Diário", icon: BookMarked },
   { href: "/historias", label: "Histórias", icon: BookOpen, badge: "em breve" },
+  { href: "/jornada", label: "Jornada", icon: Sprout },
   { href: "/perfil", label: "Meu Perfil", icon: User },
   { href: "/configuracoes", label: "Configurações", icon: Settings },
 ];
@@ -52,6 +55,8 @@ export function DashboardSidebar() {
           />
         </Link>
       </div>
+
+      <ChildSwitcher />
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">

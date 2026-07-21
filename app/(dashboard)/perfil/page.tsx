@@ -1,204 +1,216 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { ArrowLeft, Star, Trophy, BookOpen, Heart, Edit3, Plus } from "lucide-react";
-import Link from "next/link";
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  BookMarked,
+  Edit3,
+  Heart,
+  Library,
+  Plus,
+  Sparkles,
+} from "lucide-react";
+import { ChildSelectionPrompt } from "@/components/dashboard/ChildSelectionPrompt";
+import { requireAppUser } from "@/lib/auth/require-app-user";
+import { getActiveChild } from "@/lib/children/active-child";
 import { calculateAge } from "@/lib/utils";
-import NextImage from "next/image";
 
 export const metadata: Metadata = {
   title: "Perfil | Brincar Educando",
   robots: { index: false },
 };
 
-const developmentAreas = [
-  { label: "Motor", value: 75, color: "bg-rose-400" },
-  { label: "Cognitivo", value: 82, color: "bg-blue-400" },
-  { label: "Social", value: 68, color: "bg-purple-400" },
-  { label: "Linguagem", value: 90, color: "bg-emerald-400" },
-  { label: "Emocional", value: 71, color: "bg-amber-400" },
-];
-
-const milestones = [
-  { date: "Nov 2025", title: "Primeira palavra", emoji: "💬", achieved: true },
-  { date: "Out 2025", title: "Andou sozinho", emoji: "🚶", achieved: true },
-  { date: "Set 2025", title: "Reconheceu cores", emoji: "🎨", achieved: true },
-  { date: "Ago 2025", title: "Primeiros passos", emoji: "👣", achieved: true },
-  { date: "Em breve", title: "Frases de 2 palavras", emoji: "📢", achieved: false },
-  { date: "Em breve", title: "Nomear pessoas", emoji: "👨‍👩‍👦", achieved: false },
-];
+const avatarMap: Record<string, string> = {
+  boy: "/images/avatars/boy.png",
+  girl: "/images/avatars/girl.png",
+  star: "/images/avatars/star.png",
+  fox: "/images/avatars/fox.png",
+  dino: "/images/avatars/dino.png",
+  boy2: "/images/avatars/boy2.png",
+};
 
 export default async function PerfilPage() {
-  const supabase = await createClient();
+  const { supabase, user } = await requireAppUser();
+  const { activeChild, children, needsSelection } = await getActiveChild(supabase, user.id);
+  const parentName =
+    user.user_metadata?.nome ?? user.user_metadata?.full_name ?? "Responsável";
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
+  const [activitiesCount, diaryCount, storiesCount] = activeChild
+    ? await Promise.all([
+        supabase
+          .from("atividades_execucoes")
+          .select("id", { count: "exact", head: true })
+          .eq("crianca_id", activeChild.id),
+        supabase
+          .from("diario_entradas")
+          .select("id", { count: "exact", head: true })
+          .eq("crianca_id", activeChild.id),
+        supabase
+          .from("historico")
+          .select("id", { count: "exact", head: true })
+          .eq("crianca_id", activeChild.id)
+          .eq("concluido", true),
+      ])
+    : [{ count: 0 }, { count: 0 }, { count: 0 }];
 
-  const { data: criancas } = await supabase
-    .from("criancas")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  const hasChildren = criancas && criancas.length > 0;
-  const mainChild = hasChildren ? criancas[0] : null;
-  const parentName = user.user_metadata?.nome ?? user.user_metadata?.full_name ?? "Usuário";
-
-  const avatarMap: Record<string, string> = {
-    boy: "/images/avatars/boy.png",
-    girl: "/images/avatars/girl.png",
-    star: "/images/avatars/star.png",
-    fox: "/images/avatars/fox.png",
-    dino: "/images/avatars/dino.png",
-    boy2: "/images/avatars/boy2.png",
-    default: "/images/avatars/boy.png"
-  };
-
-  const avatarSrc = avatarMap[mainChild?.avatar_id] || avatarMap.default;
+  const interests = Array.isArray(activeChild?.interesses)
+    ? activeChild.interesses.filter((item): item is string => typeof item === "string")
+    : [];
+  const avatarSrc =
+    (activeChild?.avatar_id && avatarMap[activeChild.avatar_id]) ?? avatarMap.boy;
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="px-6 pt-8 pb-4 flex items-center justify-between">
+      <header className="flex items-center justify-between px-6 pb-4 pt-8">
         <Link
           href="/dashboard"
-          className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)]"
+          aria-label="Voltar para Hoje"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-card)]"
         >
-          <ArrowLeft className="h-4 w-4 text-[var(--color-foreground)]" />
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         </Link>
-        <h1 className="font-serif text-xl font-black text-[var(--color-foreground)]">Perfil</h1>
-        {hasChildren ? (
+        <h1 className="font-serif text-xl font-black">Perfil da criança</h1>
+        {activeChild ? (
           <Link
             href="/onboarding"
-            className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)]"
+            aria-label={`Editar perfil de ${activeChild.nome}`}
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-card)]"
           >
-            <Edit3 className="h-4 w-4 text-[var(--color-foreground)]" />
+            <Edit3 className="h-4 w-4" aria-hidden="true" />
           </Link>
         ) : (
-          <div className="w-8" />
+          <div className="h-11 w-11" />
         )}
       </header>
 
-      <div className="px-6 pb-8">
-        {!hasChildren ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-            <div className="w-20 h-20 rounded-full bg-[var(--color-muted)] flex items-center justify-center text-4xl">
+      <div className="px-6 pb-10">
+        {needsSelection ? (
+          <ChildSelectionPrompt />
+        ) : !activeChild ? (
+          <section className="flex flex-col items-center justify-center space-y-4 py-20 text-center">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--color-muted)] text-4xl">
               🧸
             </div>
             <div>
-              <h2 className="text-xl font-black">Nenhuma criança cadastrada</h2>
-              <p className="text-[var(--color-muted-foreground)]">Cadastre o perfil para começar!</p>
+              <h2 className="text-xl font-black">Vamos conhecer a criança?</h2>
+              <p className="text-[var(--color-muted-foreground)]">
+                Um perfil simples ajuda a sugerir experiências adequadas à fase.
+              </p>
             </div>
-            <Link href="/onboarding" className="btn-primary-theme px-6 py-2 rounded-full flex items-center gap-2">
-              <Plus className="w-4 h-4" /> Cadastrar Agora
+            <Link
+              href="/onboarding"
+              className="btn-primary-theme flex min-h-11 items-center gap-2 rounded-full px-6 py-2"
+            >
+              <Plus className="h-4 w-4" aria-hidden="true" /> Criar perfil
             </Link>
-          </div>
+          </section>
         ) : (
-          <div className="lg:grid lg:grid-cols-3 lg:gap-8">
-            {/* ── Column 1: Profile card ── */}
-            <div className="space-y-4 mb-8 lg:mb-0">
-              <div className="card-theme p-6 text-center">
-                <div className="w-32 h-32 rounded-3xl bg-[var(--color-primary)]/10 flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-xl relative overflow-hidden">
-                  <NextImage
+          <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-3">
+            <div className="space-y-4">
+              <section className="card-theme p-6 text-center">
+                <div className="relative mx-auto mb-4 h-32 w-32 overflow-hidden rounded-3xl border-4 border-white bg-[var(--color-primary)]/10 shadow-xl">
+                  <Image
                     src={avatarSrc}
-                    alt="Avatar da criança"
+                    alt={`Avatar de ${activeChild.nome}`}
                     fill
                     className="object-contain p-2"
                   />
                 </div>
-                <h2 className="font-serif text-2xl font-black text-[var(--color-foreground)] mb-1">
-                  {mainChild.nome}
-                </h2>
-                <p className="text-sm text-[var(--color-muted-foreground)] mb-4">
-                  {calculateAge(mainChild.data_nascimento)}
+                <h2 className="font-serif text-2xl font-black">{activeChild.nome}</h2>
+                <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
+                  {calculateAge(activeChild.data_nascimento)}
                 </p>
-                <div className="grid grid-cols-3 gap-3 text-center">
-                  <div className="p-2">
-                    <p className="font-black text-lg text-[var(--color-primary)]">0</p>
-                    <p className="text-[10px] text-[var(--color-muted-foreground)] font-medium">Atividades</p>
-                  </div>
-                  <div className="p-2">
-                    <p className="font-black text-lg text-[var(--color-secondary)]">0</p>
-                    <p className="text-[10px] text-[var(--color-muted-foreground)] font-medium">Entradas</p>
-                  </div>
-                  <div className="p-2">
-                    <p className="font-black text-lg text-emerald-500">0</p>
-                    <p className="text-[10px] text-[var(--color-muted-foreground)] font-medium">Histórias</p>
-                  </div>
-                </div>
-              </div>
+                {children.length > 1 && (
+                  <p className="mt-4 text-xs text-[var(--color-muted-foreground)]">
+                    Você pode trocar a criança ativa no menu lateral.
+                  </p>
+                )}
+              </section>
 
-              {/* Parent info */}
-              <div className="card-theme p-5">
-                <p className="text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] mb-3">
+              <section className="card-theme p-5">
+                <p className="mb-3 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)]">
                   Responsável
                 </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[var(--color-muted)] flex items-center justify-center text-xl">
-                    👤
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-[var(--color-foreground)]">{parentName}</p>
-                    <p className="text-xs text-[var(--color-muted-foreground)]">{user.email}</p>
-                  </div>
-                </div>
-              </div>
+                <p className="font-bold">{parentName}</p>
+                <p className="text-xs text-[var(--color-muted-foreground)]">{user.email}</p>
+              </section>
             </div>
 
-            {/* ── Column 2: Development bars ── */}
-            <div className="mb-8 lg:mb-0">
-              <div className="card-theme p-6">
-                <h3 className="font-serif text-lg font-black text-[var(--color-foreground)] mb-6">
-                  Desenvolvimento
-                </h3>
-                <div className="space-y-5">
-                  {developmentAreas.map((area) => (
-                    <div key={area.label}>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-sm font-bold text-[var(--color-foreground)]">{area.label}</span>
-                        <span className="text-sm font-black text-[var(--color-primary)]">{area.value}%</span>
-                      </div>
-                      <div className="h-3 bg-[var(--color-muted)] rounded-full overflow-hidden">
-                        <div
-                          className={`h-full ${area.color} rounded-full transition-all duration-700`}
-                          style={{ width: `${area.value}%` }}
-                        />
-                      </div>
-                    </div>
+            <section className="card-theme p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                  <Heart className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)]">
+                    O que encanta
+                  </p>
+                  <h3 className="font-serif text-lg font-black">Interesses informados</h3>
+                </div>
+              </div>
+              {interests.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {interests.map((interest) => (
+                    <span
+                      key={interest}
+                      className="rounded-full bg-[var(--color-muted)] px-3 py-1.5 text-sm font-semibold"
+                    >
+                      {interest}
+                    </span>
                   ))}
                 </div>
-                <p className="text-xs text-[var(--color-muted-foreground)] mt-4 text-center">
-                  Baseado nas atividades registradas
+              ) : (
+                <p className="text-sm text-[var(--color-muted-foreground)]">
+                  Vocês ainda não registraram interesses. Eles podem mudar — e tudo bem.
                 </p>
-              </div>
-            </div>
+              )}
+              <Link
+                href="/onboarding"
+                className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-primary)]"
+              >
+                Ajustar perfil
+              </Link>
+            </section>
 
-            {/* ── Column 3: Milestones timeline ── */}
-            <div>
-              <div className="card-theme p-6">
-                <h3 className="font-serif text-lg font-black text-[var(--color-foreground)] mb-6">
-                  Marcos de desenvolvimento
-                </h3>
-                <div className="space-y-4">
-                  {milestones.map((m, i) => (
-                    <div key={i} className="flex gap-4 items-start">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${m.achieved
-                        ? "bg-[var(--color-primary)]/10"
-                        : "bg-[var(--color-muted)] opacity-50"
-                        }`}>
-                        {m.emoji}
-                      </div>
-                      <div>
-                        <p className={`font-bold text-sm ${m.achieved ? "text-[var(--color-foreground)]" : "text-[var(--color-muted-foreground)]"}`}>
-                          {m.title}
-                        </p>
-                        <p className={`text-xs ${m.achieved ? "text-[var(--color-primary)] font-semibold" : "text-[var(--color-muted-foreground)]"}`}>
-                          {m.achieved ? `✓ ${m.date}` : m.date}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+            <div className="space-y-4">
+              <section className="card-theme p-6">
+                <div className="mb-5 flex items-center gap-3">
+                  <Library className="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true" />
+                  <h3 className="font-serif text-lg font-black">Registros desta jornada</h3>
                 </div>
-              </div>
+                <dl className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <dt className="text-sm text-[var(--color-muted-foreground)]">Brincadeiras vividas</dt>
+                    <dd className="font-black">{activitiesCount.count ?? 0}</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-sm text-[var(--color-muted-foreground)]">Memórias registradas</dt>
+                    <dd className="font-black">{diaryCount.count ?? 0}</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-sm text-[var(--color-muted-foreground)]">Histórias compartilhadas</dt>
+                    <dd className="font-black">{storiesCount.count ?? 0}</dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section className="rounded-3xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 p-6">
+                <div className="mb-3 flex items-center gap-2 font-black">
+                  <Sparkles className="h-5 w-5 text-[var(--color-primary)]" aria-hidden="true" />
+                  Acompanhar com carinho
+                </div>
+                <p className="text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+                  Estes registros mostram experiências da família, não uma nota de desenvolvimento.
+                  Cada criança tem seu ritmo. Se algo preocupar você, converse com o pediatra ou outro
+                  profissional que acompanhe a criança.
+                </p>
+                <Link
+                  href="/diario"
+                  className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[var(--color-primary)]"
+                >
+                  <BookMarked className="h-4 w-4" aria-hidden="true" /> Ver diário
+                </Link>
+              </section>
             </div>
           </div>
         )}

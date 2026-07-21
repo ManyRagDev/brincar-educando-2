@@ -1,6 +1,6 @@
 import { PublicNav } from "@/components/layout/PublicNav";
 import { Footer } from "@/components/layout/Footer";
-import { Shield, Eye, Lock, Trash2, Download, Bell, Users, Globe, Mail } from "lucide-react";
+import { Shield, Eye, Lock, Trash2, Download, Bell, Users, Mail } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

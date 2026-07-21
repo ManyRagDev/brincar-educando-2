@@ -1,96 +1,104 @@
-import { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database, Json } from "@/lib/supabase/database.types";
+import {
+  rankRecommendations,
+  type MomentContext,
+  type RankedRecommendation,
+  type RecommendationCandidate,
+  type RecommendationHistory,
+} from "@/lib/journey/recommendation-engine";
 
-export async function getDashboardSuggestions(supabase: SupabaseClient<any, any, any>, childAgeMonths: number | null) {
-    const hour = new Date().getHours();
+type AppClient = SupabaseClient<Database, "brincareducando">;
 
-    // 1. Determinar energia baseada no horário
-    let energyFilter: string[] = [];
-    let timeContext = "";
+export type ActivitySuggestion = RankedRecommendation;
 
-    if (hour >= 6 && hour < 12) {
-        energyFilter = ["alta", "media"];
-        timeContext = "Manhã de energia! ☀️";
-    } else if (hour >= 12 && hour < 18) {
-        energyFilter = ["media", "alta"];
-        timeContext = "Tarde criativa! 🎨";
-    } else {
-        energyFilter = ["baixa", "media"];
-        timeContext = "Hora de acalmar... 🌙";
-    }
+function jsonStringArray(value: Json | null): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string");
+}
 
-    // 2. Buscar atividades candidatas (Featured)
-    // Filtra por energia do horário e, se disponível, pela faixa etária da criança
-    let featuredQuery = supabase
-        .schema("brincareducando")
-        .from("atividades")
-        .select("id, slug, titulo, descricao, imagem_url, energia, preparo_minutos, categoria, beneficios")
-        .in("energia", energyFilter);
+export async function getDashboardSuggestions(
+  supabase: AppClient,
+  input: {
+    childId: string;
+    childAgeMonths: number;
+    interests: Json | null;
+    context: MomentContext | null;
+  },
+) {
+  const [activitiesResult, executionsResult, swapsResult] = await Promise.all([
+    supabase
+      .from("atividades")
+      .select(
+        "id, slug, titulo, descricao, imagem_url, energia, preparo_minutos, duracao_minutos, categoria, local, materiais, beneficios, habilidades, idade_min_meses, idade_max_meses",
+      )
+      .eq("publicado", true)
+      .not("slug", "is", null)
+      .order("codigo_externo", { ascending: true }),
+    supabase
+      .from("atividades_execucoes")
+      .select("atividade_id, avaliacao, data_conclusao, created_at")
+      .eq("crianca_id", input.childId)
+      .order("data_conclusao", { ascending: false })
+      .limit(50),
+    supabase
+      .from("recomendacoes_eventos")
+      .select("atividade_id, tipo, motivo, created_at")
+      .eq("crianca_id", input.childId)
+      .in("tipo", ["swap", "more_like_this", "less_like_this"])
+      .order("created_at", { ascending: false })
+      .limit(30),
+  ]);
 
-    if (childAgeMonths !== null) {
-        // idade_min_meses <= childAgeMonths <= idade_max_meses
-        featuredQuery = featuredQuery
-            .lte("idade_min_meses", childAgeMonths)
-            .gte("idade_max_meses", childAgeMonths);
-    }
+  if (activitiesResult.error) {
+    console.error("[Dashboard] Não foi possível carregar atividades publicadas:", activitiesResult.error);
+    return { status: "error" as const, result: null };
+  }
 
-    const { data: featuredData, error: featuredError } = await featuredQuery.limit(5);
+  const candidates = (activitiesResult.data ?? [])
+    .filter((activity): activity is typeof activity & { slug: string } => typeof activity.slug === "string")
+    .map<RecommendationCandidate>((activity) => ({
+      id: activity.id,
+      slug: activity.slug,
+      titulo: activity.titulo,
+      descricao: activity.descricao ?? "",
+      imagem_url: activity.imagem_url,
+      energia: activity.energia ?? "media",
+      preparo_minutos: activity.preparo_minutos ?? 0,
+      duracao_minutos: activity.duracao_minutos ?? activity.preparo_minutos ?? 15,
+      categoria: activity.categoria ?? "brincadeira",
+      local: activity.local ?? "interno",
+      materiais: activity.materiais ?? [],
+      beneficios: activity.beneficios ?? [],
+      habilidades: activity.habilidades ?? [],
+      idade_min_meses: activity.idade_min_meses ?? 0,
+      idade_max_meses: activity.idade_max_meses ?? 72,
+    }));
 
-    if (featuredError) {
-        console.error("[Dashboard] Error fetching featured:", featuredError);
-        return null;
-    }
+  const history: RecommendationHistory[] = [
+    ...(executionsResult.data ?? []).map((entry) => ({
+      activityId: entry.atividade_id,
+      rating: entry.avaliacao,
+      occurredAt: entry.data_conclusao ?? entry.created_at ?? new Date(0).toISOString(),
+    })),
+    ...(swapsResult.data ?? [])
+      .filter((entry): entry is typeof entry & { atividade_id: string } => Boolean(entry.atividade_id))
+      .map((entry) => ({
+        activityId: entry.atividade_id,
+        rating: entry.tipo === "more_like_this" ? 5 : entry.tipo === "less_like_this" ? 1 : null,
+        occurredAt: entry.created_at,
+        swapReason: entry.tipo === "swap" ? entry.motivo : null,
+      })),
+  ];
 
-    // 3. Buscar outras sugestões (Grid)
-    // Buscamos um pool maior (15 itens) para ter variedade e filtrar em memória
-    let othersQuery = supabase
-        .schema("brincareducando")
-        .from("atividades")
-        .select("id, slug, titulo, descricao, imagem_url, energia, preparo_minutos, categoria");
+  const result = rankRecommendations({
+    candidates,
+    childId: input.childId,
+    ageMonths: input.childAgeMonths,
+    interests: jsonStringArray(input.interests),
+    context: input.context,
+    history,
+  });
 
-    if (childAgeMonths !== null) {
-        othersQuery = othersQuery
-            .lte("idade_min_meses", childAgeMonths)
-            .gte("idade_max_meses", childAgeMonths);
-    }
-
-    const { data: othersData, error: othersError } = await othersQuery.limit(15);
-
-    if (othersError) {
-        console.error("[Dashboard] Error fetching others:", othersError);
-    }
-
-    // Se não encontrou nenhuma featured (muito raro se o banco estiver populado),
-    // tentamos pegar do pool geral como fallback
-    let candidates = featuredData || [];
-    if (candidates.length === 0 && othersData && othersData.length > 0) {
-        // Adapter para transformar 'others' em 'featured' (faltam beneficios, mas ok)
-        candidates = othersData as any[];
-        timeContext = "Sugestão especial ✨"; // Contexto genérico
-    }
-
-    if (candidates.length === 0) {
-        return null;
-    }
-
-    // Escolhe uma featured aleatória
-    const randomIndex = Math.floor(Math.random() * candidates.length);
-    const featured = candidates[randomIndex];
-
-    // Prepara 'others'
-    let finalOthers = othersData || [];
-
-    // Remove a featured da lista de outros
-    finalOthers = finalOthers.filter((a) => a.id !== featured.id);
-
-    // Embaralha e pega 4
-    finalOthers = finalOthers.sort(() => 0.5 - Math.random()).slice(0, 4);
-
-    // Garante que temos um objeto de retorno válido
-    return {
-        featured: {
-            ...featured,
-            context: timeContext,
-        },
-        others: finalOthers,
-    };
+  return { status: result ? (history.length === 0 ? "first_visit" as const : "ready" as const) : "no_match" as const, result };
 }

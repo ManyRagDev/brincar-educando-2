@@ -16,7 +16,7 @@ interface ActivitySearchProps {
     childAgeMonths?: number | null;
 }
 
-export function ActivitySearch({ childAgeLabel = null, childAgeMonths = null }: ActivitySearchProps) {
+export function ActivitySearch({ childAgeLabel = null }: ActivitySearchProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();

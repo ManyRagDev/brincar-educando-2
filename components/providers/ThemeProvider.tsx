@@ -53,14 +53,15 @@ export function ThemeProvider({
   }, []);
 
   useEffect(() => {
-    // On mount: reconcile server-rendered theme with localStorage
-    const stored = localStorage.getItem(THEME_STORAGE) as Theme | null;
-    const resolved = stored || defaultTheme;
-    if (resolved !== theme) {
+    const frame = requestAnimationFrame(() => {
+      const stored = localStorage.getItem(THEME_STORAGE) as Theme | null;
+      const resolved = stored || defaultTheme;
       setThemeState(resolved);
-    }
-    applyTheme(resolved);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      applyTheme(resolved);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [applyTheme, defaultTheme]);
 
   const setTheme = useCallback(
     (newTheme: Theme) => {

@@ -67,7 +67,7 @@ export function ChildAgeCard({
         <div className="flex items-center gap-1 mb-0.5">
           <Heart className="w-2.5 h-2.5 text-[var(--color-primary)] fill-[var(--color-primary)]/40" />
           <span className="text-[9px] font-semibold text-[var(--color-muted-foreground)] uppercase tracking-wider">
-            Crescendo
+            Jornada de
           </span>
         </div>
         <span className="text-[13px] font-bold leading-tight whitespace-nowrap">

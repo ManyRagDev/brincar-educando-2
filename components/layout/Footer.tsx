@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, Heart, Mail, Instagram } from "lucide-react";
+import { Heart, Mail, Instagram } from "lucide-react";
 
 const footerLinks = {
   conteudo: [

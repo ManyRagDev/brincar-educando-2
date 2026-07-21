@@ -16,7 +16,7 @@ export default async function HomePage() {
     {
       cookies: {
         getAll() { return cookieStore.getAll(); },
-        setAll(cookiesToSet) {
+        setAll() {
           /* No-op for read-only check on server component */
         },
       },

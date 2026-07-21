@@ -4,6 +4,7 @@
 - [/] [Core Implementation (Auth & DB)](.conductor/tracks/core-implementation/plan.md)
 - [ ] [Google OAuth Integration](.conductor/tracks/google-auth/plan.md)
 - [ ] [Journey Expansion (Jornada)](.conductor/tracks/journey-expansion/plan.md)
+- [/] [Sistema de Jornada Familiar](.conductor/tracks/parenting-journey-system/plan.md)
 - [ ] Auditoria de Rotas e Componentes
 - [ ] Refinamento de SEO
 - [ ] Integração de Novas Histórias

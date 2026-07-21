@@ -1,44 +1,47 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Dumbbell, BookMarked, BookOpen, User, ArrowRight, Bell, Plus, Calendar } from "lucide-react";
+import { Dumbbell, BookMarked, BookOpen, User, ArrowRight, Plus, Calendar } from "lucide-react";
 import { getAllBlogPosts } from "@/lib/mdx";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import { JourneySuggestions } from "@/components/journey/JourneySuggestions";
 import { getDashboardSuggestions } from "@/lib/journey/suggestions";
-import { ChildAgeCard } from "@/components/dashboard/ChildAgeCard";
 import { differenceInYears, differenceInMonths, parseISO, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import type { Metadata } from "next";
+import { requireAppUser } from "@/lib/auth/require-app-user";
+import { getActiveChild } from "@/lib/children/active-child";
+import { ChildSelectionPrompt } from "@/components/dashboard/ChildSelectionPrompt";
+import { HeaderChildSwitcher } from "@/components/dashboard/ChildSwitcher";
+import { MomentCheckIn } from "@/components/journey/MomentCheckIn";
+import { isMomentContext } from "@/lib/journey/recommendation-engine";
 
 export const metadata: Metadata = {
-  title: "Início | Brincar Educando",
+  title: "Hoje | Brincar Educando",
   robots: { index: false },
 };
 
-import { createClient } from "@/lib/supabase/server";
-
-export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const supabase = await createClient();
-
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth");
-
-  const firstName = user.user_metadata?.full_name?.split(" ")[0] ?? "Pai/Mãe";
-
-  // 1. Buscar Perfil da Criança para Contexto
-  // TODO: Migrate to brincareducando.perfis_criancas when onboarding is updated
-  const { data: criancas } = await supabase
-    .schema("brincareducando")
-    .from("criancas")
-    .select("id, nome, data_nascimento, avatar_id, cor_favorita")
-    .order("created_at", { ascending: false })
-    .limit(1);
-
-  const child = criancas?.[0];
-  let childContext = "Crie o perfil da sua criança para sugestões personalizadas.";
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ momento?: string | string[] }>;
+}) {
+  const { supabase, user } = await requireAppUser();
+  const params = await searchParams;
+  const momentValue = Array.isArray(params.momento) ? params.momento[0] : params.momento;
+  const momentContext = isMomentContext(momentValue) ? momentValue : null;
+  const { activeChild: child, needsSelection } = await getActiveChild(supabase, user.id);
+  const firstName =
+    user.user_metadata?.nome?.split(" ")[0] ??
+    user.user_metadata?.full_name?.split(" ")[0] ??
+    "família";
+  const hour = Number(
+    new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+      hour: "2-digit",
+      hourCycle: "h23",
+    }).format(new Date()),
+  );
+  const greeting = hour < 12 ? "Bom dia" : hour < 18 ? "Boa tarde" : "Boa noite";
+  const greetingEmoji = hour < 12 ? "☀️" : hour < 18 ? "🌤️" : "🌙";
   let childAgeMonths: number | null = null;
   let childAgeString = "";
 
@@ -52,11 +55,17 @@ export default async function DashboardPage() {
     if (years > 0 && months > 0) childAgeString += " e ";
     if (months > 0 || years === 0) childAgeString += `${months} ${months === 1 ? "mês" : "meses"}`;
 
-    childContext = `${child.nome} está com ${childAgeString}`;
   }
 
   // 2. Buscar Sugestões (Server Side) — filtradas pela faixa etária da criança
-  const suggestions = await getDashboardSuggestions(supabase, childAgeMonths);
+  const suggestions = child && childAgeMonths !== null
+    ? await getDashboardSuggestions(supabase, {
+        childId: child.id,
+        childAgeMonths,
+        interests: child.interesses,
+        context: momentContext,
+      })
+    : null;
 
   // Latest 3 blog posts for suggested reading
   const posts = getAllBlogPosts().slice(0, 3);
@@ -65,7 +74,7 @@ export default async function DashboardPage() {
     { href: "/atividades", label: "Atividades", icon: Dumbbell, color: "bg-[var(--color-primary)]", desc: "Explorar atividades" },
     { href: "/diario", label: "Diário", icon: BookMarked, color: "bg-[var(--color-secondary)]", desc: "Registrar memória" },
     { href: "/historias", label: "Histórias", icon: BookOpen, color: "bg-emerald-500", desc: "Ler uma história" },
-    { href: "/perfil", label: "Perfil", icon: User, color: "bg-amber-500", desc: "Ver desenvolvimento" },
+    { href: "/perfil", label: "Perfil", icon: User, color: "bg-amber-500", desc: "Conhecer a jornada" },
   ];
 
   const todayDate = format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR });
@@ -74,52 +83,89 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen">
       {/* Header Personalizado */}
-      <header className="px-6 pt-8 pb-6 flex items-start justify-between">
+      <header className="px-6 pt-8 pb-6 flex items-start justify-between gap-4">
         <div className="space-y-2">
           <h1 className="text-xl font-bold text-[var(--color-foreground)] flex items-center gap-2">
-            🌤️ Boa tarde, {firstName}!
+            {greetingEmoji} {greeting}, {firstName}!
           </h1>
           <div className="text-sm text-[var(--color-muted-foreground)] space-y-0.5">
             <p className="capitalize text-gray-500 flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
               {todayDateCapitalized}
             </p>
-            {child ? (
-              <ChildAgeCard
-                nome={child.nome}
-                idadeTexto={childAgeString}
-                avatarId={child.avatar_id}
-                corFavorita={child.cor_favorita}
-              />
-            ) : (
-              <p className="text-[var(--color-primary)] font-medium">
-                {childContext}
-              </p>
+            {child ? <HeaderChildSwitcher ageText={childAgeString} /> : (
+              <p className="text-[var(--color-primary)] font-medium">Crie o perfil da sua criança para sugestões personalizadas.</p>
             )}
           </div>
         </div>
-        <button className="p-2.5 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] shadow-sm relative">
-          <Bell className="h-5 w-5 text-[var(--color-foreground)]" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[var(--color-primary)] rounded-full" />
-        </button>
+        <Link href="/perfil" className="min-h-11 rounded-xl px-3 py-2 text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary)]/5">
+          Perfil
+        </Link>
       </header>
 
       <div className="px-6 pb-8 space-y-10">
 
-        {/* Journey Suggestions (Hero + Grid) */}
-        {suggestions ? (
+        {needsSelection && <ChildSelectionPrompt />}
+
+        {child && !needsSelection && <MomentCheckIn selected={momentContext} />}
+
+        {suggestions?.status === "first_visit" && (
+          <aside className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5" aria-label="Como funciona">
+            <p className="font-black text-emerald-950">Um começo simples em três passos</p>
+            <ol className="mt-2 grid gap-2 text-sm text-emerald-900 sm:grid-cols-3">
+              <li><strong>1.</strong> Veja por que o convite combina.</li>
+              <li><strong>2.</strong> Adapte ao ritmo de vocês.</li>
+              <li><strong>3.</strong> Depois, registre só o que quiser lembrar.</li>
+            </ol>
+          </aside>
+        )}
+
+        {/* Journey Suggestions (Hero + alternatives) */}
+        {!needsSelection && child && suggestions?.result ? (
           <JourneySuggestions
-            featured={suggestions.featured}
-            others={suggestions.others}
+            recommendations={suggestions.result}
+            childId={child.id}
+            context={momentContext}
           />
-        ) : (
+        ) : !needsSelection ? (
           <div className="p-6 rounded-2xl bg-gray-50 border border-dashed border-gray-200 text-center text-gray-400">
-            <p className="text-2xl mb-2">🎯</p>
-            <p className="font-bold text-gray-600 text-sm">Nenhuma atividade encontrada</p>
-            <p className="text-xs mt-1">
-              <a href="/atividades" className="underline hover:text-gray-700">Explorar atividades</a>
+            <p className="text-2xl mb-2" aria-hidden="true">🧸</p>
+            <p className="font-bold text-gray-600 text-sm">
+              {suggestions?.status === "error"
+                ? "As sugestões não carregaram desta vez"
+                : child
+                  ? "Ainda não há um convite seguro para esta faixa"
+                  : "Crie o primeiro perfil infantil"}
+            </p>
+            <p className="mx-auto mt-1 max-w-md text-xs">
+              {suggestions?.status === "error" && "Você ainda pode explorar atividades publicadas ou guardar uma memória. "}
+              <Link href={child ? "/atividades" : "/onboarding"} className="underline hover:text-gray-700">
+                {child ? "Ver opções disponíveis" : "Começar o perfil"}
+              </Link>
             </p>
           </div>
+        ) : null}
+
+        {child && !needsSelection && (
+          <section className="rounded-3xl bg-amber-50 p-5 md:p-6" aria-labelledby="phase-tip-title">
+            <p className="text-xs font-black uppercase tracking-wide text-amber-800">Dica da fase</p>
+            <h2 id="phase-tip-title" className="mt-1 text-lg font-black text-amber-950">
+              {childAgeMonths !== null && childAgeMonths < 24
+                ? "Siga o olhar, o gesto ou o som e responda: essa troca já é uma brincadeira inteira."
+                : "Nomeie o que vocês veem e acompanhe a iniciativa; não é preciso transformar tudo em pergunta."}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-amber-900">
+              Interações responsivas e brincadeiras compartilhadas apoiam vínculo e aprendizagem inicial, sem exigir desempenho.
+            </p>
+            <a
+              href="https://developingchild.harvard.edu/science/key-concepts/serve-and-return/"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex min-h-11 items-center text-sm font-black text-amber-950 underline underline-offset-4"
+            >
+              Saiba por quê — Center on the Developing Child
+            </a>
+          </section>
         )}
 
         {/* Quick links 2x2 grid */}

@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Camera, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createDiaryEntry } from "@/app/(dashboard)/actions";
 
 const moods = [
   { emoji: "😊", label: "Feliz" },
@@ -21,40 +21,50 @@ const moods = [
   { emoji: "😴", label: "Cansativo" },
 ];
 
-export function NewEntryForm({ childName, criancaId }: { childName?: string | null; criancaId?: string | null }) {
+const typeCopy = {
+  livre: { title: "Escrever livremente", placeholder: "O que vocês querem lembrar?" },
+  fala: { title: "Uma frase que ela disse", placeholder: "Escreva a frase e, se quiser, conte o contexto…" },
+  descoberta: { title: "Uma descoberta", placeholder: "O que despertou curiosidade ou apareceu de um jeito novo?" },
+  desafio: { title: "Um desafio de hoje", placeholder: "O que foi difícil? O que ajudou — ou o que vocês querem tentar depois?" },
+  riso: { title: "Algo que fez rir", placeholder: "Guarde a cena engraçada do jeito que aconteceu…" },
+  foto: { title: "Uma foto", placeholder: "Conte em uma linha o que esta foto ajuda a lembrar…" },
+} as const;
+
+type RegistrationType = keyof typeof typeCopy;
+
+export function NewEntryForm({ childName, criancaId, registrationType }: { childName?: string | null; criancaId?: string | null; registrationType: RegistrationType }) {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [tags, setTags] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<File | null>(null);
 
   async function handleSave() {
     if (!content.trim()) return;
     setIsSaving(true);
-
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setIsSaving(false); return; }
+    setSaveError(null);
 
     const tagsArray = tags.split(",").map((t) => t.trim()).filter(Boolean);
-
-    const { error } = await supabase.from("diario_entradas").insert({
-      usuario_id: user.id,
-      crianca_id: criancaId ?? null,
-      titulo: title.trim() || null,
-      conteudo: content.trim(),
-      humor: selectedMood ?? null,
+    const result = await createDiaryEntry({
+      childId: criancaId,
+      title,
+      content,
+      mood: selectedMood,
       tags: tagsArray,
-    });
+      registrationType,
+    }, photo ?? undefined);
 
-    if (error) {
-      console.error(error);
+    if (!result.ok) {
+      setSaveError(result.message);
       setIsSaving(false);
       return;
     }
 
     router.push("/diario");
+    router.refresh();
   }
 
   return (
@@ -69,7 +79,7 @@ export function NewEntryForm({ childName, criancaId }: { childName?: string | nu
           Voltar
         </Link>
         <h1 className="font-serif text-xl font-black text-[var(--color-foreground)]">
-          Nova entrada
+          {typeCopy[registrationType].title}
         </h1>
         <Button
           onClick={handleSave}
@@ -125,10 +135,23 @@ export function NewEntryForm({ childName, criancaId }: { childName?: string | nu
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Escreva sobre o momento especial, aprendizado ou desafio do dia..."
+          placeholder={typeCopy[registrationType].placeholder}
           rows={8}
           className="bg-[var(--color-card)] border-[var(--color-border)] resize-none leading-relaxed"
         />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="photo" className="flex items-center gap-2"><Camera className="size-4" />Foto privada (opcional)</Label>
+        <Input
+          id="photo"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={(event) => setPhoto(event.target.files?.[0] ?? null)}
+        />
+        <p className="text-xs text-[var(--color-muted-foreground)]">
+          Até 5 MB. A foto fica em armazenamento privado, com acesso temporário apenas na conta da família. Ela não é usada para treinar modelos.
+        </p>
       </div>
 
       {/* Tags */}
@@ -160,6 +183,12 @@ export function NewEntryForm({ childName, criancaId }: { childName?: string | nu
           ))}
         </div>
       </div>
+
+      {saveError && (
+        <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm font-semibold text-red-700">
+          {saveError}
+        </p>
+      )}
 
       {/* Date info */}
       <p className="text-xs text-[var(--color-muted-foreground)] text-center">
