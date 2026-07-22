@@ -29,19 +29,16 @@ interface PublicNavProps {
 export function PublicNav({ transparent = false, user }: PublicNavProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<User | null>(user ?? null);
+  const [authUser, setAuthUser] = useState<User | null | undefined>(undefined);
+  const currentUser = authUser === undefined ? user ?? null : authUser;
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
-
-  useEffect(() => {
-    setCurrentUser(user ?? null);
-  }, [user]);
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setCurrentUser(session?.user ?? null);
+      setAuthUser(session?.user ?? null);
       router.refresh();
     });
 
@@ -50,7 +47,7 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    setCurrentUser(null);
+    setAuthUser(null);
     router.refresh();
   };
 
