@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "validate:content": "node scripts/validate-activity-drafts.mjs",
+    "validate:utf8": "node scripts/check-utf8.mjs",
     "sync:wave1": "node scripts/sync-wave1-drafts.mjs",
     "publish:wave1": "node scripts/publish-wave1.mjs",
     "db:types": "supabase gen types typescript --local --schema brincareducando > lib/supabase/database.types.ts"
