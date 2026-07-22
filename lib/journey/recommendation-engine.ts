@@ -1,12 +1,12 @@
 export const RECOMMENDATION_RULE_VERSION = "v1";
 
 export const MOMENT_OPTIONS = [
-  { value: "quick", label: "Temos 5 minutos", hint: "Pouco tempo e preparo" },
-  { value: "move", label: "Quero gastar energia", hint: "Movimento e corpo" },
-  { value: "calm", label: "Precisamos desacelerar", hint: "Um convite mais tranquilo" },
-  { value: "no_materials", label: "Estamos sem materiais", hint: "Usar o que já existe" },
-  { value: "outside", label: "Podemos ir lá fora", hint: "Ambiente externo" },
-  { value: "tired_adult", label: "O adulto está cansado", hint: "Baixo esforço para conduzir" },
+  { value: "quick", label: "Só temos 5 minutos", hint: "Rápido e simples" },
+  { value: "move", label: "Gastar energia", hint: "Movimento e corpo" },
+  { value: "calm", label: "Desacelerar", hint: "Algo mais tranquilo" },
+  { value: "no_materials", label: "Sem materiais", hint: "Usar o que já temos" },
+  { value: "outside", label: "Ir lá fora", hint: "Explorar outro ambiente" },
+  { value: "tired_adult", label: "Adulto cansado", hint: "Fácil de conduzir" },
 ] as const;
 
 export type MomentContext = (typeof MOMENT_OPTIONS)[number]["value"];

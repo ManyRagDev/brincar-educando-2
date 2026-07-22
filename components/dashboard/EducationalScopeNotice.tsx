@@ -1,29 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  EDUCATIONAL_SCOPE_NOTICE_COOKIE,
+  type EducationalScopeNoticePreference,
+} from "@/lib/ui-preferences";
 
 const AUTO_HIDE_DELAY_MS = 5_000;
+const PREFERENCE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
 
-export function EducationalScopeNotice() {
-  const [expanded, setExpanded] = useState(true);
-  const autoHideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+interface EducationalScopeNoticeProps {
+  defaultExpanded: boolean;
+}
+
+function persistPreference(preference: EducationalScopeNoticePreference) {
+  const secure = window.location.protocol === "https:" ? ";secure" : "";
+  document.cookie = `${EDUCATIONAL_SCOPE_NOTICE_COOKIE}=${preference};path=/;max-age=${PREFERENCE_MAX_AGE_SECONDS};samesite=lax${secure}`;
+}
+
+export function EducationalScopeNotice({ defaultExpanded }: EducationalScopeNoticeProps) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
 
   useEffect(() => {
-    autoHideTimer.current = setTimeout(() => setExpanded(false), AUTO_HIDE_DELAY_MS);
-    return () => {
-      if (autoHideTimer.current) clearTimeout(autoHideTimer.current);
-    };
-  }, []);
+    if (!expanded) return;
+
+    const autoHideTimer = setTimeout(() => {
+      setExpanded(false);
+      persistPreference("collapsed");
+    }, AUTO_HIDE_DELAY_MS);
+
+    return () => clearTimeout(autoHideTimer);
+  }, [expanded]);
 
   function toggleNotice() {
-    if (autoHideTimer.current) {
-      clearTimeout(autoHideTimer.current);
-      autoHideTimer.current = null;
-    }
-    setExpanded((current) => !current);
+    setExpanded((current) => {
+      const next = !current;
+      persistPreference(next ? "expanded" : "collapsed");
+      return next;
+    });
   }
 
   if (!expanded) {

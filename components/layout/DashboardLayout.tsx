@@ -7,6 +7,7 @@ import type { ChildSummary } from "@/lib/children/active-child";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
+  educationalScopeNoticeExpanded: boolean;
   childState: {
     activeChild: ChildSummary | null;
     children: ChildSummary[];
@@ -14,7 +15,11 @@ interface DashboardLayoutProps {
   };
 }
 
-export function DashboardLayout({ children, childState }: DashboardLayoutProps) {
+export function DashboardLayout({
+  children,
+  childState,
+  educationalScopeNoticeExpanded,
+}: DashboardLayoutProps) {
   return (
     <ActiveChildProvider value={childState}>
       <div className="min-h-screen bg-[var(--color-background)]">
@@ -22,7 +27,7 @@ export function DashboardLayout({ children, childState }: DashboardLayoutProps) 
         <DashboardSidebar />
 
         <main className="pb-20 lg:pl-64 lg:pb-0">
-          <EducationalScopeNotice />
+          <EducationalScopeNotice defaultExpanded={educationalScopeNoticeExpanded} />
           {children}
         </main>
 
