@@ -224,6 +224,18 @@ body {
     color 0.3s ease;
 }
 
+/* Um único sinal de foco, visível tanto no teclado quanto no toque assistido. */
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+
+/* Superfícies de contexto não devem competir com o convite principal. */
+.quiet-surface {
+  background: color-mix(in srgb, var(--card) 92%, var(--primary) 8%);
+  border-color: color-mix(in srgb, var(--border) 75%, var(--primary) 25%);
+}
+
 /* =============================================
    REUSABLE COMPONENT CLASSES
    ============================================= */

@@ -87,6 +87,7 @@ Responsáveis e cuidadores de crianças na primeira infância que buscam ideias 
 | `/onboarding` | Início da configuração da família e da criança. |
 | `/perfil` | Perfil e dados da criança. |
 | `/configuracoes` | Preferências e configurações da conta. |
+| `/mais` | Hub autenticado de orientações, BrinContos, perfil e preferências. |
 
 A criança ativa é uma noção central do aplicativo: a seleção é resolvida em `lib/children/active-child.ts` e usada para isolar o contexto de atividades, Diário, histórias e Jornada.
 
@@ -165,7 +166,7 @@ O lote inicial previsto é: *A semente que escutava*, *O guarda-chuva de nuvem*,
 
 O App Router organiza as áreas por grupos de rota: `(institucional)`, `(auth)`, `(blog)`, `(loja)` e `(dashboard)`. Componentes reutilizáveis ficam em `components/`; regras de negócio e integrações ficam em `lib/`; testes unitários ficam em `tests/`; migrações e referências de dados ficam em `supabase/`.
 
-`proxy.ts` atualiza a sessão Supabase nas requisições. As áreas protegidas estão centralizadas em `lib/auth/protected-routes.ts`: dashboard, atividades, Diário, histórias, crescimento, Jornada, orientações, perfil, configurações, onboarding e administração. Além da sessão, `requireAppUser` exige que a RPC `current_user_has_manylabs_app_access` confirme o acesso da conta; caso contrário, a pessoa é direcionada a `/auth/access-denied`.
+`proxy.ts` atualiza a sessão Supabase nas requisições. As áreas protegidas estão centralizadas em `lib/auth/protected-routes.ts`: dashboard, atividades, Diário, histórias, crescimento, Jornada, orientações, Mais, perfil, configurações, onboarding e administração. Além da sessão, `requireAppUser` exige que a RPC `current_user_has_manylabs_app_access` confirme o acesso da conta; caso contrário, a pessoa é direcionada a `/auth/access-denied`.
 
 ### PWA, imagens e segurança de navegador
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpenCheck, HeartHandshake, ShieldCheck, Stethoscope } from "lucide-react";
+import { QuietBackdrop } from "@/components/experience/QuietBackdrop";
 
 export const metadata: Metadata = {
   title: "Orientações para a família | Brincar Educando",
@@ -25,16 +26,15 @@ const officialResources = [
 
 export default function OrientacoesPage() {
   return (
-    <div className="min-h-screen px-6 pb-14 pt-8">
+    <QuietBackdrop className="min-h-screen px-6 pb-14 pt-8">
       <main className="mx-auto max-w-4xl">
         <header className="mb-8 max-w-3xl">
           <p className="text-xs font-black uppercase tracking-widest text-[var(--color-primary)]">
-            Orientação responsável
+            Entender esta fase
           </p>
-          <h1 className="mt-2 font-serif text-4xl font-black">Quando uma dúvida merece apoio</h1>
+          <h1 className="mt-2 font-serif text-4xl font-black">Orientação para a família</h1>
           <p className="mt-4 text-lg leading-relaxed text-[var(--color-muted-foreground)]">
-            Brincar junto ajuda a conhecer a criança e cultivar vínculos. Os registros deste aplicativo são memórias
-            da família — não testes, notas ou diagnósticos.
+            Brincar junto ajuda a conhecer a criança e cultivar vínculos. Aqui você encontra referências para compreender a fase e buscar apoio — não testes, notas ou diagnósticos.
           </p>
         </header>
 
@@ -121,6 +121,6 @@ export default function OrientacoesPage() {
           Voltar para Hoje
         </Link>
       </main>
-    </div>
+    </QuietBackdrop>
   );
 }

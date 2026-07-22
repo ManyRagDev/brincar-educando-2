@@ -6,7 +6,7 @@ import { UnifiedDiaryTimeline, type UnifiedDiaryItem } from "@/components/diario
 import { requireAppUser } from "@/lib/auth/require-app-user";
 import { getActiveChild } from "@/lib/children/active-child";
 
-export const metadata: Metadata = { title: "Diário | Brincar Educando", robots: { index: false } };
+export const metadata: Metadata = { title: "Memórias | Brincar Educando", robots: { index: false } };
 
 const quickEntries = [
   { type: "fala", label: "Uma frase que ela disse", icon: MessageCircle },
@@ -96,20 +96,20 @@ export default async function DiaryPage() {
       <header className="mx-auto max-w-3xl">
         <p className="text-xs font-black uppercase tracking-wide text-[var(--color-primary)]">Memórias de {activeChild.nome}</p>
         <div className="mt-1 flex flex-wrap items-end justify-between gap-3">
-          <div><h1 className="font-serif text-4xl font-black">Diário</h1><p className="mt-2 text-sm text-[var(--color-muted-foreground)]">Falas, descobertas, histórias e brincadeiras numa só linha do tempo.</p></div>
+          <div><h1 className="font-serif text-4xl font-black">Memórias</h1><p className="mt-2 max-w-xl text-sm leading-6 text-[var(--color-muted-foreground)]">Aqui ficam as falas, descobertas, histórias e brincadeiras que vocês escolheram guardar. Registrar é sempre opcional.</p></div>
           <a href="/api/diario/export" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[var(--color-border)] px-4 text-sm font-bold"><Download className="size-4" />Exportar</a>
         </div>
       </header>
 
       <section className="mx-auto mt-7 max-w-3xl" aria-labelledby="quick-entry-title">
-        <div className="flex items-center justify-between"><h2 id="quick-entry-title" className="text-lg font-black">Guardar um momento</h2><Link href="/diario/nova" className="text-sm font-bold text-[var(--color-primary)]"><Plus className="mr-1 inline size-4" />Nova entrada</Link></div>
+        <div className="flex items-center justify-between"><h2 id="quick-entry-title" className="text-lg font-black">Guardar um momento</h2><Link href="/diario/nova" className="text-sm font-bold text-[var(--color-primary)]"><Plus className="mr-1 inline size-4" />Nova memória</Link></div>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {quickEntries.map(({ type, label, icon: Icon }) => <Link key={type} href={`/diario/nova?tipo=${type}`} className="flex min-h-20 items-center gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-3 text-sm font-bold hover:border-[var(--color-primary)]/50"><Icon className="size-5 shrink-0 text-[var(--color-primary)]" />{label}</Link>)}
         </div>
       </section>
 
       <section className="mx-auto mt-8 max-w-3xl" aria-labelledby="timeline-title">
-        <h2 id="timeline-title" className="text-lg font-black">Linha do tempo</h2>
+        <h2 id="timeline-title" className="text-lg font-black">Linha do tempo de vocês</h2>
         <p className="mt-1 text-xs text-[var(--color-muted-foreground)]">Fotos usam links privados que expiram em 10 minutos. Excluir uma memória também exclui sua mídia.</p>
         <UnifiedDiaryTimeline items={items} />
       </section>

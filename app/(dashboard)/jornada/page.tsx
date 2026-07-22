@@ -108,13 +108,13 @@ export default async function JornadaPage() {
         <p className="text-xs font-black uppercase tracking-widest text-[var(--color-primary)]">
           A história de {activeChild.nome}
         </p>
-        <h1 className="mt-1 font-serif text-4xl font-black">Jornada</h1>
-        <p className="mt-3 max-w-2xl text-[var(--color-muted-foreground)]">
-          Um retrato das experiências que vocês registraram — não uma nota ou avaliação do desenvolvimento.
-        </p>
+          <h1 className="mt-1 font-serif text-4xl font-black">Nossa Jornada</h1>
+          <p className="mt-3 max-w-2xl text-[var(--color-muted-foreground)]">
+          Uma síntese automática das experiências que vocês registraram. É uma forma de relembrar o repertório vivido — não uma nota, checklist ou avaliação do desenvolvimento.
+          </p>
         <div className="mt-4 flex flex-wrap gap-3 text-sm font-bold">
           <Link href="/diario" className="inline-flex min-h-11 items-center gap-2 text-[var(--color-primary)]">
-            <BookHeart className="size-4" aria-hidden="true" /> Ver linha do tempo
+            <BookHeart className="size-4" aria-hidden="true" /> Ver Memórias
           </Link>
           <a href="/api/diario/export" className="inline-flex min-h-11 items-center gap-2 text-[var(--color-muted-foreground)]">
             <Download className="size-4" aria-hidden="true" /> Exportar registros
@@ -134,7 +134,7 @@ export default async function JornadaPage() {
             <>
               <p className="text-3xl font-black text-[var(--color-primary)]">{executions.length}</p>
               <p className="text-sm text-[var(--color-muted-foreground)]">
-                brincadeiras registradas pela família
+                brincadeiras registradas pela família. A quantidade não é uma meta.
               </p>
               <div className="mt-5 space-y-2">
                 {categories.map(([category, count]) => (
@@ -169,7 +169,7 @@ export default async function JornadaPage() {
           ) : (
             <>
               <p className="text-sm leading-relaxed text-[var(--color-muted-foreground)]">
-                Ainda há poucos registros consistentes para apontar uma preferência. Continue oferecendo variedade e observe sem pressionar.
+                Ainda há poucos registros consistentes para apontar uma preferência. Continue oferecendo variedade e observe sem pressionar; não é preciso preencher nada.
               </p>
               <p className="mt-3 text-xs text-[var(--color-muted-foreground)]">
                 Uma pista só aparece após ao menos 3 experiências positivas recentes, quando um tipo se repete em metade delas.

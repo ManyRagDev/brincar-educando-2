@@ -1,14 +1,73 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Clock3, MessageCircle } from "lucide-react";
+import { ArrowLeft, BookHeart, BookOpen, Clock3, Feather, MessageCircle, Sparkles } from "lucide-react";
 import { differenceInMonths, parseISO } from "date-fns";
 import { ChildSelectionPrompt } from "@/components/dashboard/ChildSelectionPrompt";
 import { requireAppUser } from "@/lib/auth/require-app-user";
 import { getActiveChild } from "@/lib/children/active-child";
 
-export const metadata: Metadata = { title: "Brincontos | Brincar Educando", robots: { index: false } };
+export const metadata: Metadata = { title: "BrinContos — Em breve | Brincar Educando", robots: { index: false } };
+
+const BRINCONTOS_LIBRARY_ENABLED = false;
+
+function BrinContosComingSoon() {
+  return (
+    <div className="relative min-h-[calc(100vh-7rem)] overflow-hidden px-5 pb-24 pt-10 md:px-8 md:pt-16">
+      <div
+        className="pointer-events-none absolute -left-16 top-20 size-48 rounded-full bg-[var(--color-primary)]/10 blur-2xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -right-20 bottom-24 size-64 rounded-full bg-[var(--color-secondary)]/10 blur-3xl"
+        aria-hidden="true"
+      />
+
+      <main className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
+        <div className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10 px-4 py-2 text-xs font-black uppercase tracking-widest text-[var(--color-primary)]">
+          <Sparkles className="size-4" aria-hidden="true" />
+          BrinContos · Em preparação
+        </div>
+
+        <div className="relative mt-9 flex size-24 items-center justify-center rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-primary)] shadow-sm md:size-28">
+          <BookHeart className="size-11 md:size-12" strokeWidth={1.8} aria-hidden="true" />
+          <span className="absolute -right-2 -top-2 flex size-9 items-center justify-center rounded-full bg-[var(--color-secondary)] text-white shadow-sm">
+            <Feather className="size-4" aria-hidden="true" />
+          </span>
+        </div>
+
+        <p className="mt-8 text-xs font-black uppercase tracking-[0.2em] text-[var(--color-secondary)]">
+          Um cantinho que merece tempo e carinho
+        </p>
+        <h1 className="mt-3 max-w-2xl font-serif text-4xl font-black leading-tight text-[var(--color-foreground)] sm:text-5xl">
+          Histórias incríveis estão sendo preparadas para vocês.
+        </h1>
+        <p className="mt-6 max-w-xl text-base leading-7 text-[var(--color-muted-foreground)] md:text-lg md:leading-8">
+          Estamos criando cada BrinConto com imaginação e cuidado, para que a leitura vire encontro,
+          conversa e brincadeira entre crianças e quem cuida delas.
+        </p>
+
+        <div className="mt-8 w-full max-w-xl rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)]/90 p-5 shadow-sm md:p-6">
+          <p className="text-sm leading-6 text-[var(--color-muted-foreground)]">
+            Em breve, este espaço vai se encher de personagens, descobertas e pequenos momentos para
+            viver juntos. Por enquanto, seguimos escrevendo com calma — como toda boa história merece.
+          </p>
+        </div>
+
+        <Link
+          href="/dashboard"
+          className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-2xl bg-[var(--color-primary)] px-5 py-3 text-sm font-black text-white shadow-sm transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 active:scale-[0.98]"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          Voltar para o início
+        </Link>
+      </main>
+    </div>
+  );
+}
 
 export default async function HistoriasPage() {
+  if (!BRINCONTOS_LIBRARY_ENABLED) return <BrinContosComingSoon />;
+
   const { supabase, user } = await requireAppUser();
   const { activeChild, needsSelection } = await getActiveChild(supabase, user.id);
   if (needsSelection) return <div className="min-h-screen px-6 pt-8"><ChildSelectionPrompt /></div>;

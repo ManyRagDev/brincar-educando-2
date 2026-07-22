@@ -33,8 +33,8 @@ export default async function AtividadesPage({
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="px-6 pt-8 pb-6">
-        <div className="flex items-center gap-3 mb-6">
+      <header className="mx-auto max-w-6xl px-6 pb-6 pt-8">
+        <div className="mb-6 flex items-center gap-3">
           <Link
             href="/dashboard"
             className="p-2 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
@@ -42,12 +42,13 @@ export default async function AtividadesPage({
             <ArrowLeft className="h-4 w-4" />
           </Link>
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)]">
-              Explorar
-            </p>
-            <h1 className="text-2xl font-black text-[var(--color-foreground)]">Atividades</h1>
+            <p className="text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)]">Brincar</p>
+            <h1 className="text-2xl font-black text-[var(--color-foreground)]">Encontre uma brincadeira</h1>
           </div>
         </div>
+        <p className="mb-6 max-w-2xl text-sm leading-6 text-[var(--color-muted-foreground)]">
+          Explore convites para diferentes ritmos, espaços e níveis de preparo. Abrir uma ideia não inicia nada: vocês escolhem, adaptam e brincam quando fizer sentido.
+        </p>
 
         {/* Busca e filtros — com dados da criança para filtro de idade */}
         <ActivitySearch

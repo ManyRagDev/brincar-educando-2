@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Dumbbell, BookMarked, BookOpen, User, ArrowRight, Plus, Calendar } from "lucide-react";
+import { ArrowRight, BookMarked, Calendar, Dumbbell, Plus, Sprout } from "lucide-react";
 import { getAllBlogPosts } from "@/lib/mdx";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import { JourneySuggestions } from "@/components/journey/JourneySuggestions";
@@ -13,6 +13,9 @@ import { ChildSelectionPrompt } from "@/components/dashboard/ChildSelectionPromp
 import { HeaderChildSwitcher } from "@/components/dashboard/ChildSwitcher";
 import { MomentCheckIn } from "@/components/journey/MomentCheckIn";
 import { isMomentContext } from "@/lib/journey/recommendation-engine";
+import { QuietBackdrop } from "@/components/experience/QuietBackdrop";
+import { FirstVisitGuide } from "@/components/dashboard/FirstVisitGuide";
+import { ActiveSessionResume } from "@/components/dashboard/ActiveSessionResume";
 
 export const metadata: Metadata = {
   title: "Hoje | Brincar Educando",
@@ -71,19 +74,18 @@ export default async function DashboardPage({
   const posts = getAllBlogPosts().slice(0, 3);
 
   const quickLinks = [
-    { href: "/atividades", label: "Atividades", icon: Dumbbell, color: "bg-[var(--color-primary)]", desc: "Explorar atividades" },
-    { href: "/diario", label: "Diário", icon: BookMarked, color: "bg-[var(--color-secondary)]", desc: "Registrar memória" },
-    { href: "/historias", label: "Histórias", icon: BookOpen, color: "bg-emerald-500", desc: "Ler uma história" },
-    { href: "/perfil", label: "Perfil", icon: User, color: "bg-amber-500", desc: "Conhecer a jornada" },
+    { href: "/atividades", label: "Brincar", icon: Dumbbell, desc: "Encontrar outras ideias" },
+    { href: "/diario", label: "Memórias", icon: BookMarked, desc: "Guardar ou rever momentos" },
+    { href: "/jornada", label: "Jornada", icon: Sprout, desc: "Ver o repertório vivido" },
   ];
 
   const todayDate = format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR });
   const todayDateCapitalized = todayDate.charAt(0).toUpperCase() + todayDate.slice(1);
 
   return (
-    <div className="min-h-screen">
+    <QuietBackdrop className="min-h-screen">
       {/* Header Personalizado */}
-      <header className="px-6 pt-8 pb-6 flex items-start justify-between gap-4">
+      <header className="mx-auto flex max-w-5xl items-start justify-between gap-4 px-6 pb-6 pt-8">
         <div className="space-y-2">
           <h1 className="text-xl font-bold text-[var(--color-foreground)] flex items-center gap-2">
             {greetingEmoji} {greeting}, {firstName}!
@@ -110,15 +112,10 @@ export default async function DashboardPage({
         {child && !needsSelection && <MomentCheckIn selected={momentContext} />}
 
         {suggestions?.status === "first_visit" && (
-          <aside className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5" aria-label="Como funciona">
-            <p className="font-black text-emerald-950">Um começo simples em três passos</p>
-            <ol className="mt-2 grid gap-2 text-sm text-emerald-900 sm:grid-cols-3">
-              <li><strong>1.</strong> Veja por que o convite combina.</li>
-              <li><strong>2.</strong> Adapte ao ritmo de vocês.</li>
-              <li><strong>3.</strong> Depois, registre só o que quiser lembrar.</li>
-            </ol>
-          </aside>
+          <FirstVisitGuide />
         )}
+
+        <ActiveSessionResume />
 
         {/* Journey Suggestions (Hero + alternatives) */}
         {!needsSelection && child && suggestions?.result ? (
@@ -168,25 +165,27 @@ export default async function DashboardPage({
           </section>
         )}
 
-        {/* Quick links 2x2 grid */}
+        {/* Intent links */}
         <section>
-          <h2 className="text-sm font-black uppercase tracking-widest text-[var(--color-muted-foreground)] mb-4 pl-1">
-            Acessar Rápido
+          <h2 className="mb-2 pl-1 text-sm font-black uppercase tracking-widest text-[var(--color-muted-foreground)]">
+            Outros jeitos de continuar
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {quickLinks.map(({ href, label, icon: Icon, color, desc }) => (
+          <p className="mb-4 pl-1 text-sm text-[var(--color-muted-foreground)]">O que cada espaço faz, sem precisar decorar a navegação.</p>
+          <div className="grid gap-3 md:grid-cols-3">
+            {quickLinks.map(({ href, label, icon: Icon, desc }) => (
               <Link
                 key={href}
                 href={href}
-                className="card-theme group flex flex-col gap-3 p-5 hover:no-underline transition-all hover:bg-gray-50"
+                className="card-theme group flex min-h-32 flex-col gap-3 p-5 transition-all hover:bg-gray-50 hover:no-underline"
               >
-                <div className={`w-10 h-10 ${color} text-white rounded-xl flex items-center justify-center shadow-sm`}>
-                  <Icon className="h-5 w-5" />
+                <div className="flex size-10 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                  <Icon className="size-5" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="font-black text-sm text-[var(--color-foreground)]">{label}</p>
-                  <p className="text-xs text-[var(--color-muted-foreground)]">{desc}</p>
+                  <p className="text-sm font-black text-[var(--color-foreground)]">{label}</p>
+                  <p className="mt-1 text-xs leading-5 text-[var(--color-muted-foreground)]">{desc}</p>
                 </div>
+                <ArrowRight className="ml-auto size-4 text-[var(--color-muted-foreground)] transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
               </Link>
             ))}
           </div>
@@ -196,24 +195,24 @@ export default async function DashboardPage({
         <section>
           <Link
             href="/diario/nova"
-            className="flex items-center gap-4 p-5 rounded-2xl bg-[var(--color-primary)] text-[var(--color-primary-foreground)] shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all hover:no-underline group"
+            className="group flex items-center gap-4 rounded-2xl border border-[var(--color-primary)]/25 bg-[var(--color-primary)]/8 p-5 transition-all hover:bg-[var(--color-primary)]/12 hover:no-underline"
           >
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Plus className="h-6 w-6" />
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[var(--color-card)] text-[var(--color-primary)]">
+              <Plus className="size-5" aria-hidden="true" />
             </div>
             <div className="flex-1">
-              <p className="font-black text-base">Registrar memória</p>
-              <p className="text-sm opacity-80">Adicione uma nova entrada no diário</p>
+              <p className="font-black text-base text-[var(--color-foreground)]">Guardar um momento</p>
+              <p className="text-sm text-[var(--color-muted-foreground)]">Uma fala, descoberta ou cena para lembrar — se quiser.</p>
             </div>
-            <ArrowRight className="h-5 w-5 opacity-70 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="size-5 text-[var(--color-primary)] transition-transform group-hover:translate-x-1" aria-hidden="true" />
           </Link>
         </section>
 
         {/* Blog suggestions */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-black uppercase tracking-widest text-[var(--color-muted-foreground)] pl-1">
-              Leitura sugerida
+            <h2 className="pl-1 text-sm font-black uppercase tracking-widest text-[var(--color-muted-foreground)]">
+              Para ler com calma
             </h2>
             <Link
               href="/blog"
@@ -229,6 +228,6 @@ export default async function DashboardPage({
           </div>
         </section>
       </div>
-    </div>
+    </QuietBackdrop>
   );
 }

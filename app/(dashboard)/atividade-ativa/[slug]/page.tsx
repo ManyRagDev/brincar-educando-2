@@ -53,7 +53,7 @@ export default function ActiveActivityPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { activeChild, needsSelection } = useActiveChild();
-  const { isPaused, elapsedSeconds, startSession, pauseSession, resumeSession, endSession, tick } = useActiveSession();
+  const { activityId, isPaused, elapsedSeconds, startSession, pauseSession, resumeSession, endSession, tick } = useActiveSession();
   const [activity, setActivity] = useState<Activity | null>(null);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<"prepare" | "play">("prepare");
@@ -63,6 +63,7 @@ export default function ActiveActivityPage() {
   const [showAdaptation, setShowAdaptation] = useState(false);
   const [showReflection, setShowReflection] = useState(false);
   const [endReason, setEndReason] = useState<EndReason>("concluida");
+  const shouldTick = timerEnabled || Boolean(activityId);
 
   const recommendationKey = searchParams.get("rk");
   const ruleVersion = searchParams.get("rv");
@@ -111,15 +112,15 @@ export default function ActiveActivityPage() {
   }, [activeChild, slug]);
 
   useEffect(() => {
-    if (!timerEnabled || isPaused) return;
+    if (!shouldTick || isPaused) return;
     const interval = window.setInterval(tick, 1000);
     return () => window.clearInterval(interval);
-  }, [isPaused, tick, timerEnabled]);
+  }, [isPaused, shouldTick, tick]);
 
   function begin() {
     if (!activity || !activeChild) return;
     setMode("play");
-    startSession(activity.id);
+    startSession(activity.id, activity.slug);
     if (recommendationKey && ruleVersion && Number.isInteger(position)) {
       const storageKey = `recommendation-start:${recommendationKey}`;
       if (!window.sessionStorage.getItem(storageKey)) {
@@ -153,6 +154,10 @@ export default function ActiveActivityPage() {
   if (needsSelection) return <div className="min-h-screen p-6"><ChildSelectionPrompt /></div>;
   if (!activity || !activeChild) return <div className="p-8 text-center">Atividade não encontrada.</div>;
 
+  const resumedSession = activityId === activity.id;
+  const visibleMode = resumedSession ? "play" : mode;
+  const visibleTimer = timerEnabled || resumedSession;
+
   return (
     <div className="min-h-screen bg-[var(--color-background)]">
       <header className="sticky top-0 z-20 flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-background)]/95 px-4 py-3 backdrop-blur">
@@ -160,23 +165,23 @@ export default function ActiveActivityPage() {
           <X className="size-5" aria-hidden="true" />
         </Link>
         <p className="max-w-[55vw] truncate font-black">{activity.titulo}</p>
-        {mode === "play" ? (
+        {visibleMode === "play" ? (
           <button
             type="button"
             onClick={() => {
-              if (!timerEnabled) { setTimerEnabled(true); resumeSession(); }
+              if (!visibleTimer) { setTimerEnabled(true); resumeSession(); }
               else if (isPaused) resumeSession();
               else pauseSession();
             }}
             className="min-h-11 rounded-full bg-[var(--color-muted)] px-3 font-mono text-sm font-bold tabular-nums"
-            aria-label={timerEnabled ? (isPaused ? "Retomar cronômetro" : "Pausar cronômetro") : "Ativar cronômetro opcional"}
+            aria-label={visibleTimer ? (isPaused ? "Retomar cronômetro" : "Pausar cronômetro") : "Ativar cronômetro opcional"}
           >
-            {timerEnabled ? formatTime(elapsedSeconds) : <><Clock3 className="mr-1 inline size-4" /> Cronômetro</>}
+            {visibleTimer ? formatTime(elapsedSeconds) : <><Clock3 className="mr-1 inline size-4" /> Cronômetro</>}
           </button>
         ) : <div className="size-11" />}
       </header>
 
-      {mode === "prepare" ? (
+      {visibleMode === "prepare" ? (
         <main className="mx-auto max-w-2xl px-5 py-8">
           <p className="text-xs font-black uppercase tracking-wide text-[var(--color-primary)]">Antes de começar</p>
           <h1 className="mt-1 text-3xl font-black">Prepare sem pressa</h1>
@@ -255,8 +260,8 @@ export default function ActiveActivityPage() {
             <div className="grid gap-2 sm:grid-cols-2">
               <Button variant="outline" className="min-h-12" onClick={() => setShowAdaptation(true)}><RefreshCw className="mr-2 size-4" /> Adaptar</Button>
               <Button variant="outline" className="min-h-12" onClick={() => finish("perdeu_interesse")}>Perdeu o interesse</Button>
-              {timerEnabled && <Button variant="outline" className="min-h-12" onClick={() => isPaused ? resumeSession() : pauseSession()}>{isPaused ? <Play className="mr-2 size-4" /> : <Pause className="mr-2 size-4" />}{isPaused ? "Retomar" : "Pausar"}</Button>}
-              <Button className={cn("min-h-12", !timerEnabled && "sm:col-span-1")} onClick={() => finish("concluida")}>Encerrar brincadeira</Button>
+              {visibleTimer && <Button variant="outline" className="min-h-12" onClick={() => isPaused ? resumeSession() : pauseSession()}>{isPaused ? <Play className="mr-2 size-4" /> : <Pause className="mr-2 size-4" />}{isPaused ? "Retomar" : "Pausar"}</Button>}
+              <Button className={cn("min-h-12", !visibleTimer && "sm:col-span-1")} onClick={() => finish("concluida")}>Encerrar brincadeira</Button>
             </div>
             <details className="mt-4 rounded-2xl bg-[var(--color-muted)] p-4">
               <summary className="cursor-pointer font-bold">Sinais de que pode ser hora de adaptar ou parar</summary>

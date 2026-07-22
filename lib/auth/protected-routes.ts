@@ -7,6 +7,7 @@ export const PROTECTED_ROUTE_PREFIXES = [
   "/crescimento",
   "/jornada",
   "/orientacoes",
+  "/mais",
   "/perfil",
   "/configuracoes",
   "/onboarding",

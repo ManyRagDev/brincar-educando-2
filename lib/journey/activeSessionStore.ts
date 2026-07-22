@@ -3,12 +3,13 @@ import { persist } from "zustand/middleware";
 
 interface ActiveSessionState {
     activityId: string | null;
+    activitySlug: string | null;
     startTime: number | null; // Timestamp
     isPaused: boolean;
     elapsedSeconds: number;
 
     // Actions
-    startSession: (activityId: string) => void;
+    startSession: (activityId: string, activitySlug?: string) => void;
     pauseSession: () => void;
     resumeSession: () => void;
     endSession: () => void;
@@ -19,16 +20,18 @@ export const useActiveSession = create<ActiveSessionState>()(
     persist(
         (set, get) => ({
             activityId: null,
+            activitySlug: null,
             startTime: null,
             isPaused: true,
             elapsedSeconds: 0,
 
-            startSession: (activityId) => {
+            startSession: (activityId, activitySlug) => {
                 // Se já estiver rodando a mesma atividade, não reseta
                 if (get().activityId === activityId && !get().isPaused) return;
 
                 set({
                     activityId,
+                    activitySlug: activitySlug ?? get().activitySlug,
                     startTime: Date.now(),
                     isPaused: false,
                     elapsedSeconds: get().activityId === activityId ? get().elapsedSeconds : 0,
@@ -41,6 +44,7 @@ export const useActiveSession = create<ActiveSessionState>()(
 
             endSession: () => set({
                 activityId: null,
+                activitySlug: null,
                 startTime: null,
                 isPaused: true,
                 elapsedSeconds: 0

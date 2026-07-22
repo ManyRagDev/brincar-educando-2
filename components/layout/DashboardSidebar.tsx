@@ -4,30 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  Home,
-  Dumbbell,
-  BookMarked,
-  BookOpen,
-  User,
-  Settings,
   LogOut,
   ChevronRight,
-  Sprout,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ChildSwitcher } from "@/components/dashboard/ChildSwitcher";
+import { accountNavigation, discoveryNavigation, isNavigationItemActive, primaryDashboardNavigation } from "@/lib/navigation";
 
-const navItems = [
-  { href: "/dashboard", label: "Início", icon: Home },
-  { href: "/atividades", label: "Atividades", icon: Dumbbell },
-  { href: "/diario", label: "Diário", icon: BookMarked },
-  { href: "/historias", label: "Histórias", icon: BookOpen, badge: "em breve" },
-  { href: "/jornada", label: "Jornada", icon: Sprout },
-  { href: "/perfil", label: "Meu Perfil", icon: User },
-  { href: "/configuracoes", label: "Configurações", icon: Settings },
+const navGroups = [
+  { label: "Para agora", items: primaryDashboardNavigation },
+  { label: "Descobrir", items: discoveryNavigation },
+  { label: "Sua conta", items: accountNavigation },
 ];
 
 export function DashboardSidebar() {
@@ -59,39 +49,39 @@ export function DashboardSidebar() {
       <ChildSwitcher />
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {navItems.map(({ href, label, icon: Icon, badge }) => {
-          const isActive =
-            pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all group",
-                isActive
-                  ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] shadow-sm"
-                  : "text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
-              )}
-            >
-              <Icon className="h-4 w-4 flex-shrink-0" />
-              <span className="flex-1">{label}</span>
-              {badge && (
-                <span
-                  className={cn(
-                    "text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full",
-                    isActive
-                      ? "bg-white/20 text-white"
-                      : "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
-                  )}
-                >
-                  {badge}
-                </span>
-              )}
-              {isActive && <ChevronRight className="h-3 w-3 opacity-70" />}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-5" aria-label="Navegação principal">
+        {navGroups.map((group) => (
+          <div key={group.label}>
+            <p className="px-4 pb-2 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">{group.label}</p>
+            <div className="space-y-1">
+              {group.items.map(({ href, label, icon: Icon, badge, description }) => {
+                const isActive = isNavigationItemActive(pathname, href);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    title={description}
+                    className={cn(
+                      "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all",
+                      isActive
+                        ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] shadow-sm"
+                        : "text-[var(--color-foreground)] hover:bg-[var(--color-muted)]",
+                    )}
+                  >
+                    <Icon className="h-4 w-4 flex-shrink-0" />
+                    <span className="flex-1">{label}</span>
+                    {badge && (
+                      <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest", isActive ? "bg-white/20 text-white" : "bg-[var(--color-primary)]/10 text-[var(--color-primary)]")}>
+                        {badge}
+                      </span>
+                    )}
+                    {isActive && <ChevronRight className="h-3 w-3 opacity-70" aria-hidden="true" />}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Bottom: theme + signout */}

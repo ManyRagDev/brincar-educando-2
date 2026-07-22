@@ -11,6 +11,7 @@ test("protege todas as rotas privadas e seus descendentes", () => {
     "/jornada",
     "/onboarding",
     "/orientacoes",
+    "/mais",
   ]) {
     assert.equal(isProtectedPath(path), true, path);
   }
