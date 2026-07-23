@@ -56,6 +56,12 @@ export const discoveryNavigation: DashboardNavigationItem[] = [
     icon: Info,
   },
   {
+    href: "/blog",
+    label: "Ler e entender",
+    description: "Ler orientações e ideias para o cotidiano",
+    icon: BookMarked,
+  },
+  {
     href: "/historias",
     label: "BrinContos",
     description: "Histórias para viver juntos — em preparação",

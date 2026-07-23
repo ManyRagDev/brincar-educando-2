@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useTheme } from "@/components/providers/ThemeProvider";
+import Image from "next/image";
+import { getActivityImageAlt, getActivityImagePath } from "@/lib/activities/activity-images";
+import { repairMojibake } from "@/lib/text/repair-mojibake";
 
 // Mapeamento de categoria → gradiente e emoji (mesmo padrão de JourneySuggestions)
 const categoryVisual: Record<string, { gradient: string; emoji: string }> = {
@@ -45,6 +48,7 @@ interface ActivityCardProps {
 export function ActivityCard({ activity, index = 0 }: ActivityCardProps) {
     const { isAcolher } = useTheme();
     const visual = getCategoryVisual(activity.categoria);
+    const imageSrc = getActivityImagePath({ titulo: activity.titulo, categoria: activity.categoria });
 
     // Map energy level to badge type
     const getEnergyBadge = (energy: string): BadgeType => {
@@ -68,12 +72,9 @@ export function ActivityCard({ activity, index = 0 }: ActivityCardProps) {
                         ? "border-emerald-100 hover:border-emerald-300 bg-emerald-50/30"
                         : "border-border hover:border-primary/50"
                 )}>
-                    {/* Thumbnail visual por categoria */}
-                    <div className={cn(
-                        "h-20 w-full bg-gradient-to-br flex items-center justify-center flex-shrink-0",
-                        visual.gradient
-                    )}>
-                        <span className="text-3xl drop-shadow-sm select-none">{visual.emoji}</span>
+                    <div className={cn("relative h-40 w-full overflow-hidden bg-gradient-to-br flex items-center justify-center flex-shrink-0", visual.gradient)}>
+                        <Image src={imageSrc} alt={getActivityImageAlt(activity.titulo)} fill sizes="(max-width: 640px) 100vw, (max-width: 1280px) 33vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                     </div>
 
                     <CardHeader className="p-5 pb-2 space-y-3">
@@ -89,7 +90,7 @@ export function ActivityCard({ activity, index = 0 }: ActivityCardProps) {
                                 "font-bold text-xl leading-tight group-hover:text-primary transition-colors line-clamp-2",
                                 isAcolher ? "text-emerald-900" : "text-foreground"
                             )}>
-                                {activity.titulo}
+                                {repairMojibake(activity.titulo)}
                             </h3>
                             <div className="flex items-center gap-2 text-muted-foreground text-xs font-medium">
                                 <span className="flex items-center gap-1">
@@ -107,7 +108,7 @@ export function ActivityCard({ activity, index = 0 }: ActivityCardProps) {
 
                     <CardContent className="p-5 pt-2 pb-4 flex-grow">
                         <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
-                            {activity.descricao}
+                            {repairMojibake(activity.descricao)}
                         </p>
                     </CardContent>
 

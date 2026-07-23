@@ -32,16 +32,16 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="hidden lg:flex w-64 flex-col fixed inset-y-0 left-0 z-40 bg-[var(--color-card)] border-r border-[var(--color-border)]">
+    <aside className="hidden lg:flex w-60 flex-col fixed inset-y-0 left-0 z-40 border-r border-[var(--color-border)] bg-[var(--sidebar)]">
       {/* Logo */}
-      <div className="flex items-center px-6 py-4 border-b border-[var(--color-border)]">
+      <div className="flex items-center px-5 py-4 border-b border-[var(--color-border)]">
         <Link href="/" className="group">
           <Image
             src="/logotipo.png"
             alt="Brincar Educando"
             width={390}
             height={132}
-            className="h-[108px] w-auto object-contain group-hover:scale-105 transition-transform"
+            className="h-16 w-auto object-contain transition-transform group-hover:scale-[1.02]"
           />
         </Link>
       </div>
@@ -62,7 +62,7 @@ export function DashboardSidebar() {
                     href={href}
                     title={description}
                     className={cn(
-                      "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all",
+                      "group flex min-h-11 items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all",
                       isActive
                         ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] shadow-sm"
                         : "text-[var(--color-foreground)] hover:bg-[var(--color-muted)]",

@@ -26,7 +26,7 @@ export function DashboardLayout({
         <DashboardNavigationFeedback />
         <DashboardSidebar />
 
-        <main className="pb-20 lg:pl-64 lg:pb-0">
+        <main className="pb-20 lg:pl-60 lg:pb-0">
           <EducationalScopeNotice defaultExpanded={educationalScopeNoticeExpanded} />
           {children}
         </main>

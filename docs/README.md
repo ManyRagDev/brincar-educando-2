@@ -3,6 +3,7 @@
 ## Referência do projeto
 
 - [Documento Mestre](DOCUMENTO_MESTRE.md)
+- [Plano Definitivo do Dashboard Hoje](PLANO_DEFINITIVO_DASHBOARD_HOJE.md)
 - [Validação com cuidadores e profissionais](VALIDACAO_COM_CUIDADORES_E_PROFISSIONAIS.md)
 
 ## Pacote editorial obrigatório

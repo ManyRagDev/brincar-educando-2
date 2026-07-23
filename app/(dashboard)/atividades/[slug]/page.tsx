@@ -8,6 +8,8 @@ import { ArrowLeft, BookOpenCheck, Clock3, ExternalLink, HeartHandshake, Package
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.types";
+import { getActivityImageAlt, getActivityImagePath } from "@/lib/activities/activity-images";
+import { repairMojibake, repairStringArray } from "@/lib/text/repair-mojibake";
 
 type ActivityView = {
   id: string;
@@ -97,9 +99,9 @@ export default function ActivityDetailsPage() {
       setActivity({
         id: data.id,
         slug: data.slug ?? slug,
-        titulo: data.titulo,
-        resumo: data.resumo ?? data.descricao ?? "",
-        justificativaFase: data.justificativa_fase ?? "",
+        titulo: repairMojibake(data.titulo),
+        resumo: repairMojibake(data.resumo ?? data.descricao ?? ""),
+        justificativaFase: repairMojibake(data.justificativa_fase ?? ""),
         imagemUrl: data.imagem_url,
         duracao: data.duracao_minutos ?? 15,
         preparo: data.preparo_minutos ?? 0,
@@ -107,13 +109,13 @@ export default function ActivityDetailsPage() {
         energiaAdulto: data.energia_adulto ?? "media",
         bagunca: data.nivel_bagunca ?? "baixa",
         local: data.local ?? "interno",
-        materiais: data.materiais ?? [],
-        preparacao: data.preparacao,
-        passos: steps,
-        prompts: data.prompts_interacao,
-        sinaisInteresse: data.sinais_interesse,
-        sinaisPausa: data.sinais_adaptar_parar,
-        encerramento: data.encerramento,
+        materiais: repairStringArray(data.materiais),
+        preparacao: repairStringArray(data.preparacao),
+        passos: steps.map(repairMojibake),
+        prompts: repairStringArray(data.prompts_interacao),
+        sinaisInteresse: repairStringArray(data.sinais_interesse),
+        sinaisPausa: repairStringArray(data.sinais_adaptar_parar),
+        encerramento: repairStringArray(data.encerramento),
         variacoes: data.variacoes,
         adaptacoes: data.adaptacoes_inclusivas,
         seguranca: data.seguranca,
@@ -177,8 +179,8 @@ export default function ActivityDetailsPage() {
   return (
     <div className="min-h-screen pb-24">
       <header className="relative overflow-hidden bg-[var(--color-muted)]">
-        {activity.imagemUrl ? (
-          <div className="relative h-64 md:h-80"><Image src={activity.imagemUrl} alt="" fill priority className="object-cover" /></div>
+        {activity.imagemUrl || getActivityImagePath({ titulo: activity.titulo }) ? (
+          <div className="relative h-64 md:h-96"><Image src={activity.imagemUrl || getActivityImagePath({ titulo: activity.titulo })} alt={getActivityImageAlt(activity.titulo)} fill priority sizes="100vw" className="object-cover" /></div>
         ) : (
           <div className="flex h-44 items-center justify-center bg-gradient-to-br from-amber-100 to-emerald-100 text-6xl" aria-hidden="true">🧩</div>
         )}
@@ -226,7 +228,12 @@ export default function ActivityDetailsPage() {
               {extraAdaptations.map((item) => <li key={item.id}><strong>{item.titulo}:</strong> {item.orientacao}</li>)}
             </ul>
           </ContentSection>
-          <ContentSection title="Fonte e revisão" icon={BookOpenCheck}>
+          <details className="group rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)]">
+            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-black marker:hidden md:px-6">
+              <span className="flex items-center gap-2"><BookOpenCheck className="size-5 text-[var(--color-primary)]" aria-hidden="true" />Fonte e revisão</span>
+              <span className="text-xs text-[var(--color-muted-foreground)] transition-transform group-open:rotate-180" aria-hidden="true">⌄</span>
+            </summary>
+            <div className="border-t border-[var(--color-border)] px-5 pb-5 pt-4 md:px-6">
             <p>Conteúdo v{activity.versao}. {activity.revisadoPor ? `Revisão: ${activity.revisadoPor}.` : "Revisão pendente."}</p>
             {activity.proximaRevisao && <p>Próxima revisão editorial: {new Date(`${activity.proximaRevisao}T12:00:00`).toLocaleDateString("pt-BR")}.</p>}
             <div className="mt-4 space-y-3">
@@ -238,7 +245,8 @@ export default function ActivityDetailsPage() {
                 </div>
               ))}
             </div>
-          </ContentSection>
+            </div>
+          </details>
         </div>
       </main>
     </div>

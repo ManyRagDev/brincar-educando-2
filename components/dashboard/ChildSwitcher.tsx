@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { setActiveChild } from "@/app/(dashboard)/actions";
 import { useActiveChild } from "@/components/dashboard/ActiveChildProvider";
 import { ChildAgeCard } from "@/components/dashboard/ChildAgeCard";
+import { repairMojibake } from "@/lib/text/repair-mojibake";
 
 export function ChildSwitcher() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -29,7 +30,7 @@ export function ChildSwitcher() {
         {!activeChild && <option value="">Escolha uma criança</option>}
         {children.map((child) => (
           <option key={child.id} value={child.id}>
-            {child.nome}
+            {repairMojibake(child.nome)}
           </option>
         ))}
       </select>
@@ -62,7 +63,7 @@ export function HeaderChildSwitcher({ ageText }: { ageText: string }) {
             className="min-h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] px-3 text-sm font-bold text-[var(--color-foreground)]"
           >
             {children.map((child) => (
-              <option key={child.id} value={child.id}>{child.nome}</option>
+              <option key={child.id} value={child.id}>{repairMojibake(child.nome)}</option>
             ))}
           </select>
         </div>

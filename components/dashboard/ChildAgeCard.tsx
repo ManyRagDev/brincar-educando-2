@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Sparkles, Heart } from "lucide-react";
+import { repairMojibake } from "@/lib/text/repair-mojibake";
 
 interface ChildAgeCardProps {
   nome: string;
@@ -51,7 +52,7 @@ export function ChildAgeCard({
           <div className="w-full h-full rounded-full bg-white p-0.5 flex items-center justify-center overflow-hidden">
             <Image
               src={avatarSrc}
-              alt={`Avatar de ${nome}`}
+              alt={`Avatar de ${repairMojibake(nome)}`}
               width={36}
               height={36}
               className="w-full h-full object-contain"
@@ -71,7 +72,7 @@ export function ChildAgeCard({
           </span>
         </div>
         <span className="text-[13px] font-bold leading-tight whitespace-nowrap">
-          <span className={`bg-gradient-to-r ${gradientClass} bg-clip-text text-transparent`}>{nome}</span>
+          <span className={`bg-gradient-to-r ${gradientClass} bg-clip-text text-transparent`}>{repairMojibake(nome)}</span>
           <span className="mx-1 text-[var(--color-muted-foreground)]/40">•</span>
           <span className="text-[var(--color-foreground)]">{idadeTexto}</span>
         </span>
