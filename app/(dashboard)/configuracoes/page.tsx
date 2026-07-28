@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Bell, Shield, User, Moon, Palette, Trash2 } from "lucide-react";
+import { NotificationPreferencesForm } from "@/components/dashboard/NotificationPreferencesForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -74,59 +75,9 @@ export default async function ConfiguracoesPage() {
         {/* Preferences Section */}
         <section className="mb-8">
           <h2 className="text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] mb-4">
-            Preferências
+            Preferências de Notificação
           </h2>
-          <div className="space-y-3">
-            {/* Theme - Managed by ThemeToggle component */}
-            <div className="card-theme p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
-                  <Palette className="h-5 w-5 text-[var(--color-primary)]" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[var(--color-foreground)]">Tema visual</p>
-                  <p className="text-xs text-[var(--color-muted-foreground)]">Acolher ou Vibrante</p>
-                </div>
-              </div>
-              <span className="text-xs text-[var(--color-muted-foreground)] bg-[var(--color-muted)] px-2 py-1 rounded">
-                Use o botão no menu
-              </span>
-            </div>
-
-            {/* Notifications */}
-            <div className="card-theme p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-secondary)]/10 flex items-center justify-center">
-                  <Bell className="h-5 w-5 text-[var(--color-secondary)]" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[var(--color-foreground)]">Notificações</p>
-                  <p className="text-xs text-[var(--color-muted-foreground)]">Receber novidades por email</p>
-                </div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-[var(--color-muted)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--color-primary)]"></div>
-              </label>
-            </div>
-
-            {/* Newsletter */}
-            <div className="card-theme p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <Moon className="h-5 w-5 text-emerald-500" />
-                </div>
-                <div>
-                  <p className="font-semibold text-[var(--color-foreground)]">Newsletter semanal</p>
-                  <p className="text-xs text-[var(--color-muted-foreground)]">Dicas e novidades toda semana</p>
-                </div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked />
-                <div className="w-11 h-6 bg-[var(--color-muted)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--color-primary)]"></div>
-              </label>
-            </div>
-          </div>
+          <NotificationPreferencesForm userId={user.id} />
         </section>
 
         {/* Privacy & Security */}

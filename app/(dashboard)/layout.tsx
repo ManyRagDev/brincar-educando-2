@@ -1,4 +1,5 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { PushNotificationInitializer } from "@/components/providers/PushNotificationInitializer";
 import { requireAppUser } from "@/lib/auth/require-app-user";
 import { getActiveChild } from "@/lib/children/active-child";
 import { EDUCATIONAL_SCOPE_NOTICE_COOKIE } from "@/lib/ui-preferences";
@@ -20,6 +21,7 @@ export default async function DashboardGroupLayout({
       childState={childState}
       educationalScopeNoticeExpanded={educationalScopeNoticeExpanded}
     >
+      <PushNotificationInitializer userId={user.id} />
       {children}
     </DashboardLayout>
   );
