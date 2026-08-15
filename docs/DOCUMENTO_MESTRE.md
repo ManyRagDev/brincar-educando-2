@@ -156,6 +156,8 @@ O lote inicial previsto é: *A semente que escutava*, *O guarda-chuva de nuvem*,
 | Camada | Tecnologia e responsabilidade |
 | --- | --- |
 | Aplicação web | Next.js 16 com App Router e React 19. |
+| APK Android vigente | Capacitor 8 envolvendo a aplicação web remota; permanece como baseline até uma decisão futura de substituição. |
+| Cliente Android dedicado (desenvolvimento) | `apps/android`: React 19, Ionic 8, Capacitor 8 e bundle local para `br.com.brincareducando.app.dev`. Exclusivo de APK/AAB Android. |
 | Linguagem | TypeScript 5. |
 | Estilos e UI | Tailwind CSS 4, Radix UI, shadcn/ui, `class-variance-authority`, `tailwind-merge`, Lucide. |
 | Formulários/validação | React Hook Form, Zod e `@hookform/resolvers`. |
@@ -171,6 +173,28 @@ O App Router organiza as áreas por grupos de rota: `(institucional)`, `(auth)`,
 ### PWA, imagens e segurança de navegador
 
 O manifesto define a aplicação como PWA em português do Brasil, com início em `/dashboard`, modo `standalone` e orientação vertical. O Next otimiza imagens AVIF/WebP e permite imagens HTTPS remotas. Os cabeçalhos incluem `nosniff`, bloqueio de frame, política de referenciador restrita, HSTS, e bloqueio de câmera, microfone e geolocalização. Recursos estáticos do Next recebem cache imutável; HTML é revalidado pelo navegador.
+
+### Fronteira Android aprovada, ainda não implementada
+
+Em 28 de julho de 2026 foi aprovada a criação incremental de um cliente
+React/Ionic/Capacitor dedicado ao APK Android. O estado é 🟡: a primeira fatia
+foi implementada, verificada no emulador e conferida com ressalvas; ainda não é
+release nem substitui o APK vigente.
+
+Esta iniciativa é exclusiva do APK/AAB Android. Navegador mobile, PWA e desktop
+continuam pertencendo à aplicação Next.js atual e não receberão a interface
+Android por viewport, user-agent, rota condicional ou importação compartilhada.
+O cliente dedicado nascerá em `apps/android`, com bundle local e identificador
+de desenvolvimento instalável em paralelo. O diretório `android/` vigente só
+será substituído em uma entrega futura de cutover, após paridade, validação
+humana e rollback testado.
+
+Documentos operacionais:
+
+- `.conductor/tracks/android-mobile-experience/spec.md`;
+- `.conductor/tracks/android-mobile-experience/plan.md`;
+- `.conductor/tracks/android-mobile-experience/handoff-01-foundation-session.md`;
+- `.conductor/tracks/android-mobile-experience/visual-manifest.md`.
 
 ## 5. Dados, propriedade e segurança
 
@@ -285,7 +309,84 @@ As migrações incrementais ficam em `supabase/migrations/`. Nunca editar, renum
 - Vazar a chave de serviço ou tornar fotos do Diário públicas.
 - Aumentar catálogo ou mudar o recomendador sem validação com cuidadores e profissionais.
 
-## 9. Como manter este documento vivo
+## 9. Histórico de entregas
+
+### 9.1 Abertura da experiência Android dedicada (28 de julho de 2026)
+
+**Contexto:** o APK existente abre a implantação web em uma WebView e herda
+landing page, navegação por documentos e carregamentos de site. O objetivo é
+criar comportamento próprio de aplicativo sem alterar navegador mobile, PWA ou
+desktop.
+
+**O que foi feito:** a iniciativa foi registrada no mecanismo Conductor; foram
+criados especificação, plano, manifesto visual proposto e handoff executável da
+primeira entrega. A fronteira exclusiva Android/APK foi registrada como
+invariante.
+
+**Decisões e por quê:** o novo APK terá um único runtime React/Ionic/Capacitor,
+bundle local e projeto de desenvolvimento paralelo. Flutter não será embutido
+no mesmo APK; continua como alternativa no checkpoint de paridade. A separação
+evita dois modelos de navegação, estado e depuração no mesmo binário.
+
+**Achados reais:** o login web depende de Next, cookies SSR e endpoint com
+segredo de servidor; a criança ativa depende de cookie; o dashboard usa Server
+Components; e a permissão de push é solicitada no layout autenticado. Portanto,
+as telas web não são componentes diretamente reutilizáveis pelo cliente
+Android.
+
+**Verificação:** documentação conferida contra `capacitor.config.ts`,
+`components/auth/AuthForm.tsx`, `lib/auth/require-app-user.ts`,
+`lib/children/active-child.ts`, `app/(dashboard)/layout.tsx` e
+`hooks/usePushNotifications.ts`. Nenhum novo runtime ou APK foi alegado como
+executado.
+
+**Pendências:** aprovação humana do manifesto visual; implementação; testes;
+execução em emulador; pedido de conferência total e registro do veredito. O
+estado continua 🟡.
+
+### 9.2 Fundação Android e sessão (28 de julho de 2026)
+
+**Contexto:** após o aceite visual, a primeira fatia precisava provar que um APK
+local pode abrir como aplicativo, sem substituir o APK vigente nem tocar na
+PWA.
+
+**O que foi feito:** foi criado `apps/android` com React/Ionic/Capacitor,
+tipos de estado de sessão, login por e-mail/senha, validação de acesso,
+restauração, logout, shell Hoje, navegação persistente e tratamento de
+background/back. O APK novo usa o identificador de desenvolvimento
+`br.com.brincareducando.app.dev` e contém somente a permissão de internet.
+
+**Decisões e por quê:** o cliente não reutiliza componentes Next, cookies SSR
+ou o inicializador web de push. A sessão usa Capacitor Preferences de forma
+temporária, com a decisão de armazenamento apoiado no Keystore reservada para
+antes de release. O lint Next ignora somente artefatos Vite/Gradle gerados;
+arquivos-fonte Android seguem verificados por TypeScript e Vitest próprios.
+
+**Achados reais:** o lint raiz passou a varrer bundles Android e excedeu a
+memória. A causa foi a criação dos artefatos gerados, não o código de interface;
+as exclusões foram limitadas a esses diretórios. O lint então revelou quatro
+erros preexistentes de `any` no push web, fora da entrega.
+
+**Verificação:** typecheck Android; 5 testes Vitest; build Vite; `assembleDebug`;
+instalação no AVD API 36.1; cold start; credencial inválida com mensagem
+localizada; background/foreground; typecheck web; 15 testes Node; build Next.
+O script `npm run verify:apk` produz hash e relatório derivado do APK. Lint web
+permanece 🟡 pelos quatro erros preexistentes de push.
+
+**Pendências:** login real, restauração de sessão real, todos os viewports,
+divisão de bundle, armazenamento Keystore e julgamento visual do proprietário.
+A entrega permanece 🟡 até que essas ressalvas sejam tratadas.
+
+**Conferência total:** executada por outro agente na mesma sessão em 29 de julho
+de 2026, com independência fraca e veredito **APROVADO COM RESSALVAS**. Foram
+confirmados isolamento Next/PWA, config sem URL remota, permissões mínimas,
+estados tipados, erro de credencial, cold start e retorno de background. O
+conferente reexecutou typecheck e 15 testes web; o build web fresco permanece
+evidência do implementador para evitar escrever `.next` durante a revisão.
+Ressalvas: Keystore antes de release, bundle de 1,26 MB, login real não
+autorizado e julgamento visual do proprietário.
+
+## 10. Como manter este documento vivo
 
 Atualize esta referência quando ocorrer qualquer uma destas situações:
 

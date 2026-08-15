@@ -95,7 +95,7 @@ export default function SobrePage() {
   return (
     <>
       <PublicNav />
-      <main className="min-h-screen bg-[var(--color-background)] pt-[120px]">
+      <main className="min-h-screen bg-[var(--color-background)] pt-20 sm:pt-24 md:pt-28">
 
         {/* Hero */}
         <div className="bg-[var(--color-muted)] border-b border-[var(--color-border)]">

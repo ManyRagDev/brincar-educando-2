@@ -48,14 +48,14 @@ function CompactAlternative({ activity, label, childId, context, ruleVersion }: 
     <Link
       href={recommendationHref(activity, context, 1, ruleVersion)}
       onClick={() => void recordRecommendationEvent(eventInput(activity, childId, context, 1, "open", ruleVersion))}
-      className="dashboard-alternative group"
+      className="dashboard-alternative group rounded-2xl bg-[var(--color-card)] p-4 border border-[var(--color-border)] shadow-xs transition hover:border-[var(--color-primary)]/50"
     >
       <span className="dashboard-eyebrow text-[var(--color-primary)]">{label}</span>
-      <span className="mt-1 line-clamp-2 text-sm font-black text-[var(--color-foreground)]">{activity.titulo}</span>
-      <span className="mt-2 flex items-center gap-3 text-xs text-[var(--color-muted-foreground)]">
+      <span className="mt-1 line-clamp-1 text-sm font-black text-[var(--color-foreground)]">{activity.titulo}</span>
+      <span className="mt-1.5 flex items-center gap-3 text-xs text-[var(--color-muted-foreground)]">
         <span>{activity.duracao_minutos} min</span>
         <span>Preparo {activity.preparo_minutos} min</span>
-        <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+        <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1 text-[var(--color-primary)]" aria-hidden="true" />
       </span>
     </Link>
   );
@@ -97,64 +97,123 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
   }
 
   return (
-    <section aria-labelledby="plan-now-title" className="space-y-4">
-      <div>
-        <p className="dashboard-eyebrow flex items-center gap-1.5 text-[var(--color-primary)]"><Sparkles className="size-4" aria-hidden="true" /> Para agora</p>
-        <h2 id="plan-now-title" className="mt-1 text-2xl font-black tracking-tight text-[var(--color-foreground)] sm:text-3xl">Uma brincadeira possível para vocês</h2>
+    <section aria-labelledby="plan-now-title" className="space-y-3.5">
+      <div className="flex items-center justify-between">
+        <p className="dashboard-eyebrow flex items-center gap-1.5 text-[var(--color-primary)]">
+          <Sparkles className="size-3.5" aria-hidden="true" /> Brincadeira para agora
+        </p>
       </div>
 
-      <article className="dashboard-hero overflow-hidden">
-        <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(20rem,44%)]">
-          <div className="order-2 flex min-w-0 flex-col p-5 sm:p-7 md:order-1 md:p-8">
-            <p className="text-sm font-bold text-[var(--color-primary)]">Sugestão para este momento</p>
-            <h3 className="mt-2 text-3xl font-black leading-[1.05] tracking-tight text-[var(--color-foreground)] sm:text-4xl">{featured.titulo}</h3>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-muted-foreground)]">{featured.descricao}</p>
+      <article className="dashboard-hero overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-lg transition-shadow">
+        <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(18rem,40%)]">
+          <div className="order-2 flex min-w-0 flex-col p-4 sm:p-6 md:order-1 md:p-7">
+            <span className="text-[11px] font-black uppercase tracking-wider text-[var(--color-primary)]">Sugestão de Hoje</span>
+            <h3 id="plan-now-title" className="mt-1 text-2xl font-black leading-tight tracking-tight text-[var(--color-foreground)] sm:text-3xl">{featured.titulo}</h3>
+            <p className="mt-2 line-clamp-2 text-xs sm:text-sm leading-relaxed text-[var(--color-muted-foreground)]">{featured.descricao}</p>
 
-            <div className="mt-5 flex flex-wrap gap-2 text-xs font-bold text-[var(--color-foreground)]">
-              <span className="dashboard-signal"><Clock3 className="size-4 text-[var(--color-primary)]" aria-hidden="true" /> {featured.duracao_minutos} min</span>
-              <span className="dashboard-signal"><Clock3 className="size-4 text-[var(--color-primary)]" aria-hidden="true" /> {featured.preparo_minutos} min de preparo</span>
-              <span className="dashboard-signal"><PackageOpen className="size-4 text-[var(--color-primary)]" aria-hidden="true" /> {featured.materiais.length ? `${featured.materiais.length} materiais` : "Sem material específico"}</span>
+            <div className="mt-3.5 flex flex-wrap items-center gap-1.5 text-xs font-bold text-[var(--color-foreground)]">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2.5 py-1">
+                <Clock3 className="size-3.5 text-[var(--color-primary)]" aria-hidden="true" /> {featured.duracao_minutos} min
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2.5 py-1">
+                Preparo {featured.preparo_minutos} min
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2.5 py-1">
+                <PackageOpen className="size-3.5 text-[var(--color-primary)]" aria-hidden="true" /> {featured.materiais.length ? `${featured.materiais.length} materiais` : "Sem materiais"}
+              </span>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-[#f2cfc3] bg-[#fff7f3] p-4">
-              <p className="font-bold text-[var(--color-foreground)]">Boa para agora porque {reasonText.toLocaleLowerCase()}.</p>
-              <p className="mt-2 flex items-start gap-2 text-sm leading-5 text-[var(--color-muted-foreground)]"><Check className="mt-0.5 size-4 shrink-0 text-[var(--color-primary)]" aria-hidden="true" /> Convite ao adulto: acompanhe a iniciativa da criança sem precisar conduzir cada passo.</p>
+            <div className="mt-3 rounded-xl border border-[#f2cfc3] dark:border-neutral-800 bg-[#fff7f3] dark:bg-neutral-900/60 p-2.5 sm:p-3">
+              <p className="text-xs font-bold text-[var(--color-foreground)] leading-snug">Boa para agora: {reasonText.toLocaleLowerCase()}.</p>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href={recommendationHref(featured, context, currentIndex, recommendations.ruleVersion)} onClick={() => void recordRecommendationEvent(eventInput(featured, childId, context, currentIndex, "open", recommendations.ruleVersion))} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 text-sm font-black text-white shadow-[0_8px_20px_rgba(255,111,97,0.2)] transition hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">Ver como brincar <ArrowRight className="size-4" aria-hidden="true" /></Link>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+              <Link
+                href={recommendationHref(featured, context, currentIndex, recommendations.ruleVersion)}
+                onClick={() => void recordRecommendationEvent(eventInput(featured, childId, context, currentIndex, "open", recommendations.ruleVersion))}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 text-sm font-black text-white shadow-md shadow-[var(--color-primary)]/20 transition hover:brightness-95 active:scale-98"
+              >
+                Ver como brincar <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
               {recommendations.ranked.length > 1 && (
-                <button type="button" onClick={() => setShowReasons((visible) => !visible)} aria-expanded={showReasons} aria-controls="swap-reasons" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-bold text-[var(--color-foreground)] underline-offset-4 hover:bg-[var(--color-muted)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]">
-                  <RefreshCw className="size-4" aria-hidden="true" /> {isPending ? "Trocando…" : "Quero outra ideia"}
+                <button
+                  type="button"
+                  onClick={() => setShowReasons((visible) => !visible)}
+                  aria-expanded={showReasons}
+                  aria-controls="swap-reasons"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-xs font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] active:scale-95"
+                >
+                  <RefreshCw className="size-3.5" aria-hidden="true" /> {isPending ? "Trocando…" : "Quero outra ideia"}
                 </button>
               )}
             </div>
 
             {showReasons && (
-              <div id="swap-reasons" className="mt-4 rounded-2xl border border-[var(--color-border)] bg-white p-4">
-                <p className="text-sm font-bold text-[var(--color-foreground)]">Se quiser, conte o motivo</p>
-                <p className="mt-1 text-xs text-[var(--color-muted-foreground)]">Isso ajuda a próxima sugestão; escolha só se fizer sentido.</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {swapReasons.map((reason) => <button key={reason.value} type="button" disabled={isPending} onClick={() => swap(reason.value)} className="min-h-10 rounded-full border border-[var(--color-border)] bg-white px-3 text-xs font-bold hover:border-[var(--color-primary)] disabled:opacity-50">{reason.label}</button>)}
+              <div id="swap-reasons" className="mt-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-3">
+                <p className="text-xs font-bold text-[var(--color-foreground)]">Se quiser, conte o motivo:</p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {swapReasons.map((reason) => (
+                    <button
+                      key={reason.value}
+                      type="button"
+                      disabled={isPending}
+                      onClick={() => swap(reason.value)}
+                      className="min-h-8 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] px-2.5 text-[11px] font-bold hover:border-[var(--color-primary)] active:scale-95 disabled:opacity-50"
+                    >
+                      {reason.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
 
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-[11px] text-[var(--color-muted-foreground)]">Para próximas sugestões:</span>
-              <button type="button" aria-pressed={feedback === "more_like_this"} onClick={() => sendFeedback("more_like_this")} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-[var(--color-border)] px-3 text-[11px] font-bold hover:border-[var(--color-primary)]"><ThumbsUp className="size-3" aria-hidden="true" /> Mais como esta</button>
-              <button type="button" aria-pressed={feedback === "less_like_this"} onClick={() => sendFeedback("less_like_this")} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-[var(--color-border)] px-3 text-[11px] font-bold hover:border-[var(--color-primary)]"><ThumbsDown className="size-3" aria-hidden="true" /> Menos como esta</button>
-              {feedback && <span className="text-[11px] text-[var(--color-muted-foreground)]">Preferência guardada.</span>}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="text-[10px] text-[var(--color-muted-foreground)]">Para você:</span>
+              <button
+                type="button"
+                aria-pressed={feedback === "more_like_this"}
+                onClick={() => sendFeedback("more_like_this")}
+                className="inline-flex min-h-7 items-center gap-1 rounded-full border border-[var(--color-border)] px-2.5 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
+              >
+                <ThumbsUp className="size-3" aria-hidden="true" /> Mais como esta
+              </button>
+              <button
+                type="button"
+                aria-pressed={feedback === "less_like_this"}
+                onClick={() => sendFeedback("less_like_this")}
+                className="inline-flex min-h-7 items-center gap-1 rounded-full border border-[var(--color-border)] px-2.5 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
+              >
+                <ThumbsDown className="size-3" aria-hidden="true" /> Menos como esta
+              </button>
+              {feedback && <span className="text-[10px] text-[var(--color-muted-foreground)]">Preferência salva!</span>}
             </div>
           </div>
 
-          <div className="relative order-1 min-h-64 bg-[#f7eee5] md:order-2 md:min-h-full">
-            {imageSrc ? <Image src={imageSrc} alt={`Imagem da brincadeira ${featured.titulo}`} fill priority sizes="(min-width: 768px) 44vw, 100vw" className="object-cover" /> : <div className="flex min-h-64 items-center justify-center bg-gradient-to-br from-[#fff2ce] via-[#e8f1d9] to-[#d8f0df] px-8 text-center"><div><p className="text-4xl" aria-hidden="true">✦</p><p className="mt-2 text-sm font-bold text-[#527449]">Uma ideia pronta para ganhar o jeito de vocês.</p></div></div>}
+          <div className="relative order-1 h-44 sm:h-52 md:order-2 md:h-full md:min-h-full bg-[#f7eee5] dark:bg-neutral-900 overflow-hidden">
+            {imageSrc ? (
+              <Image
+                src={imageSrc}
+                alt={`Imagem da brincadeira ${featured.titulo}`}
+                fill
+                priority
+                sizes="(min-width: 768px) 40vw, 100vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full min-h-44 items-center justify-center bg-gradient-to-br from-[#fff2ce] via-[#e8f1d9] to-[#d8f0df] px-6 text-center">
+                <p className="text-3xl" aria-hidden="true">🧩</p>
+              </div>
+            )}
           </div>
         </div>
       </article>
 
-      {(simple || different) && <div className="grid gap-3 sm:grid-cols-2">{simple && <CompactAlternative activity={simple} label="Mais simples" childId={childId} context={context} ruleVersion={recommendations.ruleVersion} />}{different && <CompactAlternative activity={different} label="Outro clima" childId={childId} context={context} ruleVersion={recommendations.ruleVersion} />}</div>}
+      {(simple || different) && (
+        <div className="grid gap-2.5 sm:grid-cols-2 pt-1">
+          {simple && <CompactAlternative activity={simple} label="Mais rápida / simples" childId={childId} context={context} ruleVersion={recommendations.ruleVersion} />}
+          {different && <CompactAlternative activity={different} label="Outro clima" childId={childId} context={context} ruleVersion={recommendations.ruleVersion} />}
+        </div>
+      )}
     </section>
   );
 }

@@ -5,6 +5,7 @@
 - [ ] [Google OAuth Integration](.conductor/tracks/google-auth/plan.md)
 - [ ] [Journey Expansion (Jornada)](.conductor/tracks/journey-expansion/plan.md)
 - [/] [Sistema de Jornada Familiar](.conductor/tracks/parenting-journey-system/plan.md)
+- [/] [Experiência Android dedicada](.conductor/tracks/android-mobile-experience/plan.md)
 - [ ] Auditoria de Rotas e Componentes
 - [ ] Refinamento de SEO
 - [ ] Integração de Novas Histórias

@@ -85,7 +85,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       <PublicNav />
       <ReadingProgress />
 
-      <main className="min-h-screen bg-[var(--color-background)] pt-[120px]">
+      <main className="min-h-screen bg-[var(--color-background)] pt-20 sm:pt-24 md:pt-28">
         {/* Hero image */}
         <div className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden">
           <Image

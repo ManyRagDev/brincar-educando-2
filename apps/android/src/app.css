@@ -1,0 +1,77 @@
+@import "@fontsource/work-sans/latin-ext-400.css";
+@import "@fontsource/work-sans/latin-ext-500.css";
+@import "@fontsource/work-sans/latin-ext-700.css";
+@import "@fontsource/lora/latin-ext-700.css";
+
+:root {
+  --ion-font-family: "Work Sans", system-ui, sans-serif;
+  --ion-color-primary: #c94f46;
+  --ion-color-primary-rgb: 201, 79, 70;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #b1463e;
+  --ion-color-primary-tint: #ce6159;
+  --android-bg: #fff9f5;
+  --android-surface: #ffffff;
+  --android-ink: #25211f;
+  --android-muted: #6f6661;
+  --android-primary: #c94f46;
+  --android-primary-soft: #ffe2dd;
+  --android-secondary: #6548b8;
+  --android-sage: #627257;
+  --android-line: #e9ddd7;
+  --android-danger: #b3261e;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; background: var(--android-bg); color: var(--android-ink); }
+body { overscroll-behavior-y: none; }
+ion-app { background: var(--android-bg); }
+ion-content { --background: var(--android-bg); }
+ion-button { --border-radius: 14px; min-height: 48px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+ion-input { --background: var(--android-surface); --border-color: var(--android-line); --border-radius: 14px; --padding-start: 14px; --padding-end: 14px; min-height: 52px; border: 1px solid var(--android-line); border-radius: 14px; }
+
+.screen { min-height: 100dvh; padding: calc(env(safe-area-inset-top) + 32px) 20px calc(env(safe-area-inset-bottom) + 28px); background: var(--android-bg); }
+.screen-centered { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+.screen-centered h1 { max-width: 320px; margin: 0; font: 700 28px/1.22 "Lora", Georgia, serif; }
+.screen-centered p { max-width: 330px; margin: 0; color: var(--android-muted); font-size: 16px; line-height: 1.5; }
+.brand-mark, .avatar, .soft-icon { display: grid; place-items: center; flex: 0 0 auto; }
+.brand-mark { width: 44px; height: 44px; border-radius: 15px; color: #fff; background: var(--android-primary); font: 700 23px/1 "Lora", Georgia, serif; box-shadow: 0 8px 20px rgb(201 79 70 / 20%); }
+.soft-icon { width: 56px; height: 56px; border-radius: 20px; color: var(--android-secondary); background: #eee9ff; font-size: 25px; }
+.eyebrow { margin: 0; color: var(--android-secondary); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+
+.login-screen { display: flex; flex-direction: column; justify-content: center; gap: 28px; max-width: 480px; margin: 0 auto; }
+.login-heading h1 { margin: 8px 0; font: 700 30px/1.2 "Lora", Georgia, serif; }
+.login-heading p:last-child, .login-help { margin: 0; color: var(--android-muted); font-size: 15px; line-height: 1.5; }
+.login-form { display: grid; gap: 10px; }
+.login-form label { margin-top: 6px; color: var(--android-ink); font-size: 14px; font-weight: 700; }
+.login-form ion-button { margin-top: 10px; }
+.inline-message { margin: 2px 0; padding: 12px; border-radius: 12px; font-size: 14px; line-height: 1.4; }
+.inline-message.error { color: var(--android-danger); background: #fce8e7; }
+
+.app-shell { min-height: 100dvh; background: var(--android-bg); }
+.app-content { --padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+.today-screen { padding: calc(env(safe-area-inset-top) + 24px) 20px 28px; }
+.today-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.today-header h1 { margin: 6px 0 0; font: 700 28px/1.22 "Lora", Georgia, serif; letter-spacing: -.02em; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; color: var(--android-secondary); background: #eee9ff; font-size: 15px; font-weight: 700; }
+.now-thread { position: relative; height: 44px; margin: 12px 0 -2px 24px; border-left: 2px solid var(--android-primary-soft); border-bottom: 2px solid var(--android-primary-soft); border-bottom-left-radius: 16px; }
+.now-thread span { position: absolute; bottom: -7px; right: -5px; width: 11px; height: 11px; border-radius: 50%; background: var(--android-primary); }
+.next-step-card { border: 1px solid var(--android-line); border-radius: 24px; padding: 24px; background: var(--android-surface); box-shadow: 0 12px 34px rgb(83 54 43 / 7%); }
+.next-step-card h2, .foundation-note h2, .unavailable-card h2 { margin: 8px 0; font: 700 21px/1.28 "Lora", Georgia, serif; }
+.next-step-card p:not(.eyebrow), .foundation-note p, .unavailable-card p { margin: 0; color: var(--android-muted); font-size: 15px; line-height: 1.55; }
+.next-step-card ion-button { margin: 14px -8px -6px; color: var(--android-primary); }
+.foundation-note { display: flex; gap: 14px; margin-top: 28px; padding: 16px 4px; }
+.foundation-note ion-icon { flex: 0 0 auto; margin-top: 3px; color: var(--android-sage); font-size: 22px; }
+.foundation-note h2 { margin: 0 0 4px; font-family: "Work Sans", system-ui, sans-serif; font-size: 16px; }
+.unavailable-card { margin: calc(env(safe-area-inset-top) + 82px) 20px 0; padding: 28px 24px; border: 1px solid var(--android-line); border-radius: 24px; background: var(--android-surface); }
+.unavailable-card > ion-icon { color: var(--android-secondary); font-size: 28px; }
+.sign-out-link { width: calc(100% - 40px); margin: 20px; border: 0; background: transparent; color: var(--android-danger); font: 700 14px/1.4 inherit; }
+.bottom-navigation { position: fixed; z-index: 10; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(4, 1fr); min-height: calc(68px + env(safe-area-inset-bottom)); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--android-line); background: rgb(255 255 255 / 95%); backdrop-filter: blur(16px); }
+.bottom-navigation button { display: grid; place-items: center; gap: 3px; min-width: 48px; min-height: 48px; border: 0; border-radius: 14px; color: var(--android-muted); background: transparent; font: 700 11px/1 "Work Sans", system-ui, sans-serif; }
+.bottom-navigation ion-icon { font-size: 21px; }
+.bottom-navigation button.active { color: var(--android-primary); background: var(--android-primary-soft); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .next-step-card { animation: arrive 220ms ease-out both; }
+  @keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+}

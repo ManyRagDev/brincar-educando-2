@@ -12,6 +12,14 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Android client owns its generated Vite and Gradle artifacts. They are
+    // verified by apps/android's TypeScript, Vitest and Gradle commands instead.
+    "apps/android/node_modules/**",
+    "apps/android/dist/**",
+    "apps/android/android/**",
+    // Generated Capacitor assets in the legacy APK are also outside the Next
+    // lint boundary.
+    "android/**",
   ]),
 ]);
 

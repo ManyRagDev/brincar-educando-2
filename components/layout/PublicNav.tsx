@@ -60,7 +60,7 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
           : "bg-[var(--color-background)]/90 backdrop-blur-lg border-b border-[var(--color-border)]"
       )}
     >
-      <div className="container mx-auto flex h-[120px] items-center justify-between px-4">
+      <div className="container mx-auto flex h-16 sm:h-20 md:h-24 items-center justify-between px-4 pt-safe">
         {/* Logo */}
         <Link href="/" className="flex items-center group">
           <Image
@@ -68,7 +68,7 @@ export function PublicNav({ transparent = false, user }: PublicNavProps) {
             alt="Brincar Educando"
             width={420}
             height={144}
-            className="h-[108px] w-auto object-contain group-hover:scale-105 transition-transform"
+            className="h-10 sm:h-14 md:h-16 w-auto object-contain group-hover:scale-105 transition-transform"
             priority
           />
         </Link>

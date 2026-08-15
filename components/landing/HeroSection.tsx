@@ -10,7 +10,7 @@ export function HeroSection() {
   const { isAcolher } = useTheme();
 
   return (
-    <section className="relative min-h-screen pt-[120px] overflow-hidden bg-[var(--color-background)]">
+    <section className="relative min-h-screen pt-20 sm:pt-24 md:pt-28 overflow-hidden bg-[var(--color-background)]">
       {/* Background decorative blobs */}
       <div
         aria-hidden

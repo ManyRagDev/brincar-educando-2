@@ -13,8 +13,7 @@ import { QuietBackdrop } from "@/components/experience/QuietBackdrop";
 import { ChildSelectionPrompt } from "@/components/dashboard/ChildSelectionPrompt";
 import { HeaderChildSwitcher } from "@/components/dashboard/ChildSwitcher";
 import { ActiveSessionResume } from "@/components/dashboard/ActiveSessionResume";
-import { TodayPath } from "@/components/dashboard/TodayPath";
-import { MomentContextControl } from "@/components/dashboard/MomentContextControl";
+import { MomentContextChips } from "@/components/dashboard/MomentContextChips";
 import { PhaseTeaser } from "@/components/dashboard/PhaseTeaser";
 import { ContextualReadingCard } from "@/components/dashboard/ContextualReadingCard";
 import { MemoryPrompt } from "@/components/dashboard/MemoryPrompt";
@@ -61,12 +60,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     <QuietBackdrop className="dashboard-page min-h-screen">
       <header className="dashboard-header">
         <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-xl font-black tracking-tight text-[var(--color-foreground)] sm:text-2xl"><span aria-hidden="true">{greetingEmoji}</span> {greeting}, {firstName}!</h1>
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--color-muted-foreground)]">
+          <h1 className="flex items-center gap-2 text-xl font-black tracking-tight text-[var(--color-foreground)] sm:text-2xl">
+            <span aria-hidden="true">{greetingEmoji}</span> {greeting}, {firstName}!
+          </h1>
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm text-[var(--color-muted-foreground)]">
             {child ? <HeaderChildSwitcher ageText={childAgeString} /> : <p className="font-semibold text-[var(--color-primary)]">Crie um perfil para receber ideias personalizadas.</p>}
           </div>
         </div>
-        <div className="flex items-center gap-3 text-xs font-semibold text-[var(--color-muted-foreground)] sm:ml-auto sm:pl-6">
+        <div className="hidden sm:flex items-center gap-3 text-xs font-semibold text-[var(--color-muted-foreground)] sm:ml-auto sm:pl-6">
           <p className="flex items-center gap-1.5 whitespace-nowrap"><Calendar className="size-3.5" aria-hidden="true" /> <span className="capitalize">{todayDateCapitalized}</span></p>
           <span className="hidden items-center gap-2 lg:flex"><Compass className="size-4" aria-hidden="true" /> Um momento de cada vez</span>
         </div>
@@ -76,13 +77,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         {needsSelection && <ChildSelectionPrompt />}
 
         {child && !needsSelection && (
-          <>
-            <TodayPath />
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm text-[var(--color-muted-foreground)]">Uma pista pode ajudar — ou vocês podem seguir sem escolher.</p>
-              <MomentContextControl selected={momentContext} />
-            </div>
-          </>
+          <MomentContextChips selected={momentContext} />
         )}
 
         <ActiveSessionResume />

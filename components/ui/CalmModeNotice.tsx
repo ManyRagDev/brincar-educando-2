@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/providers/ThemeProvider";
 
 const STORAGE_KEY = "brincar-educando-calm-notice-dismissed";
+const NOTICE_DURATION_SECONDS = 6;
 
 function HandDrawnArrow() {
     return (
@@ -14,7 +15,7 @@ function HandDrawnArrow() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed top-24 right-4 sm:right-12 md:right-16 z-[60] pointer-events-none hidden sm:block"
+            className="fixed top-20 right-4 sm:right-12 md:right-16 z-[60] pointer-events-none hidden sm:block"
         >
             <div className="relative">
                 <svg
@@ -60,6 +61,7 @@ function HandDrawnArrow() {
 export function CalmModeNotice() {
     const [isVisible, setIsVisible] = useState(false);
     const [showArrow, setShowArrow] = useState(false);
+    const [remainingSeconds, setRemainingSeconds] = useState(NOTICE_DURATION_SECONDS);
     const { toggleTheme, isAcolher } = useTheme();
 
     useEffect(() => {
@@ -67,24 +69,34 @@ export function CalmModeNotice() {
         const dismissed = localStorage.getItem(STORAGE_KEY);
         if (dismissed === "true") return;
 
-        // Show notice after 3 seconds
+        // Show notice after 2.5 seconds
         const noticeTimer = setTimeout(() => {
             setIsVisible(true);
-            // Show arrow 1 second after notice
-            const arrowTimer = setTimeout(() => setShowArrow(true), 1000);
+            const arrowTimer = setTimeout(() => setShowArrow(true), 800);
             return () => clearTimeout(arrowTimer);
-        }, 3000);
+        }, 2500);
 
         return () => clearTimeout(noticeTimer);
     }, []);
 
-    // Auto-hide arrow after 8 seconds of visibility
+    // Countdown and auto-dismiss timer
     useEffect(() => {
-        if (showArrow) {
-            const timer = setTimeout(() => setShowArrow(false), 8000);
-            return () => clearTimeout(timer);
-        }
-    }, [showArrow]);
+        if (!isVisible) return;
+
+        const interval = setInterval(() => {
+            setRemainingSeconds((current) => {
+                if (current <= 1) {
+                    setIsVisible(false);
+                    setShowArrow(false);
+                    localStorage.setItem(STORAGE_KEY, "true");
+                    return 0;
+                }
+                return current - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isVisible]);
 
     const handleDismiss = () => {
         setIsVisible(false);
@@ -94,7 +106,7 @@ export function CalmModeNotice() {
 
     const handleToggle = () => {
         toggleTheme();
-        setShowArrow(false); // Hide arrow on first interaction
+        setShowArrow(false);
     };
 
     return (
@@ -106,26 +118,31 @@ export function CalmModeNotice() {
             <AnimatePresence>
                 {isVisible && (
                     <motion.div
-                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
                         className={cn(
-                            "fixed bottom-6 left-1/2 -translate-x-1/2 z-[50] w-[90%] max-w-sm sm:w-auto",
-                            "bg-[var(--color-card)] border-2 border-[var(--color-primary)]/20",
-                            "rounded-3xl p-4 shadow-2xl backdrop-blur-md",
-                            "flex flex-col sm:flex-row items-center gap-4"
+                            "fixed bottom-[calc(5.25rem+env(safe-area-inset-bottom,0px))] sm:bottom-6 left-1/2 -translate-x-1/2 z-[45] w-[calc(100%-2rem)] max-w-sm sm:w-auto",
+                            "bg-[var(--color-card)]/95 border border-[var(--color-primary)]/25 overflow-hidden",
+                            "rounded-2xl sm:rounded-3xl p-3.5 shadow-2xl backdrop-blur-lg",
+                            "flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
                         )}
                     >
-                        <div className="flex items-center gap-3 flex-1">
-                            <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0">
-                                <InfinityIcon className="h-5 w-5 text-[var(--color-primary)]" />
+                        <div className="flex items-center gap-3 flex-1 w-full">
+                            <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/10 flex items-center justify-center shrink-0">
+                                <InfinityIcon className="h-4 w-4 text-[var(--color-primary)]" />
                             </div>
-                            <div className="text-left">
-                                <p className="text-sm font-black text-[var(--color-foreground)] leading-tight">
-                                    Ambiente Acolhedor
-                                </p>
-                                <p className="text-[10px] text-[var(--color-muted-foreground)] font-medium">
+                            <div className="text-left flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="text-xs font-black text-[var(--color-foreground)] leading-tight">
+                                        Ambiente Acolhedor
+                                    </p>
+                                    <span className="text-[10px] font-bold text-[var(--color-muted-foreground)] tabular-nums">
+                                        {remainingSeconds}s
+                                    </span>
+                                </div>
+                                <p className="text-[10px] text-[var(--color-muted-foreground)] font-medium truncate">
                                     Cores suaves para quem prefere menos estímulo.
                                 </p>
                             </div>
@@ -135,15 +152,15 @@ export function CalmModeNotice() {
                             <button
                                 onClick={handleToggle}
                                 className={cn(
-                                    "flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2",
+                                    "flex-1 sm:flex-none px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 min-h-[36px]",
                                     isAcolher
                                         ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
-                                        : "bg-[var(--color-primary)] text-white shadow-md hover:shadow-lg active:scale-95"
+                                        : "bg-[var(--color-primary)] text-white shadow-sm hover:brightness-95 active:scale-95"
                                 )}
                             >
                                 {isAcolher ? (
                                     <>
-                                        <Check className="h-3 w-3" /> Ativado
+                                        <Check className="h-3.5 w-3.5" /> Ativado
                                     </>
                                 ) : (
                                     "Ativar Modo"
@@ -151,11 +168,21 @@ export function CalmModeNotice() {
                             </button>
                             <button
                                 onClick={handleDismiss}
-                                className="p-2 rounded-xl hover:bg-[var(--color-muted)] text-[var(--color-muted-foreground)] transition-colors"
+                                className="p-1.5 rounded-xl hover:bg-[var(--color-muted)] text-[var(--color-muted-foreground)] transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
                                 aria-label="Dispensar"
                             >
                                 <X className="h-4 w-4" />
                             </button>
+                        </div>
+
+                        {/* Barra de progresso visual de tempo restante */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-[var(--color-muted)]">
+                            <motion.div
+                                initial={{ width: "100%" }}
+                                animate={{ width: "0%" }}
+                                transition={{ duration: NOTICE_DURATION_SECONDS, ease: "linear" }}
+                                className="h-full bg-[var(--color-primary)]"
+                            />
                         </div>
                     </motion.div>
                 )}

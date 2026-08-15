@@ -5,6 +5,7 @@ import { BlogPreviewSection } from "@/components/landing/BlogPreviewSection";
 import { PillarsSection } from "@/components/landing/PillarsSection";
 import { NewsletterSection } from "@/components/landing/NewsletterSection";
 import { CalmModeNotice } from "@/components/ui/CalmModeNotice";
+import { CapacitorNativeRedirect } from "@/components/providers/CapacitorNativeRedirect";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -15,6 +16,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <CapacitorNativeRedirect isAuthenticated={Boolean(user)} />
       <PublicNav user={user} />
       <main>
         <HeroSection />

@@ -78,7 +78,7 @@ export default function PrivacidadePage() {
   return (
     <>
       <PublicNav />
-      <main className="min-h-screen bg-[var(--color-background)] pt-[120px]">
+      <main className="min-h-screen bg-[var(--color-background)] pt-20 sm:pt-24 md:pt-28">
         {/* Hero */}
         <div className="bg-[var(--color-muted)] border-b border-[var(--color-border)]">
           <div className="container mx-auto px-4 py-12 md:py-16 max-w-4xl">
