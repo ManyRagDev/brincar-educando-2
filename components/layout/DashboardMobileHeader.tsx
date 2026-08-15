@@ -20,18 +20,18 @@ export function DashboardMobileHeader() {
   }
 
   return (
-    <header className="lg:hidden sticky top-0 z-30 bg-[var(--color-background)]/90 backdrop-blur-md border-b border-[var(--color-border)] transition-colors">
+    <header className="lg:hidden sticky top-0 z-30 bg-[var(--color-background)]/95 backdrop-blur-md border-b border-[var(--color-border)] transition-colors">
       <div className="pt-safe">
-        <div className="flex h-14 items-center justify-between px-4 gap-2">
-          {/* Logo oficial padronizado */}
+        <div className="flex h-15 sm:h-16 items-center justify-between px-3.5 sm:px-4 gap-2">
+          {/* Logo oficial padronizado com destaque */}
           <Link href="/dashboard" className="flex items-center shrink-0" aria-label="Ir para início do Painel">
             <Image
               src="/logotipo.png"
               alt="Brincar Educando"
-              width={260}
-              height={80}
+              width={280}
+              height={90}
               priority
-              className="h-7 sm:h-8 w-auto object-contain"
+              className="h-9 sm:h-10 w-auto object-contain"
             />
           </Link>
 

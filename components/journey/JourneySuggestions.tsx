@@ -104,34 +104,32 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
         </p>
       </div>
 
-      <article className="dashboard-hero overflow-hidden rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-lg transition-shadow">
+      <article className="dashboard-hero overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-md transition-shadow">
         <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(18rem,40%)]">
-          <div className="order-2 flex min-w-0 flex-col p-4 sm:p-6 md:order-1 md:p-7">
-            <span className="text-[11px] font-black uppercase tracking-wider text-[var(--color-primary)]">Sugestão de Hoje</span>
-            <h3 id="plan-now-title" className="mt-1 text-2xl font-black leading-tight tracking-tight text-[var(--color-foreground)] sm:text-3xl">{featured.titulo}</h3>
-            <p className="mt-2 line-clamp-2 text-xs sm:text-sm leading-relaxed text-[var(--color-muted-foreground)]">{featured.descricao}</p>
-
-            <div className="mt-3.5 flex flex-wrap items-center gap-1.5 text-xs font-bold text-[var(--color-foreground)]">
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2.5 py-1">
-                <Clock3 className="size-3.5 text-[var(--color-primary)]" aria-hidden="true" /> {featured.duracao_minutos} min
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2.5 py-1">
-                Preparo {featured.preparo_minutos} min
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-muted)] px-2.5 py-1">
-                <PackageOpen className="size-3.5 text-[var(--color-primary)]" aria-hidden="true" /> {featured.materiais.length ? `${featured.materiais.length} materiais` : "Sem materiais"}
-              </span>
+          <div className="order-2 flex min-w-0 flex-col p-3.5 sm:p-5 md:order-1 md:p-7">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[var(--color-primary)]">Sugestão de Hoje</span>
+              <div className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-muted-foreground)]">
+                <span className="inline-flex items-center gap-1">
+                  <Clock3 className="size-3 text-[var(--color-primary)]" aria-hidden="true" /> {featured.duracao_minutos} min
+                </span>
+                <span>•</span>
+                <span>Preparo {featured.preparo_minutos} min</span>
+              </div>
             </div>
 
-            <div className="mt-3 rounded-xl border border-[#f2cfc3] dark:border-neutral-800 bg-[#fff7f3] dark:bg-neutral-900/60 p-2.5 sm:p-3">
-              <p className="text-xs font-bold text-[var(--color-foreground)] leading-snug">Boa para agora: {reasonText.toLocaleLowerCase()}.</p>
+            <h3 id="plan-now-title" className="mt-1 text-xl sm:text-2xl md:text-3xl font-black leading-tight tracking-tight text-[var(--color-foreground)]">{featured.titulo}</h3>
+            <p className="mt-1.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-[var(--color-muted-foreground)]">{featured.descricao}</p>
+
+            <div className="mt-2 rounded-lg border border-[#f2cfc3] dark:border-neutral-800 bg-[#fff7f3] dark:bg-neutral-900/60 p-2 sm:p-2.5">
+              <p className="text-[11px] sm:text-xs font-bold text-[var(--color-foreground)] leading-snug">Boa para agora: {reasonText.toLocaleLowerCase()}.</p>
             </div>
 
-            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
               <Link
                 href={recommendationHref(featured, context, currentIndex, recommendations.ruleVersion)}
                 onClick={() => void recordRecommendationEvent(eventInput(featured, childId, context, currentIndex, "open", recommendations.ruleVersion))}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-6 text-sm font-black text-white shadow-md shadow-[var(--color-primary)]/20 transition hover:brightness-95 active:scale-98"
+                className="inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 text-xs sm:text-sm font-black text-white shadow-md shadow-[var(--color-primary)]/20 transition hover:brightness-95 active:scale-98"
               >
                 Ver como brincar <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
@@ -141,7 +139,7 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
                   onClick={() => setShowReasons((visible) => !visible)}
                   aria-expanded={showReasons}
                   aria-controls="swap-reasons"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 text-xs font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] active:scale-95"
+                  className="inline-flex min-h-10 sm:min-h-11 items-center justify-center gap-1.5 rounded-xl px-2.5 text-xs font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] active:scale-95"
                 >
                   <RefreshCw className="size-3.5" aria-hidden="true" /> {isPending ? "Trocando…" : "Quero outra ideia"}
                 </button>
@@ -149,16 +147,16 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
             </div>
 
             {showReasons && (
-              <div id="swap-reasons" className="mt-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-3">
+              <div id="swap-reasons" className="mt-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-2.5">
                 <p className="text-xs font-bold text-[var(--color-foreground)]">Se quiser, conte o motivo:</p>
-                <div className="mt-2 flex flex-wrap gap-1.5">
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {swapReasons.map((reason) => (
                     <button
                       key={reason.value}
                       type="button"
                       disabled={isPending}
                       onClick={() => swap(reason.value)}
-                      className="min-h-8 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] px-2.5 text-[11px] font-bold hover:border-[var(--color-primary)] active:scale-95 disabled:opacity-50"
+                      className="min-h-7 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] px-2.5 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95 disabled:opacity-50"
                     >
                       {reason.label}
                     </button>
@@ -167,29 +165,29 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
               </div>
             )}
 
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+            <div className="mt-2.5 flex flex-wrap items-center gap-2">
               <span className="text-[10px] text-[var(--color-muted-foreground)]">Para você:</span>
               <button
                 type="button"
                 aria-pressed={feedback === "more_like_this"}
                 onClick={() => sendFeedback("more_like_this")}
-                className="inline-flex min-h-7 items-center gap-1 rounded-full border border-[var(--color-border)] px-2.5 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
+                className="inline-flex min-h-6 items-center gap-1 rounded-full border border-[var(--color-border)] px-2 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
               >
-                <ThumbsUp className="size-3" aria-hidden="true" /> Mais como esta
+                <ThumbsUp className="size-2.5" aria-hidden="true" /> Mais como esta
               </button>
               <button
                 type="button"
                 aria-pressed={feedback === "less_like_this"}
                 onClick={() => sendFeedback("less_like_this")}
-                className="inline-flex min-h-7 items-center gap-1 rounded-full border border-[var(--color-border)] px-2.5 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
+                className="inline-flex min-h-6 items-center gap-1 rounded-full border border-[var(--color-border)] px-2 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
               >
-                <ThumbsDown className="size-3" aria-hidden="true" /> Menos como esta
+                <ThumbsDown className="size-2.5" aria-hidden="true" /> Menos como esta
               </button>
-              {feedback && <span className="text-[10px] text-[var(--color-muted-foreground)]">Preferência salva!</span>}
+              {feedback && <span className="text-[10px] text-[var(--color-muted-foreground)]">Salvo!</span>}
             </div>
           </div>
 
-          <div className="relative order-1 h-44 sm:h-52 md:order-2 md:h-full md:min-h-full bg-[#f7eee5] dark:bg-neutral-900 overflow-hidden">
+          <div className="relative order-1 h-28 sm:h-36 md:order-2 md:h-full md:min-h-full bg-[#f7eee5] dark:bg-neutral-900 overflow-hidden">
             {imageSrc ? (
               <Image
                 src={imageSrc}
@@ -200,8 +198,8 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
                 className="object-cover"
               />
             ) : (
-              <div className="flex h-full min-h-44 items-center justify-center bg-gradient-to-br from-[#fff2ce] via-[#e8f1d9] to-[#d8f0df] px-6 text-center">
-                <p className="text-3xl" aria-hidden="true">🧩</p>
+              <div className="flex h-full min-h-28 items-center justify-center bg-gradient-to-br from-[#fff2ce] via-[#e8f1d9] to-[#d8f0df] px-4 text-center">
+                <p className="text-2xl" aria-hidden="true">🧩</p>
               </div>
             )}
           </div>

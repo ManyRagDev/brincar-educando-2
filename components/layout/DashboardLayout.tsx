@@ -29,7 +29,6 @@ export function DashboardLayout({
         <DashboardSidebar />
 
         <main className="pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pl-60 lg:pb-0">
-          <EducationalScopeNotice defaultExpanded={educationalScopeNoticeExpanded} />
           {children}
         </main>
 
