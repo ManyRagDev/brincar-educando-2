@@ -12,9 +12,11 @@ type AppClient = SupabaseClient<Database, "brincareducando">;
 
 export type ActivitySuggestion = RankedRecommendation;
 
+import { repairMojibake, repairStringArray } from "@/lib/text/repair-mojibake";
+
 function jsonStringArray(value: Json | null): string[] {
   if (!Array.isArray(value)) return [];
-  return value.filter((item): item is string => typeof item === "string");
+  return repairStringArray(value);
 }
 
 export async function getDashboardSuggestions(
@@ -60,17 +62,17 @@ export async function getDashboardSuggestions(
     .map<RecommendationCandidate>((activity) => ({
       id: activity.id,
       slug: activity.slug,
-      titulo: activity.titulo,
-      descricao: activity.descricao ?? "",
+      titulo: repairMojibake(activity.titulo),
+      descricao: repairMojibake(activity.descricao ?? ""),
       imagem_url: activity.imagem_url,
       energia: activity.energia ?? "media",
       preparo_minutos: activity.preparo_minutos ?? 0,
       duracao_minutos: activity.duracao_minutos ?? activity.preparo_minutos ?? 15,
       categoria: activity.categoria ?? "brincadeira",
       local: activity.local ?? "interno",
-      materiais: activity.materiais ?? [],
-      beneficios: activity.beneficios ?? [],
-      habilidades: activity.habilidades ?? [],
+      materiais: repairStringArray(activity.materiais),
+      beneficios: repairStringArray(activity.beneficios),
+      habilidades: repairStringArray(activity.habilidades),
       idade_min_meses: activity.idade_min_meses ?? 0,
       idade_max_meses: activity.idade_max_meses ?? 72,
     }));
