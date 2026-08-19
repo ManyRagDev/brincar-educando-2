@@ -260,17 +260,26 @@ Todo lote novo ou alteração material de conteúdo deve:
 
 Antes de ampliar o catálogo ou alterar materialmente o recomendador, é obrigatório seguir [o protocolo de validação](VALIDACAO_COM_CUIDADORES_E_PROFISSIONAIS.md): piloto com 5–8 cuidadores e parecer de pessoas com experiência em educação infantil e saúde/desenvolvimento. O protocolo não é pesquisa clínica e não deve recolher dados identificáveis ou históricos de saúde.
 
+### Criação e Governança do Blog (MDX)
+
+Os artigos de blog são redigidos em MDX em `content/blog/` e renderizados dinamicamente em `app/(blog)/blog/[slug]/page.tsx`.
+Para manter o padrão editorial e técnico sem alucinações, o projeto conta com a skill automatizada `.agents/skills/blog-post-creator/`:
+- **Blueprint Mestre**: Estrutura padrão com acolhimento, respiro visual com imagem 16:9 após o 1º parágrafo, dados científicos, scripts de fala, guias de bolso, mitos/verdades e CTAs.
+- **Validação Automatizada**: Executada via `npm run validate:blog` antes de cada deploy.
+- **Imagens Editoriais**: Aspect ratio 16:9 em `public/images/<slug>.jpg` seguindo paleta suave e acolhedora da marca.
+
 ## 7. Operação e manutenção
 
 ### Comandos de desenvolvimento
 
 ```bash
-npm run dev        # desenvolvimento
-npm run lint       # lint
-npm run typecheck  # TypeScript sem emissão
-npm test           # testes unitários
-npm run build      # build de produção
-npm run start      # servidor de produção
+npm run dev           # desenvolvimento
+npm run lint          # lint
+npm run typecheck     # TypeScript sem emissão
+npm test              # testes unitários
+npm run validate:blog # validação de conformidade e anti-alucinação dos posts MDX
+npm run build         # build de produção
+npm run start         # servidor de produção
 ```
 
 Para regenerar os tipos após uma mudança confirmada no banco:

@@ -16,7 +16,7 @@ Para manter a consistência estética e a sensação de leveza, acolhimento e ca
 ## 📐 2. Parâmetros Técnicos
 
 *   **Aspect Ratio**: `16:9` (perfeito para a Hero Image no topo da página e para o card vertical do blog).
-*   **Destino do Arquivo**: `public/images/<slug>.png`
+*   **Destino do Arquivo**: `public/images/<slug>.jpg` (ou `.png` nativo correspondente ao formato gerado).
 *   **Posicionamento no Artigo**: Exatamente após o primeiro parágrafo introdutório, antes do bloco `<Callout>`.
 
 ---

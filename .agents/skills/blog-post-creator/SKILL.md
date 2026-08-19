@@ -43,13 +43,13 @@ date: YYYY-MM-DD
 excerpt: "Resumo cativante em 1 ou 2 frases explicando o que os pais vão descobrir com respeito e base científica, sem culpas."
 category: "Desenvolvimento" # Deve ser uma das categorias oficiais
 readTime: "6 min"
-thumbnail: "/images/kebab-case-do-slug.png"
+thumbnail: "/images/kebab-case-do-slug.jpg"
 ---
 ```
 
 *Regras dos Metadados:*
 - O `slug` deve coincidir exatamente com o nome do arquivo (ex: `slug: sono-do-bebe` -> `content/blog/sono-do-bebe.mdx`).
-- A `category` deve coincidir exatamente com uma das 8 opções oficiais (com letras maiúsculas e acentos corretos).
+- A `category` deve coincidir exatamente com uma das opções oficiais em [`references/category-matrix.md`](./references/category-matrix.md) (com letras maiúsculas e acentos corretos).
 
 ---
 
@@ -58,14 +58,14 @@ O conteúdo deve seguir rigorosamente o template [references/post-blueprint.mdx]
 
 #### A. Imports Obrigatórios no topo do arquivo (após o frontmatter):
 ```mdx
-import { Info, Tip, Warning, Callout, Checklist } from "@/components/ui/blocks"
-import { Image } from "@/components/ui/image"
-import ProductEmbed from "@/components/ProductEmbed"
+import { Info, Tip, Warning, Callout, Checklist } from "@/components/ui/blocks";
+import { Image } from "@/components/ui/image";
+import ProductEmbed from "@/components/ProductEmbed";
 ```
 
 #### B. Esqueleto de Seções Obrigatórias:
 1. **Abertura Afetiva**: Validação das emoções e desafios dos cuidadores (1º parágrafo).
-2. **<Image>**: Imagem gerada no formato 16:9 posicionada imediatamente após o 1º parágrafo (`<Image src="/images/<slug>.png" alt="..." />`) para trazer leveza visual e conforto imediato ao leitor.
+2. **<Image>**: Imagem gerada no formato 16:9 posicionada imediatamente após o 1º parágrafo (`<Image src="/images/<slug>.jpg" alt="..." />`) para trazer leveza visual e conforto imediato ao leitor.
 3. **<Callout>**: Tese central ou frase inspiradora do artigo.
 4. **## O que a ciência nos mostra**: Fundamentação leve com bloco `<Info>` (citando conceitos da matriz de evidências).
 5. **## O que é esperado para cada fase**: Linha do tempo ou marcos de prontidão sem rotular a criança.
@@ -92,7 +92,7 @@ Sempre que gerar um novo post, o agente deve criar a imagem conceitual que ilust
    - `Prompt`: Descrição da cena afetiva alinhada ao tema.
    - `ImageName`: O mesmo identificador do `<slug>`.
    - `AspectRatio`: `"16:9"`.
-3. Garanta que a imagem seja salva em `public/images/<slug>.png` para que o Next.js e o MDX a renderizem automaticamente tanto na Thumbnail do card quanto no componente `<Image>`.
+3. Salve o arquivo correspondente em `public/images/<slug>.jpg` (ou `.png` nativo correspondente ao formato gerado) para que o Next.js e o MDX a renderizem perfeitamente tanto na Thumbnail do card quanto no componente `<Image>`.
 
 ---
 
