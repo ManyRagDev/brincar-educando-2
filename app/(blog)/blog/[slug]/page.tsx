@@ -75,10 +75,15 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const { title, excerpt, thumbnail, category, readTime, date } = post.metadata;
 
-  // Related posts (same category, exclude current)
-  const related = getAllBlogPosts()
-    .filter((p) => p.slug !== slug && p.metadata.category === category)
-    .slice(0, 3);
+  // Related posts (same category if available, fallback to other posts, exclude current)
+  const sameCategory = getAllBlogPosts().filter(
+    (p) => p.slug !== slug && p.metadata.category === category
+  );
+  const related = (
+    sameCategory.length > 0
+      ? sameCategory
+      : getAllBlogPosts().filter((p) => p.slug !== slug)
+  ).slice(0, 3);
 
   return (
     <>

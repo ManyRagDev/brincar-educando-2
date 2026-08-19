@@ -56,11 +56,18 @@ export function Callout({ children, className }: BlockProps) {
 }
 
 interface ChecklistProps {
-  items: string[];
+  items?: string[];
+  children?: React.ReactNode;
   className?: string;
 }
 
-export function Checklist({ items, className }: ChecklistProps) {
+export function Checklist({ items, children, className }: ChecklistProps) {
+  if (children) {
+    return <div className={cn("my-6 space-y-2", className)}>{children}</div>;
+  }
+  if (!items || !Array.isArray(items)) {
+    return null;
+  }
   return (
     <ul className={cn("my-6 space-y-2", className)}>
       {items.map((item, i) => (
