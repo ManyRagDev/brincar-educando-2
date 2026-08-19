@@ -151,12 +151,10 @@ export default function TermosPage() {
                 <Li>Diário familiar para registro de memórias e marcos do desenvolvimento.</Li>
                 <Li>Artigos educativos sobre desenvolvimento infantil, sono, alimentação e parentalidade.</Li>
                 <Li>Histórias infantis educativas (Brincontos) — em desenvolvimento.</Li>
-                <Li>Loja curada com produtos de parceiros selecionados — em desenvolvimento.</Li>
               </ul>
               <p>
-                O serviço é fornecido na modalidade <strong className="text-[var(--color-foreground)]">freemium</strong>:
-                funcionalidades básicas são gratuitas; funcionalidades premium, quando disponíveis,
-                serão claramente sinalizadas e cobradas separadamente.
+                O serviço é fornecido de forma <strong className="text-[var(--color-foreground)]">100% gratuita</strong>,
+                como um projeto comunitário aberto para apoiar famílias, sem cobranças, anúncios comerciais ou venda de dados.
               </p>
             </Section>
 
@@ -246,9 +244,9 @@ export default function TermosPage() {
               <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-start gap-3">
                 <ShieldAlert className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <p className="text-amber-800 font-semibold text-xs leading-relaxed">
-                  O conteúdo do Brincar Educando é fornecido exclusivamente para fins informativos e educativos.
+                  O conteúdo do Brincar Educando é fornecido exclusivamente para fins informativos e educativos, baseado em diretrizes públicas (OMS, Sociedade Brasileira de Pediatria).
                   Não substitui orientação médica, psicológica, nutricional ou pedagógica profissional.
-                  Sempre consulte profissionais de saúde qualificados para questões específicas sobre o desenvolvimento ou saúde do seu filho.
+                  Sempre consulte profissionais de saúde e educação qualificados para questões específicas sobre o desenvolvimento ou saúde do seu filho.
                 </p>
               </div>
               <p>
@@ -257,24 +255,17 @@ export default function TermosPage() {
               <ul className="space-y-2 list-none">
                 <Li>Danos diretos ou indiretos decorrentes do uso ou da impossibilidade de uso da plataforma.</Li>
                 <Li>Interrupções temporárias do serviço por manutenção ou força maior.</Li>
-                <Li>Conteúdo de terceiros linkado a partir da plataforma (incluindo links de parceiros da loja).</Li>
                 <Li>Decisões tomadas com base exclusiva nas informações disponibilizadas na plataforma.</Li>
               </ul>
             </Section>
 
-            <Section id="links-afiliados" numero="9" titulo="Links de Parceiros e Afiliados">
+            <Section id="compromisso-social" numero="9" titulo="Compromisso Social e Ausência de Publicidade">
               <p>
-                A futura seção de loja do Brincar Educando poderá conter links para produtos de parceiros
-                externos. Esses links podem ser links de afiliado, o que significa que podemos receber
-                uma comissão se você realizar uma compra — sem custo adicional para você.
+                O Brincar Educando é mantido como uma iniciativa social e educacional sem fins lucrativos.
+                Não exibimos anúncios publicitários de terceiros, não comercializamos espaços de patrocínio direcionados a crianças e não vendemos dados de usuários ou de seus filhos.
               </p>
               <p>
-                A curadoria dos produtos é feita de forma independente, com base em critérios de
-                qualidade e desenvolvimento infantil. A existência de parceria comercial não influencia
-                negativamente nossa avaliação.
-              </p>
-              <p>
-                Links de afiliado serão claramente identificados nas páginas da loja.
+                Todas as recomendações e sugestões de brincadeiras são elaboradas com base em critérios educativos e científicos de desenvolvimento infantil.
               </p>
             </Section>
 

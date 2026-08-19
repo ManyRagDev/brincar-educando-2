@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "Brincar",
     description:
       "Apoio à parentalidade positiva baseada em evidências para o desenvolvimento saudável da primeira infância.",
-    start_url: "/dashboard",
+    start_url: "/",
     display: "standalone",
     background_color: "#FFFFFF",
     theme_color: "#FF6F61",

@@ -64,14 +64,14 @@ const funcionalidades = [
   },
   {
     icon: BookOpen,
-    titulo: "Histórias (em breve)",
-    desc: "Brincontos — histórias mágicas e educativas para ler junto, com temas de emoções, natureza, valores e fantasia.",
+    titulo: "Histórias",
+    desc: "Brincontos — histórias educativas para ler junto, com temas de acolhimento emocional, natureza e imaginação.",
     cor: "bg-emerald-500",
   },
   {
-    icon: ShoppingBag,
-    titulo: "Loja (em breve)",
-    desc: "Curadoria de brinquedos, materiais e livros com respaldo em desenvolvimento infantil — sem achismo, só o que vale.",
+    icon: Sparkles,
+    titulo: "Orientações & Marcos",
+    desc: "Orientações baseadas nas diretrizes da OMS e Sociedade Brasileira de Pediatria para apoiar a observação familiar com leveza.",
     cor: "bg-amber-500",
   },
 ];

@@ -27,9 +27,15 @@ function isTextFile(file) {
     || basename.startsWith(".env.");
 }
 
+const ignoredFromMojibakeCheck = new Set([
+  "lib/text/repair-mojibake.ts",
+  "lib\\text\\repair-mojibake.ts",
+]);
+
 function inspectText(file, text, hasBom) {
   const findings = [];
-  const mojibake = text.match(mojibakePattern);
+  const normalizedPath = file.replace(/\\/g, "/");
+  const mojibake = ignoredFromMojibakeCheck.has(normalizedPath) ? null : text.match(mojibakePattern);
   const controls = text.match(forbiddenControlsPattern);
 
   if (hasBom) findings.push(`${file}: UTF-8 BOM desnecessário`);

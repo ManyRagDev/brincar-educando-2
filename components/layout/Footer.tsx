@@ -1,21 +1,27 @@
 import Link from "next/link";
 import { Heart, Mail, Instagram } from "lucide-react";
 
-const footerLinks = {
+type FooterLinkItem = {
+  href: string;
+  label: string;
+  badge?: string;
+};
+
+const footerLinks: Record<string, FooterLinkItem[]> = {
   conteudo: [
     { href: "/blog", label: "Blog" },
-    { href: "/loja", label: "Loja", badge: "Em breve" },
+    { href: "/orientacoes", label: "Orientações & Marcos" },
     { href: "/historias", label: "Histórias" },
   ],
-  empresa: [
-    { href: "/sobre", label: "Sobre nós" },
-    { href: "/privacidade", label: "Privacidade" },
+  projeto: [
+    { href: "/sobre", label: "Sobre o projeto" },
+    { href: "/privacidade", label: "Privacidade (LGPD)" },
     { href: "/termos", label: "Termos de uso" },
   ],
   conta: [
     { href: "/auth", label: "Entrar" },
     { href: "/auth?mode=signup", label: "Criar conta" },
-    { href: "/dashboard", label: "Dashboard" },
+    { href: "/dashboard", label: "Área da Família" },
   ],
 };
 
@@ -81,10 +87,10 @@ export function Footer() {
 
           <div>
             <h3 className="font-bold text-sm uppercase tracking-wider text-[var(--color-muted-foreground)] mb-4">
-              Empresa
+              Projeto
             </h3>
             <ul className="space-y-2">
-              {footerLinks.empresa.map((link) => (
+              {footerLinks.projeto.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

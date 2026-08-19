@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Menu, X, BookOpen, Home, ShoppingBag, Info } from "lucide-react";
+import { Menu, X, BookOpen, Home, Info, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -14,10 +14,17 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { LogOut, LayoutDashboard } from "lucide-react";
 
-const navLinks = [
+type NavLinkItem = {
+  href: string;
+  label: string;
+  icon: typeof Home;
+  badge?: string;
+};
+
+const navLinks: NavLinkItem[] = [
   { href: "/", label: "Início", icon: Home },
   { href: "/blog", label: "Blog", icon: BookOpen },
-  { href: "/loja", label: "Loja", icon: ShoppingBag, badge: "Em breve" },
+  { href: "/orientacoes", label: "Orientações", icon: Sparkles },
   { href: "/sobre", label: "Sobre", icon: Info },
 ];
 
