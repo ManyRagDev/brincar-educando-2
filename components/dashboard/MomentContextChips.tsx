@@ -25,30 +25,26 @@ const shortLabels: Record<MomentContext, string> = {
 
 export function MomentContextChips({ selected }: { selected: MomentContext | null }) {
   return (
-    <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
+    <div className="dashboard-context-scroller">
       <div
         role="region"
         aria-label="Filtros de contexto da brincadeira"
-        className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-0.5 no-scrollbar scroll-smooth"
+        className="dashboard-context-chips no-scrollbar"
       >
-        {/* Opção padrão: Para agora */}
         <Link
           href="/dashboard"
           replace
           scroll={false}
           aria-current={!selected ? "true" : undefined}
           className={cn(
-            "inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all select-none active:scale-95",
-            !selected
-              ? "bg-[var(--color-primary)] text-white shadow-xs font-black"
-              : "border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-muted-foreground)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-foreground)]"
+            "dashboard-context-chip",
+            !selected && "is-active",
           )}
         >
-          <Sparkles className={cn("size-3.5", !selected ? "text-white" : "text-[var(--color-primary)]")} aria-hidden="true" />
+          <span className="dashboard-context-chip-icon"><Sparkles aria-hidden="true" /></span>
           <span>Para agora</span>
         </Link>
 
-        {/* Demais opções do MOMENT_OPTIONS */}
         {MOMENT_OPTIONS.map((option) => {
           const Icon = icons[option.value];
           const active = option.value === selected;
@@ -62,13 +58,11 @@ export function MomentContextChips({ selected }: { selected: MomentContext | nul
               scroll={false}
               aria-current={active ? "true" : undefined}
               className={cn(
-                "inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold transition-all select-none active:scale-95",
-                active
-                  ? "bg-[var(--color-primary)] text-white shadow-xs font-black"
-                  : "border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-muted-foreground)] hover:border-[var(--color-primary)]/40 hover:text-[var(--color-foreground)]"
+                "dashboard-context-chip",
+                active && "is-active",
               )}
             >
-              <Icon className={cn("size-3.5", active ? "text-white" : "text-[var(--color-primary)]")} aria-hidden="true" />
+              <span className="dashboard-context-chip-icon"><Icon aria-hidden="true" /></span>
               <span>{label}</span>
             </Link>
           );

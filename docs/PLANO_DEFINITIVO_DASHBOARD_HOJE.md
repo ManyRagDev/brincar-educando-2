@@ -2,7 +2,7 @@
 
 > Especificação executiva do redesign aprovado para a página autenticada `/dashboard` do Brincar Educando.
 
-**Status:** aprovado para implementação  
+**Status:** 🟡 implementado; aguardando conferência total e validação autenticada das páginas internas  
 **Data da decisão:** 22 de julho de 2026  
 **Referência visual aprovada:** [mockup do Dashboard Hoje](assets/dashboard-hoje-redesign-reference.png)  
 **Documento relacionado:** [Plano Mestre da Nova UX](../PLANO_MESTRE_NOVA_UX.md)
@@ -763,3 +763,6 @@ O redesign estará completo somente quando:
 | 2026-07-22 | Curva sem estados de conclusão | preservar ludicidade sem avaliar desenvolvimento |
 | 2026-07-22 | Gerar imagens sob uma bíblia de arte | obter consistência e utilidade editorial |
 | 2026-07-22 | Construir curva e ornamentos funcionais em código | garantir responsividade, acessibilidade e Modo Acolher |
+| 2026-09-04 | Promover a experiência validada de `/dashboard2` para `/dashboard` | tornar a versão aprovada a entrada oficial |
+| 2026-09-04 | Preservar a composição anterior em `/dashboard-legado`, fora da navegação | manter referência recuperável sem sustentar duas versões ativas |
+| 2026-09-04 | Levar a linguagem visual ao `DashboardLayout` compartilhado | unificar as páginas autenticadas sem copiar o shell por rota |

@@ -8,14 +8,6 @@ import { recordRecommendationEvent, type RecommendationEventInput } from "@/app/
 import type { MomentContext, RecommendationResult, RankedRecommendation } from "@/lib/journey/recommendation-engine";
 import { getActivityImagePath } from "@/lib/activities/activity-images";
 
-const swapReasons: Array<{ value: NonNullable<RecommendationEventInput["reason"]>; label: string }> = [
-  { value: "no_time", label: "Pouco tempo" },
-  { value: "no_materials", label: "Sem os materiais" },
-  { value: "wrong_mood", label: "Outro clima" },
-  { value: "already_did", label: "Já fizemos recentemente" },
-  { value: "just_browsing", label: "Só quero outra" },
-];
-
 function eventInput(
   activity: RankedRecommendation,
   childId: string,
@@ -48,7 +40,7 @@ function CompactAlternative({ activity, label, childId, context, ruleVersion }: 
     <Link
       href={recommendationHref(activity, context, 1, ruleVersion)}
       onClick={() => void recordRecommendationEvent(eventInput(activity, childId, context, 1, "open", ruleVersion))}
-      className="dashboard-alternative group rounded-2xl bg-[var(--color-card)] p-4 border border-[var(--color-border)] shadow-xs transition hover:border-[var(--color-primary)]/50"
+      className="dashboard-alternative group"
     >
       <span className="dashboard-eyebrow text-[var(--color-primary)]">{label}</span>
       <span className="mt-1 line-clamp-1 text-sm font-black text-[var(--color-foreground)]">{activity.titulo}</span>
@@ -63,7 +55,6 @@ function CompactAlternative({ activity, label, childId, context, ruleVersion }: 
 
 export function JourneySuggestions({ recommendations, childId, context }: { recommendations: RecommendationResult; childId: string; context: MomentContext | null }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showReasons, setShowReasons] = useState(false);
   const [feedback, setFeedback] = useState<"more_like_this" | "less_like_this" | null>(null);
   const [isPending, startTransition] = useTransition();
   const featured = recommendations.ranked[currentIndex] ?? recommendations.featured;
@@ -75,6 +66,10 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
     .replace(/^boa para agora\s*/i, "")
     .replace(/^porque\s*/i, "")
     .replace(/[.\s]+$/, "");
+  const materialCount = featured.materiais.length;
+  const materialLabel = materialCount === 0
+    ? "Sem materiais"
+    : `${materialCount} ${materialCount === 1 ? "material" : "materiais"}`;
 
   useEffect(() => {
     const storageKey = `recommendation-impression:${featured.recommendationKey}`;
@@ -84,11 +79,12 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
   }, [childId, context, currentIndex, featured, recommendations.ruleVersion]);
 
   function swap(reason: RecommendationEventInput["reason"]) {
-    startTransition(async () => {
-      await recordRecommendationEvent(eventInput(featured, childId, context, currentIndex, "swap", recommendations.ruleVersion, reason));
+    const event = eventInput(featured, childId, context, currentIndex, "swap", recommendations.ruleVersion, reason);
+    setFeedback(null);
+    startTransition(() => {
       setCurrentIndex((current) => (current + 1) % recommendations.ranked.length);
-      setShowReasons(false);
     });
+    void recordRecommendationEvent(event);
   }
 
   function sendFeedback(type: "more_like_this" | "less_like_this") {
@@ -97,97 +93,57 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
   }
 
   return (
-    <section aria-labelledby="plan-now-title" className="space-y-3.5">
-      <div className="flex items-center justify-between">
-        <p className="dashboard-eyebrow flex items-center gap-1.5 text-[var(--color-primary)]">
-          <Sparkles className="size-3.5" aria-hidden="true" /> Brincadeira para agora
-        </p>
+    <section aria-labelledby="plan-now-title" className="dashboard-now-section">
+      <div className="dashboard-now-heading">
+        <div>
+          <p className="dashboard-eyebrow flex items-center gap-1.5 text-[var(--color-primary)]">
+            <Sparkles className="size-3.5" aria-hidden="true" /> Para agora
+          </p>
+          <h2 id="plan-now-title">Uma brincadeira possível para vocês</h2>
+        </div>
+        <p>Escolhida para a fase e para o momento de vocês.</p>
       </div>
 
-      <article className="dashboard-hero overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] shadow-md transition-shadow">
-        <div className="grid md:grid-cols-[minmax(0,1fr)_minmax(18rem,40%)]">
-          <div className="order-2 flex min-w-0 flex-col p-3.5 sm:p-5 md:order-1 md:p-7">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[var(--color-primary)]">Sugestão de Hoje</span>
-              <div className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-muted-foreground)]">
-                <span className="inline-flex items-center gap-1">
-                  <Clock3 className="size-3 text-[var(--color-primary)]" aria-hidden="true" /> {featured.duracao_minutos} min
-                </span>
-                <span>•</span>
-                <span>Preparo {featured.preparo_minutos} min</span>
-              </div>
+      <article className="dashboard-hero">
+        <div className="dashboard-hero-grid">
+          <div className="dashboard-hero-copy">
+            <span className="dashboard-clay-label">Sugestão para este momento</span>
+            <h3>{featured.titulo}</h3>
+            <p className="dashboard-hero-description">{featured.descricao}</p>
+
+            <div className="dashboard-signals" aria-label="Informações práticas">
+              <span className="dashboard-signal"><Clock3 aria-hidden="true" /> {featured.duracao_minutos} min</span>
+              <span className="dashboard-signal"><Clock3 aria-hidden="true" /> {featured.preparo_minutos} min de preparo</span>
+              <span className="dashboard-signal"><PackageOpen aria-hidden="true" /> {materialLabel}</span>
             </div>
 
-            <h3 id="plan-now-title" className="mt-1 text-xl sm:text-2xl md:text-3xl font-black leading-tight tracking-tight text-[var(--color-foreground)]">{featured.titulo}</h3>
-            <p className="mt-1.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-[var(--color-muted-foreground)]">{featured.descricao}</p>
-
-            <div className="mt-2 rounded-lg border border-[#f2cfc3] dark:border-neutral-800 bg-[#fff7f3] dark:bg-neutral-900/60 p-2 sm:p-2.5">
-              <p className="text-[11px] sm:text-xs font-bold text-[var(--color-foreground)] leading-snug">Boa para agora: {reasonText.toLocaleLowerCase()}.</p>
+            <div className="dashboard-reason">
+              <span className="dashboard-reason-mark"><Check aria-hidden="true" /></span>
+              <p><strong>Boa para agora</strong> porque {reasonText.toLocaleLowerCase()}.</p>
             </div>
 
-            <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+            <div className="dashboard-hero-actions">
               <Link
                 href={recommendationHref(featured, context, currentIndex, recommendations.ruleVersion)}
                 onClick={() => void recordRecommendationEvent(eventInput(featured, childId, context, currentIndex, "open", recommendations.ruleVersion))}
-                className="inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-5 text-xs sm:text-sm font-black text-white shadow-md shadow-[var(--color-primary)]/20 transition hover:brightness-95 active:scale-98"
+                className="dashboard-primary-action"
               >
                 Ver como brincar <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
               {recommendations.ranked.length > 1 && (
                 <button
                   type="button"
-                  onClick={() => setShowReasons((visible) => !visible)}
-                  aria-expanded={showReasons}
-                  aria-controls="swap-reasons"
-                  className="inline-flex min-h-10 sm:min-h-11 items-center justify-center gap-1.5 rounded-xl px-2.5 text-xs font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] active:scale-95"
+                  onClick={() => swap("just_browsing")}
+                  disabled={isPending}
+                  className="dashboard-swap-action"
                 >
                   <RefreshCw className="size-3.5" aria-hidden="true" /> {isPending ? "Trocando…" : "Quero outra ideia"}
                 </button>
               )}
             </div>
-
-            {showReasons && (
-              <div id="swap-reasons" className="mt-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-background)] p-2.5">
-                <p className="text-xs font-bold text-[var(--color-foreground)]">Se quiser, conte o motivo:</p>
-                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  {swapReasons.map((reason) => (
-                    <button
-                      key={reason.value}
-                      type="button"
-                      disabled={isPending}
-                      onClick={() => swap(reason.value)}
-                      className="min-h-7 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] px-2.5 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95 disabled:opacity-50"
-                    >
-                      {reason.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="mt-2.5 flex flex-wrap items-center gap-2">
-              <span className="text-[10px] text-[var(--color-muted-foreground)]">Para você:</span>
-              <button
-                type="button"
-                aria-pressed={feedback === "more_like_this"}
-                onClick={() => sendFeedback("more_like_this")}
-                className="inline-flex min-h-6 items-center gap-1 rounded-full border border-[var(--color-border)] px-2 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
-              >
-                <ThumbsUp className="size-2.5" aria-hidden="true" /> Mais como esta
-              </button>
-              <button
-                type="button"
-                aria-pressed={feedback === "less_like_this"}
-                onClick={() => sendFeedback("less_like_this")}
-                className="inline-flex min-h-6 items-center gap-1 rounded-full border border-[var(--color-border)] px-2 text-[10px] font-bold hover:border-[var(--color-primary)] active:scale-95"
-              >
-                <ThumbsDown className="size-2.5" aria-hidden="true" /> Menos como esta
-              </button>
-              {feedback && <span className="text-[10px] text-[var(--color-muted-foreground)]">Salvo!</span>}
-            </div>
           </div>
 
-          <div className="relative order-1 h-28 sm:h-36 md:order-2 md:h-full md:min-h-full bg-[#f7eee5] dark:bg-neutral-900 overflow-hidden">
+          <div className="dashboard-hero-media">
             {imageSrc ? (
               <Image
                 src={imageSrc}
@@ -198,7 +154,7 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
                 className="object-cover"
               />
             ) : (
-              <div className="flex h-full min-h-28 items-center justify-center bg-gradient-to-br from-[#fff2ce] via-[#e8f1d9] to-[#d8f0df] px-4 text-center">
+              <div className="dashboard-hero-fallback">
                 <p className="text-2xl" aria-hidden="true">🧩</p>
               </div>
             )}
@@ -207,11 +163,22 @@ export function JourneySuggestions({ recommendations, childId, context }: { reco
       </article>
 
       {(simple || different) && (
-        <div className="grid gap-2.5 sm:grid-cols-2 pt-1">
+        <div className="dashboard-alternatives">
           {simple && <CompactAlternative activity={simple} label="Mais rápida / simples" childId={childId} context={context} ruleVersion={recommendations.ruleVersion} />}
           {different && <CompactAlternative activity={different} label="Outro clima" childId={childId} context={context} ruleVersion={recommendations.ruleVersion} />}
         </div>
       )}
+
+      <div className="dashboard-preference-line">
+        <span>Para as próximas sugestões:</span>
+        <button type="button" aria-pressed={feedback === "more_like_this"} onClick={() => sendFeedback("more_like_this")}>
+          <ThumbsUp aria-hidden="true" /> Mais como esta
+        </button>
+        <button type="button" aria-pressed={feedback === "less_like_this"} onClick={() => sendFeedback("less_like_this")}>
+          <ThumbsDown aria-hidden="true" /> Menos como esta
+        </button>
+        {feedback && <span role="status">Preferência salva.</span>}
+      </div>
     </section>
   );
 }

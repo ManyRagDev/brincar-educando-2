@@ -39,7 +39,7 @@ export function ChildAgeCard({
   const gradientClass = corClasses[corFavorita] || corClasses.azul;
 
   return (
-    <div className="relative inline-flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 border border-[var(--color-primary)]/15 shadow-lg shadow-[var(--color-primary)]/10 overflow-hidden">
+    <div className="dashboard-child-card">
       {/* Subtle gradient background */}
       <div className={`absolute inset-0 bg-gradient-to-r ${gradientClass} opacity-[0.06]`} />
       
@@ -47,8 +47,8 @@ export function ChildAgeCard({
       <div className={`absolute right-0 top-0 w-16 h-16 bg-gradient-to-br ${gradientClass} opacity-10 rounded-full blur-xl translate-x-1/2 -translate-y-1/2`} />
 
       {/* Avatar container */}
-      <div className="relative flex-shrink-0">
-        <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${gradientClass} p-[2px] shadow-md`}>
+      <div className="dashboard-child-avatar relative flex-shrink-0">
+        <div className={`h-full w-full rounded-full bg-gradient-to-br ${gradientClass} p-[2px] shadow-md`}>
           <div className="w-full h-full rounded-full bg-white p-0.5 flex items-center justify-center overflow-hidden">
             <Image
               src={avatarSrc}
@@ -64,14 +64,14 @@ export function ChildAgeCard({
       </div>
 
       {/* Text content */}
-      <div className="relative flex flex-col pr-1">
-        <div className="flex items-center gap-1 mb-0.5">
+      <div className="dashboard-child-copy relative flex flex-col pr-1">
+        <div className="dashboard-child-label flex items-center gap-1 mb-0.5">
           <Heart className="w-2.5 h-2.5 text-[var(--color-primary)] fill-[var(--color-primary)]/40" />
           <span className="text-[9px] font-semibold text-[var(--color-muted-foreground)] uppercase tracking-wider">
             Jornada de
           </span>
         </div>
-        <span className="text-[13px] font-bold leading-tight whitespace-nowrap">
+        <span className="dashboard-child-name font-bold leading-tight whitespace-nowrap">
           <span className={`bg-gradient-to-r ${gradientClass} bg-clip-text text-transparent`}>{repairMojibake(nome)}</span>
           <span className="mx-1 text-[var(--color-muted-foreground)]/40">•</span>
           <span className="text-[var(--color-foreground)]">{idadeTexto}</span>

@@ -20,7 +20,7 @@ export function DashboardMobileHeader() {
   }
 
   return (
-    <header className="lg:hidden sticky top-0 z-30 bg-[var(--color-background)]/95 backdrop-blur-md border-b border-[var(--color-border)] transition-colors">
+    <header className="dashboard-mobile-header sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-background)]/95 backdrop-blur-md transition-colors lg:hidden">
       <div className="pt-safe">
         <div className="flex h-15 sm:h-16 items-center justify-between px-3.5 sm:px-4 gap-2">
           {/* Logo oficial padronizado com destaque */}

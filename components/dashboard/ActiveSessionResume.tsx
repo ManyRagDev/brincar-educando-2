@@ -14,7 +14,7 @@ export function ActiveSessionResume() {
 
   return (
     <section
-      className="rounded-3xl border border-[var(--color-primary)]/25 bg-[var(--color-primary)]/8 p-5"
+      className="dashboard-resume-card"
       aria-labelledby="resume-play-title"
     >
       <div className="flex items-start gap-3">
@@ -33,7 +33,7 @@ export function ActiveSessionResume() {
           </p>
           <Link
             href={`/atividade-ativa/${activitySlug}`}
-            className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-black text-[var(--color-primary)] underline-offset-4 hover:underline"
+            className="dashboard-resume-action"
           >
             Retomar brincadeira <ArrowRight className="size-4" aria-hidden="true" />
           </Link>

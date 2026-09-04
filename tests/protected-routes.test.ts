@@ -5,6 +5,7 @@ import { isProtectedPath } from "../lib/auth/protected-routes.ts";
 test("protege todas as rotas privadas e seus descendentes", () => {
   for (const path of [
     "/dashboard",
+    "/dashboard-legado",
     "/atividade-ativa/pintura",
     "/configuracoes",
     "/crescimento",

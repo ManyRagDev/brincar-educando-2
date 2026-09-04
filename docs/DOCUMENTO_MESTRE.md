@@ -7,7 +7,7 @@
 **Produto:** Brincar Educando
 
 **Idioma e público prioritários:** português do Brasil; responsáveis por crianças na primeira infância
-**Última consolidação:** 21 de julho de 2026
+**Última consolidação:** 4 de setembro de 2026
 
 ## 1. Identidade do produto
 
@@ -94,6 +94,12 @@ A criança ativa é uma noção central do aplicativo: a seleção é resolvida 
 ### Hoje e recomendações
 
 **Rota:** `/dashboard`.
+
+Desde 4 de setembro de 2026, a direção visual antes validada em `/dashboard2`
+é a experiência oficial de Hoje e também fundamenta o shell das demais rotas
+autenticadas. `/dashboard2` apenas redireciona para `/dashboard`. A composição
+anterior foi preservada em `/dashboard-legado`, sem entrada na navegação do
+aplicativo, para comparação e eventual consulta durante a estabilização.
 
 O dashboard apresenta uma saudação no fuso de São Paulo, a criança ativa e um check-in opcional do momento:
 
@@ -394,6 +400,34 @@ conferente reexecutou typecheck e 15 testes web; o build web fresco permanece
 evidência do implementador para evitar escrever `.next` durante a revisão.
 Ressalvas: Keystore antes de release, bundle de 1,26 MB, login real não
 autorizado e julgamento visual do proprietário.
+
+### 9.3 Promoção do novo Dashboard Hoje e unificação visual do shell (4 de setembro de 2026)
+
+**Contexto:** a experiência experimental de `/dashboard2` foi aprovada pelo
+proprietário para se tornar a entrada oficial, e sua linguagem visual deveria
+seguir para as demais páginas autenticadas sem duplicar um layout por rota.
+
+**O que foi feito:** o conteúdo do dashboard2 passou a responder em
+`/dashboard`; `/dashboard2` tornou-se um redirecionamento; a composição anterior
+foi movida para `/dashboard-legado`; e o shell compartilhado recebeu a barra
+lateral, navegação móvel, superfícies táteis e tratamento do Modo Acolher da
+direção aprovada. Os contratos de dados e fluxos das páginas internas foram
+preservados.
+
+**Decisão arquitetural:** o dashboard oficial passou a usar o
+`DashboardLayout` comum em vez de manter uma segunda barra lateral própria. A
+identidade visual é aplicada no shell e em primitivas compartilhadas, evitando
+divergência entre Atividades, Memórias, Jornada, Orientações, Perfil e
+Configurações.
+
+**Achado real:** medidas estruturais do shell não podem depender apenas da
+geração incremental de utilitários durante o desenvolvimento; largura e inset
+da barra lateral foram registrados explicitamente no CSS compartilhado após uma
+compilação incremental exibir uma largura incorreta.
+
+**Verificação:** typecheck, lint direcionado, testes automatizados e inspeção
+visual do shell em origem limpa. A entrega permanece 🟡 até a conferência total
+e a validação humana das páginas internas em sessão autenticada.
 
 ## 10. Como manter este documento vivo
 

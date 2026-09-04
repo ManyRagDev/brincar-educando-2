@@ -1,5 +1,6 @@
 export const PROTECTED_ROUTE_PREFIXES = [
   "/dashboard",
+  "/dashboard-legado",
   "/atividades",
   "/atividade-ativa",
   "/diario",

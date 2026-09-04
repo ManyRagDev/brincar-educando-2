@@ -2,7 +2,6 @@ import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardMobileHeader } from "./DashboardMobileHeader";
 import { BottomNav } from "./BottomNav";
 import { ActiveChildProvider } from "@/components/dashboard/ActiveChildProvider";
-import { EducationalScopeNotice } from "@/components/dashboard/EducationalScopeNotice";
 import { DashboardNavigationFeedback } from "./DashboardNavigationFeedback";
 import type { ChildSummary } from "@/lib/children/active-child";
 
@@ -19,16 +18,15 @@ interface DashboardLayoutProps {
 export function DashboardLayout({
   children,
   childState,
-  educationalScopeNoticeExpanded,
 }: DashboardLayoutProps) {
   return (
     <ActiveChildProvider value={childState}>
-      <div className="min-h-screen bg-[var(--color-background)]">
+      <div className="dashboard-app-shell min-h-screen bg-[var(--color-background)]">
         <DashboardNavigationFeedback />
         <DashboardMobileHeader />
         <DashboardSidebar />
 
-        <main className="pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pl-60 lg:pb-0">
+        <main className="dashboard-shell-main pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pl-[17.5rem] lg:pb-0">
           {children}
         </main>
 

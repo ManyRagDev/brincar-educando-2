@@ -26,7 +26,7 @@ export function BottomNav() {
       aria-label="Navegação principal móvel"
       className="lg:hidden fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 w-[calc(100%-1.25rem)] max-w-[420px] z-[9999] transition-all duration-300"
     >
-      <div className="relative flex items-center justify-between gap-1 p-1.5 rounded-2xl sm:rounded-3xl bg-[var(--card)]/98 backdrop-blur-2xl border border-[var(--border)] shadow-[0_14px_40px_rgba(0,0,0,0.14)] dark:shadow-[0_14px_40px_rgba(0,0,0,0.55)] transition-all duration-300">
+      <div className="dashboard-mobile-dock relative flex items-center justify-between gap-1 p-1.5 rounded-2xl sm:rounded-3xl bg-[var(--card)]/98 backdrop-blur-2xl border border-[var(--border)] shadow-[0_14px_40px_rgba(0,0,0,0.14)] dark:shadow-[0_14px_40px_rgba(0,0,0,0.55)] transition-all duration-300">
         {tabs.map(({ href, label, icon: Icon }) => {
           const isActive =
             href === "/mais"
@@ -41,6 +41,7 @@ export function BottomNav() {
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "group relative flex flex-1 flex-col items-center justify-center min-h-[50px] py-1 px-1 rounded-xl sm:rounded-2xl transition-all duration-150 select-none active:scale-95",
+                isActive && "dashboard-mobile-nav-active",
                 !isActive && "hover:bg-[var(--muted)]/50"
               )}
             >
@@ -48,7 +49,7 @@ export function BottomNav() {
               {isActive && (
                 <motion.div
                   layoutId="dock-active-pill"
-                  className="absolute inset-0 rounded-xl sm:rounded-2xl bg-[var(--primary)] shadow-[0_4px_16px_rgba(0,0,0,0.18)]"
+                  className="dashboard-mobile-dock-pill absolute inset-0 rounded-xl sm:rounded-2xl bg-[var(--primary)] shadow-[0_4px_16px_rgba(0,0,0,0.18)]"
                   transition={{
                     type: "spring",
                     stiffness: 420,
